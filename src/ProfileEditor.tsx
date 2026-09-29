@@ -64,6 +64,30 @@ export function ProfileEditor() {
           />
         ) : (
           <input
+            type={
+              path.endsWith(".url") ||
+              path.endsWith("repository") ||
+              path === "license_url" ||
+              path === "get_started"
+                ? "url"
+                : "text"
+            }
+            autoCapitalize={
+              path === "id" ||
+              path.endsWith(".url") ||
+              path.endsWith("repository") ||
+              path === "license_url" ||
+              path === "get_started"
+                ? "none"
+                : "sentences"
+            }
+            spellCheck={
+              !(
+                path === "id" ||
+                path.endsWith(".url") ||
+                path.endsWith("repository")
+              )
+            }
             value={value || ""}
             onChange={(e) => set(path, e.target.value)}
           />
@@ -140,8 +164,18 @@ export function ProfileEditor() {
           project page.
         </p>
       </div>
+      <a
+        className="mobile-editor-jump text-link"
+        href="#listing-preview"
+        onClick={(event) => {
+          event.preventDefault();
+          document.getElementById("listing-preview")?.focus();
+        }}
+      >
+        Preview & save ↓
+      </a>
       <div className="share-layout">
-        <section className="form-panel">
+        <section className="form-panel" id="listing-form" tabIndex={-1}>
           <div className="form-toolbar">
             <div className="segmented">
               <button
@@ -303,7 +337,21 @@ export function ProfileEditor() {
             </a>
           </div>
         </section>
-        <aside className="submission-preview">
+        <aside
+          className="submission-preview"
+          id="listing-preview"
+          tabIndex={-1}
+        >
+          <a
+            className="mobile-editor-jump text-link"
+            href="#listing-form"
+            onClick={(event) => {
+              event.preventDefault();
+              document.getElementById("listing-form")?.focus();
+            }}
+          >
+            ↑ Back to editing
+          </a>
           <div className="eyebrow">YOUR LISTING PREVIEW</div>
           {display ? (
             <article className="project-card preview-card">

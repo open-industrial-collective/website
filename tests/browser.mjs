@@ -95,7 +95,7 @@ await expect(
   page.getByRole("button", { name: "Operations", exact: false }),
 ).toHaveCount(0);
 await page
-  .getByRole("textbox", { name: "Search catalog" })
+  .getByRole("searchbox", { name: "Search catalog" })
   .fill("no-matching-tool");
 await expect(page.getByRole("status")).toHaveText(/0 projects/);
 await page.getByRole("button", { name: "Clear filters" }).click();
