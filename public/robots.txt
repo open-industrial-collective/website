@@ -1,2 +1,3 @@
 User-agent: *
 Allow: /
+Sitemap: https://openindustrialcollective.org/sitemap.xml

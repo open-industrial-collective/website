@@ -9,10 +9,10 @@
   "scripts": {
     "dev": "npm run catalog && vite --host 127.0.0.1",
     "catalog": "npm run schema && tsx scripts/build-catalog.ts",
-    "build": "npm run catalog && tsc --noEmit && vite build",
+    "build": "npm run catalog && tsc --noEmit && vite build && vite build --ssr src/entry-server.tsx --outDir .ssr && node scripts/prerender.mjs",
     "preview": "vite preview --host 127.0.0.1",
     "test": "npm run schema && tsx --test tests/*.test.ts",
-    "check": "npm test && npm run build",
+    "check": "npm test && npm run build && node tests/seo-output.mjs",
     "schema": "node scripts/compile-validator.mjs",
     "profile": "tsx scripts/sync-profile.ts"
   },
