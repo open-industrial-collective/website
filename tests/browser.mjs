@@ -115,7 +115,7 @@ await page
   .fill("no-matching-tool");
 await expect(page.getByRole("status")).toHaveText(/0 projects/);
 await page.getByRole("button", { name: "Clear filters" }).click();
-await expect(page.getByRole("status")).toHaveText(/1 project · 4 examples/);
+await expect(page.getByRole("status")).toHaveText(/2 projects · 4 examples/);
 await expect(
   page
     .getByLabel("Source availability", { exact: true })
@@ -168,7 +168,7 @@ await expect(
   page.getByRole("img", { name: "Ignition by Inductive Automation®" }),
 ).toBeVisible();
 await page.getByRole("link", { name: "Find these tools" }).click();
-await expect(page.getByRole("status")).toHaveText(/1 project · 4 examples/);
+await expect(page.getByRole("status")).toHaveText(/2 projects · 4 examples/);
 await page.getByLabel("Runs on", { exact: true }).selectOption("Raspberry Pi");
 await expect(page.getByRole("status")).toHaveText(/0 projects · 1 example/);
 await expect(
