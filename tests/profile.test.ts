@@ -287,7 +287,7 @@ test("generic React renderer displays a second project and suppresses HTML and u
   const gallery = renderToStaticMarkup(
     createElement(ShowcasePreview, { media: p.media }),
   );
-  assert.match(gallery, /Preview views/);
+  assert.match(gallery, /Choose media/);
   assert.match(gallery, /walkthrough/);
   const safe = renderToStaticMarkup(
     createElement(ProfileText, {
