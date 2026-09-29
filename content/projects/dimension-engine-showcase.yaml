@@ -21,7 +21,7 @@ branding:
   logo:
     on_light: ./media/logo.png
     on_dark: ./media/logo.png
-    alt: Dimension Engine dimensional DE monogram in cyan and blue
+    alt: Dimension Engine 3D monogram with a rounded cyan D and blue E
 media:
   - id: factory
     type: image

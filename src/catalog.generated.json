@@ -53,9 +53,9 @@
       },
       "branding": {
         "logo": {
-          "on_light": "/images/projects/68a49b42a4fdfd149ce9bb42aaf72fc4b8755a0383a753c356695961a4cd2a89.webp",
-          "on_dark": "/images/projects/68a49b42a4fdfd149ce9bb42aaf72fc4b8755a0383a753c356695961a4cd2a89.webp",
-          "alt": "Dimension Engine dimensional DE monogram in cyan and blue"
+          "on_light": "/images/projects/bbc042bc56d1df0c88f41ca183e2bfa537b0e39c971a62241b05267152a38dad.webp",
+          "on_dark": "/images/projects/bbc042bc56d1df0c88f41ca183e2bfa537b0e39c971a62241b05267152a38dad.webp",
+          "alt": "Dimension Engine 3D monogram with a rounded cyan D and blue E"
         }
       },
       "media": [
@@ -205,7 +205,7 @@
         "logo": {
           "on_light": "./media/logo.png",
           "on_dark": "./media/logo.png",
-          "alt": "Dimension Engine dimensional DE monogram in cyan and blue"
+          "alt": "Dimension Engine 3D monogram with a rounded cyan D and blue E"
         }
       },
       "media": [
@@ -333,8 +333,8 @@
       "submitted_by": "Grindstone Systems",
       "source": {
         "repository": "open-industrial-collective/dimension-engine-listing",
-        "commit": "08cf7e91631a782c40252313c0ace9fe7271a612",
-        "digest": "d1c77c87d42e62a52f7f941cb7f11e7a151629abd09af7c3788c9bfbb37f83e3"
+        "commit": "f647aacdf50904c835e28019997c53b373389c13",
+        "digest": "ed2cc7525c1c305b27959a58fdee2621abab7d6f92b64a82a29646e5ebb2a6d5"
       }
     }
   },
