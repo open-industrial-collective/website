@@ -662,6 +662,207 @@
         "listed",
         "withdrawn"
       ]
+    },
+    "discovery": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "primary": {
+          "enum": [
+            "connectivity",
+            "visualization",
+            "operations",
+            "data",
+            "automation",
+            "development",
+            "infrastructure",
+            "security"
+          ]
+        },
+        "secondary": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "connectivity",
+              "visualization",
+              "operations",
+              "data",
+              "automation",
+              "development",
+              "infrastructure",
+              "security"
+            ]
+          },
+          "maxItems": 2,
+          "uniqueItems": true
+        },
+        "capabilities": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100,
+            "pattern": "\\S"
+          },
+          "maxItems": 12,
+          "uniqueItems": true
+        },
+        "product_type": {
+          "enum": [
+            "application",
+            "extension",
+            "resource",
+            "library",
+            "assets"
+          ]
+        },
+        "interfaces": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100,
+            "pattern": "\\S"
+          },
+          "maxItems": 12,
+          "uniqueItems": true
+        },
+        "works_with": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100,
+                "pattern": "\\S"
+              },
+              "relationship": {
+                "enum": [
+                  "requires",
+                  "integrates",
+                  "exports"
+                ]
+              },
+              "version": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100,
+                "pattern": "\\S"
+              },
+              "evidence_url": {
+                "type": "string",
+                "format": "https-url",
+                "maxLength": 2048
+              }
+            },
+            "required": [
+              "name",
+              "relationship"
+            ]
+          },
+          "maxItems": 12,
+          "uniqueItems": true
+        },
+        "options": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "resource_id": {
+                "type": "string",
+                "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+              },
+              "delivery": {
+                "enum": [
+                  "web",
+                  "container",
+                  "installer",
+                  "module",
+                  "project",
+                  "source",
+                  "assets"
+                ]
+              },
+              "environments": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100,
+                  "pattern": "\\S"
+                },
+                "maxItems": 12,
+                "uniqueItems": true
+              },
+              "deployment": {
+                "type": "array",
+                "items": {
+                  "enum": [
+                    "local",
+                    "server",
+                    "cloud",
+                    "hosted"
+                  ]
+                },
+                "maxItems": 12,
+                "uniqueItems": true
+              }
+            },
+            "required": [
+              "delivery",
+              "environments",
+              "deployment"
+            ]
+          },
+          "maxItems": 12,
+          "uniqueItems": true
+        },
+        "offline": {
+          "enum": [
+            "yes",
+            "no",
+            "unknown"
+          ]
+        },
+        "air_gap": {
+          "enum": [
+            "documented",
+            "no",
+            "unknown"
+          ]
+        },
+        "air_gap_url": {
+          "type": "string",
+          "format": "https-url",
+          "maxLength": 2048
+        },
+        "commercial_use": {
+          "enum": [
+            "yes",
+            "no",
+            "unknown"
+          ]
+        },
+        "support": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "community",
+              "publisher",
+              "paid"
+            ]
+          },
+          "maxItems": 12,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "primary"
+      ]
     }
   },
   "required": [

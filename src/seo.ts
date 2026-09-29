@@ -9,6 +9,7 @@ const pages: Record<string, [string, string]> = {
     "Explore free industrial tools",
     "Browse free industrial software for engineering, operations, visualization and connectivity. Compare source availability, access terms and requirements.",
   ],
+  "/explore/glossary": ["Explore filters and classification", "Understand OIC capability categories, package formats, platform relationships and search filters."],
   "/share": [
     "Share a free industrial tool",
     "Prepare a portable OIC project profile and request a listing for your free industrial software, module or browser demo.",

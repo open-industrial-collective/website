@@ -36,6 +36,7 @@ export type Listing = Project & {
   listing: {
     origin: "curated" | "community";
     reviewed: string;
+    added?: string;
     submitted_by?: string;
     source?: {repository: string; commit: string; digest: string};
   };

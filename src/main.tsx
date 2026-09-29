@@ -10,6 +10,7 @@ import "./mobile.css";
 import "./resources.css";
 import "./charter.css";
 import "./polish.css";
+import "./explore.css";
 const root = document.getElementById("root")!;
 const app = (
   <React.StrictMode>

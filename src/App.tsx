@@ -5,6 +5,7 @@ import {
   Route,
   Routes,
   useLocation,
+  useNavigationType,
   useParams,
   useSearchParams,
 } from "react-router-dom";
@@ -59,12 +60,10 @@ import { CollectiveSculpture } from "./CollectiveSculpture";
 import { CommunityPage } from "./CommunityPage";
 import { pageSeo } from "./seo";
 import { CharterPage } from "./CharterPage";
+import Explore, { FitDetails, DiscoveryGlossary } from "./Explore";
 const projects = data as Listing[];
 const publishedProjects = projects.filter(
   (project) => project.listing.origin === "community",
-);
-const exampleProjects = projects.filter(
-  (project) => project.listing.origin === "curated",
 );
 const availableCategories = categories.filter((category) =>
   projects.some((project) => project.category === category),
@@ -78,12 +77,6 @@ const categoryIcons: Record<Category, LucideIcon> = {
   Operations: Settings2,
   Engineering: Box,
   "AI & automation": Workflow,
-};
-const projectIcons: Record<string, LucideIcon> = {
-  "node-red": Workflow,
-  fuxa: Layers3,
-  "mqtt-explorer": Radio,
-  mosquitto: Cable,
 };
 const categoryDescriptions: Record<Category, string> = {
   "Data & connectivity": "Move data. Connect systems.",
@@ -104,7 +97,7 @@ function Icon({ project, size = 26 }: { project: Project; size?: number }) {
         />
       </span>
     );
-  const I = projectIcons[project.id] || categoryIcons[project.category];
+  const I = categoryIcons[project.category];
   return (
     <span className={`project-icon ${project.id}`}>
       <I size={size} strokeWidth={1.6} />
@@ -141,8 +134,26 @@ function download(name: string, value: string, type = "text/yaml") {
   a.click();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
+const scrollPositions = new Map<string, number>();
 function ScrollAndTitle() {
-  const { pathname, hash } = useLocation();
+  const { pathname, hash, key, search } = useLocation();
+  const navigationType = useNavigationType();
+  useEffect(() => {
+    const remember = () => {
+      scrollPositions.set(key, window.scrollY);
+      if (pathname === "/explore")
+        scrollPositions.set(pathname + search, window.scrollY);
+    };
+    window.addEventListener("scroll", remember, { passive: true });
+    return () => window.removeEventListener("scroll", remember);
+  }, [key, pathname, search]);
+  useEffect(() => {
+    const original = window.history.scrollRestoration;
+    window.history.scrollRestoration = "manual";
+    return () => {
+      window.history.scrollRestoration = original;
+    };
+  }, []);
   useEffect(() => {
     const seo = pageSeo(pathname);
     document.title = seo.title;
@@ -188,7 +199,15 @@ function ScrollAndTitle() {
       ?.setAttribute("content", seo.image);
     const target = hash ? document.getElementById(hash.slice(1)) : null;
     if (target) target.scrollIntoView();
-    else window.scrollTo(0, 0);
+    else
+      window.scrollTo(
+        0,
+        (navigationType === "POP"
+          ? scrollPositions.get(key)
+          : pathname === "/explore"
+            ? scrollPositions.get(pathname + search)
+            : 0) || 0,
+      );
     (target || document.querySelector("main"))?.focus({ preventScroll: true });
   }, [pathname, hash]);
   return null;
@@ -288,6 +307,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/explore" element={<Explore />} />
+          <Route path="/explore/glossary" element={<DiscoveryGlossary />} />
           <Route path="/projects/:id" element={<Detail />} />
           <Route path="/share" element={<ProfileEditor />} />
           <Route path="/community" element={<CommunityPage />} />
@@ -451,24 +471,13 @@ function Home() {
             );
           })}
         </div>
-        <details className="example-listings workshop-examples">
-          <summary>
-            <span>
-              Browse {exampleProjects.length} example listings{" "}
-              <small>Familiar tools, with their terms in one place.</small>
-            </span>
-            <ChevronRight size={19} />
-          </summary>
-          <p>
-            Curated from public sources to show how OIC listings work. Their
-            maintainers did not submit them.
-          </p>
-          <div className="project-grid home-grid">
-            {exampleProjects.map((p) => (
+        <div className="project-grid home-grid">
+          {publishedProjects
+            .filter((p) => p.id !== featured?.id)
+            .map((p) => (
               <ProjectCard key={p.id} project={p} />
             ))}
-          </div>
-        </details>
+        </div>
       </section>
       <section className="workshop-purpose" id="why-oic" tabIndex={-1}>
         <div className="container workshop-purpose-inner">
@@ -596,290 +605,6 @@ function ProjectCard({
     </article>
   );
 }
-function Explore() {
-  const [params, setParams] = useSearchParams();
-  const [filtersOpen, setFiltersOpen] = useState(false);
-  const query = params.get("q") || "";
-  const category = params.get("category") || "";
-  const source = params.get("source") || "";
-  const sort = params.get("sort") || "name";
-  const platform = params.get("platform") || "";
-  const software = params.get("software") || "";
-  const update = (key: string, value: string) =>
-    setParams(
-      (prev) => {
-        const next = new URLSearchParams(prev);
-        if (value) next.set(key, value);
-        else next.delete(key);
-        return next;
-      },
-      { replace: true },
-    );
-  const filtered = useMemo(
-    () =>
-      projects
-        .filter(
-          (p) =>
-            (!category || p.category === category) &&
-            (!source || p.source === source) &&
-            (!platform || p.platforms.includes(platform)) &&
-            (!software ||
-              (p.software_requirements || "see-terms") === software) &&
-            [
-              p.name,
-              p.summary,
-              p.description,
-              p.category,
-              p.maintainer,
-              ...p.tags,
-              ...p.platforms,
-            ]
-              .join(" ")
-              .toLowerCase()
-              .includes(query.toLowerCase().trim()),
-        )
-        .sort((a, b) =>
-          sort === "category"
-            ? a.category.localeCompare(b.category) ||
-              a.name.localeCompare(b.name)
-            : a.name.localeCompare(b.name),
-        ),
-    [query, category, source, sort, platform, software],
-  );
-  const realResults = filtered.filter((p) => p.listing.origin === "community");
-  const exampleResults = filtered.filter((p) => p.listing.origin === "curated");
-  const filterCount = [category, source, platform, software].filter(
-    Boolean,
-  ).length;
-  const activeFilter = Boolean(query || filterCount);
-  return (
-    <div className="container page">
-      <div className="page-heading">
-        <div className="eyebrow">THE COLLECTIVE TOOLBOX</div>
-        <h1>Made for the work you do.</h1>
-        <p>
-          Find free software for the shop floor, the edge, and everything in
-          between.
-        </p>
-      </div>
-      <div className="explore-layout">
-        <div className="catalog-controls">
-          <div className="search-input">
-            <Search size={20} />
-            <input
-              type="search"
-              inputMode="search"
-              autoComplete="off"
-              aria-label="Search catalog"
-              placeholder="Search tools, tags, protocols…"
-              value={query}
-              onChange={(e) => update("q", e.target.value)}
-            />
-            {query && (
-              <button onClick={() => update("q", "")} aria-label="Clear search">
-                <X size={17} />
-              </button>
-            )}
-          </div>
-          <div className="filter-actions">
-            <button
-              className="button filter-toggle"
-              aria-expanded={filtersOpen}
-              aria-controls="catalog-filters"
-              onClick={() => setFiltersOpen(!filtersOpen)}
-            >
-              <Settings2 size={18} /> Filters
-              {filterCount > 0 && (
-                <span className="filter-count">{filterCount}</span>
-              )}
-              <ChevronRight size={16} />
-            </button>
-            {activeFilter && (
-              <button className="text-link" onClick={() => setParams({})}>
-                Reset filters
-              </button>
-            )}
-          </div>
-        </div>
-        <aside
-          id="catalog-filters"
-          aria-label="Catalog filters"
-          className={`filter-sidebar ${filtersOpen ? "filters-open" : ""}`}
-        >
-          <h2>Categories</h2>
-          <button
-            aria-pressed={!category}
-            className={!category ? "selected" : ""}
-            onClick={() => update("category", "")}
-          >
-            <Boxes size={18} />
-            All listings<span>{projects.length}</span>
-          </button>
-          {availableCategories.map((c) => {
-            const I = categoryIcons[c];
-            return (
-              <button
-                aria-pressed={category === c}
-                className={category === c ? "selected" : ""}
-                key={c}
-                onClick={() => update("category", c)}
-              >
-                <I size={18} />
-                {c}
-                <span>{projects.filter((p) => p.category === c).length}</span>
-              </button>
-            );
-          })}
-          <label htmlFor="source">Source availability</label>
-          <select
-            id="source"
-            value={source}
-            onChange={(e) => update("source", e.target.value)}
-          >
-            <option value="">Any source type</option>
-            {availableSources.map(([key, value]) => (
-              <option key={key} value={key}>
-                {value}
-              </option>
-            ))}
-          </select>
-          <label htmlFor="platform">Runs on</label>
-          <select
-            id="platform"
-            value={platform}
-            onChange={(e) => update("platform", e.target.value)}
-          >
-            <option value="">Any platform</option>
-            {[...new Set(projects.flatMap((p) => p.platforms))]
-              .sort()
-              .map((p) => (
-                <option key={p}>{p}</option>
-              ))}
-          </select>
-          <label htmlFor="software">Software requirements</label>
-          <select
-            id="software"
-            value={software}
-            onChange={(e) => update("software", e.target.value)}
-          >
-            <option value="">Any requirements</option>
-            {Object.entries(softwareLabels)
-              .filter(([key]) =>
-                projects.some(
-                  (p) => (p.software_requirements || "see-terms") === key,
-                ),
-              )
-              .map(([key, label]) => (
-                <option key={key} value={key}>
-                  {label}
-                </option>
-              ))}
-          </select>
-          <button
-            className="button filter-done"
-            onClick={() => {
-              setFiltersOpen(false);
-              document
-                .querySelector<HTMLButtonElement>(".filter-toggle")
-                ?.focus();
-            }}
-          >
-            Show {filtered.length}{" "}
-            {filtered.length === 1 ? "result" : "results"}{" "}
-            <ArrowRight size={16} />
-          </button>
-          <div className="sidebar-note">
-            <CheckCircle2 size={19} />
-            <strong>Free access. Clear terms.</strong>
-            <p>
-              Check the free edition, permitted uses, and requirements. Required
-              platforms, hardware, hosting, integration, or support may have
-              costs.
-            </p>
-          </div>
-        </aside>
-        <section className="results">
-          <div className="results-toolbar">
-            <span role="status">
-              {realResults.length}{" "}
-              {realResults.length === 1 ? "project" : "projects"}
-              {exampleResults.length
-                ? ` · ${exampleResults.length} ${exampleResults.length === 1 ? "example" : "examples"}`
-                : ""}
-              {category ? ` in ${category}` : ""}
-            </span>
-            <label>
-              Sort{" "}
-              <select
-                aria-label="Sort tools"
-                value={sort}
-                onChange={(e) => update("sort", e.target.value)}
-              >
-                <option value="name">Name A–Z</option>
-                <option value="category">Category</option>
-              </select>
-            </label>
-          </div>
-          {realResults.length > 0 && (
-            <div className="project-grid">
-              {realResults.map((p) => (
-                <ProjectCard key={p.id} project={p} />
-              ))}
-            </div>
-          )}
-          {exampleResults.length > 0 && (
-            <details
-              className="example-listings"
-              key={String(activeFilter)}
-              open={activeFilter || undefined}
-            >
-              <summary>
-                Example listings ({exampleResults.length}){" "}
-                <ChevronRight size={17} />
-              </summary>
-              <p>
-                Curated from public project pages to demonstrate the catalog.
-                These were not submitted by their maintainers.
-              </p>
-              <div className="project-grid">
-                {exampleResults.map((p) => (
-                  <ProjectCard key={p.id} project={p} />
-                ))}
-              </div>
-            </details>
-          )}
-          {!filtered.length && (
-            <div className="empty-state">
-              <Search size={32} />
-              <h2>
-                {!query && category
-                  ? "Room for your next project."
-                  : "No tools found."}
-              </h2>
-              <p>
-                {!query && category
-                  ? "This part of the toolbox is still taking shape. Be one of the first to contribute."
-                  : "Try another search or clear your filters."}
-              </p>
-              <div className="actions">
-                <button className="button" onClick={() => setParams({})}>
-                  Clear filters
-                </button>
-                <Link className="button primary" to="/share">
-                  Share a project <ArrowUpRight size={16} />
-                </Link>
-              </div>
-            </div>
-          )}
-          <p className="catalog-note">
-            Project pages identify the listing author and the limits of OIC
-            review.
-          </p>
-        </section>
-      </div>
-    </div>
-  );
-}
 function ListingCorrection({ project }: { project: Listing }) {
   const [note, setNote] = useState("");
   const [saved, setSaved] = useState(false);
@@ -935,6 +660,12 @@ function ListingCorrection({ project }: { project: Listing }) {
 }
 function Detail() {
   const { id } = useParams();
+  const location = useLocation();
+  const backTo =
+    typeof location.state?.explore === "string" &&
+    /^\/explore(?:\?|$)/.test(location.state.explore)
+      ? location.state.explore
+      : "/explore";
   const p = projects.find((p) => p.id === id);
   if (!p) return <NotFound />;
   const related = publishedProjects
@@ -947,7 +678,7 @@ function Detail() {
   };
   return (
     <div className="container page">
-      <Link className="back" to="/explore">
+      <Link className="back" to={backTo}>
         <ArrowLeft size={16} />
         All tools
       </Link>
@@ -1017,6 +748,7 @@ function Detail() {
               {/terms$/i.test(p.license) ? "" : " terms"}
             </External>
           </section>
+          <FitDetails project={p} />
           {p.profile && <ProfileSections profile={p.profile} />}
           <details className="listing-details">
             <summary>

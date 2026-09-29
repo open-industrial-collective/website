@@ -122,3 +122,20 @@ release:
   url: https://example.org/releases/0.1.0
   date: "2026-09-28"
 visibility: listed
+# Optional discovery metadata. Add only facts supported by the listed edition.
+# discovery:
+#   primary: visualization
+#   product_type: application
+#   capabilities: [Symbol generation, SVG export]
+#   works_with:
+#     - name: Ignition Perspective
+#       relationship: exports
+#   options:
+#     - delivery: web
+#       environments: [Browser]
+#       deployment: [hosted]
+#   offline: unknown
+#   air_gap: unknown
+#   commercial_use: unknown
+# Package-specific options can name resource_id from resources[].
+# air_gap: documented also requires an air_gap_url reference.

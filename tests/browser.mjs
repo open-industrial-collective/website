@@ -1,8 +1,8 @@
+import { countLabel } from "./catalog-counts.mjs";
 import { chromium, expect } from "@playwright/test";
 import assert from "node:assert/strict";
 import { parse } from "yaml";
 import { mkdir, readFile } from "node:fs/promises";
-import { countLabel, noPaidSoftware } from "./catalog-counts.mjs";
 const base = process.env.OIC_BASE_URL || "http://127.0.0.1:4173";
 const showcase = JSON.parse(
   await readFile(
@@ -39,9 +39,11 @@ await mkdir(new URL("../qa/", import.meta.url), { recursive: true });
 await page.goto(base);
 await page.getByRole("heading", { name: /A better starting point/ }).waitFor();
 await expect(
-  page.getByRole("link", { name: "Dimension Engine Showcase", exact: true }),
+  page
+    .getByRole("link", { name: "Dimension Engine Showcase", exact: true })
+    .first(),
 ).toBeVisible();
-await expect(page.getByText("Browse 4 example listings")).toBeVisible();
+await expect(page.getByText(/Browse .* example listings/)).toHaveCount(0);
 await expect(
   page.getByRole("link", { name: /Open browser preview/ }),
 ).toHaveAttribute("href", "https://dimension-engine-showcase.vercel.app/");
@@ -75,15 +77,9 @@ await page.getByRole("link", { name: "Why OIC?", exact: true }).click();
 await expect(page.locator("#why-oic")).toBeFocused();
 await page.goto(base);
 
-await expect(
-  page.getByRole("link", { name: "Node-RED", exact: true }),
-).toBeHidden();
-await page.getByText("Browse 4 example listings").click();
-await expect(
-  page.getByRole("link", { name: "Node-RED", exact: true }),
-).toBeVisible();
 await page
   .getByRole("link", { name: "Dimension Engine Showcase", exact: true })
+  .first()
   .click();
 await page.waitForURL("**/projects/dimension-engine-showcase");
 await expect(
@@ -104,46 +100,31 @@ await page.screenshot({
 });
 await page
   .getByRole("textbox", { name: "Search tools", exact: true })
-  .fill("MQTT");
+  .fill("symbols");
 await page.getByRole("button", { name: "Search", exact: true }).click();
-await page.waitForURL("**/explore?q=MQTT");
-await expect(page.getByRole("status")).toHaveText(/0 projects · 3 examples/);
-await expect(
-  page.getByRole("button", { name: "Operations", exact: false }),
-).toHaveCount(0);
+await page.waitForURL("**/explore?q=symbols");
+await expect(page.getByRole("status")).toHaveText("1 tool");
 await page
   .getByRole("searchbox", { name: "Search catalog" })
   .fill("no-matching-tool");
-await expect(page.getByRole("status")).toHaveText(/0 projects/);
-await page.getByRole("button", { name: "Clear filters" }).click();
+await expect(page.getByRole("status")).toHaveText("0 tools");
+await page.getByRole("button", { name: "Clear all filters" }).click();
 await expect(page.getByRole("status")).toHaveText(countLabel());
-await expect(
-  page
-    .getByLabel("Source availability", { exact: true })
-    .locator('option[value="closed-source"]'),
-).toHaveCount(1);
+await page.getByRole("checkbox", { name: "Closed source" }).check();
+await expect(page.getByRole("status")).toHaveText("1 tool");
+await page.getByRole("checkbox", { name: "Closed source" }).uncheck();
+await page.getByRole("checkbox", { name: "Open source", exact: false }).check();
+await expect(page.getByRole("status")).toHaveText("1 tool");
+await page.getByRole("link", { name: "Visual Toolkit", exact: true }).click();
 await page
-  .getByLabel("Source availability", { exact: true })
-  .selectOption("closed-source");
-await expect(page.getByRole("status")).toHaveText(countLabel((p) => p.source === "closed-source"));
-await expect(
-  page.getByRole("link", { name: "Dimension Engine Showcase", exact: true }),
-).toBeVisible();
-await page
-  .getByLabel("Source availability", { exact: true })
-  .selectOption("source-available");
-await expect(page.getByRole("status")).toHaveText(countLabel((p) => p.source === "source-available"));
-await page.getByRole("link", { name: "MQTT Explorer", exact: true }).click();
-await page
-  .getByRole("heading", { name: "MQTT Explorer", exact: true })
+  .getByRole("heading", { name: "Visual Toolkit", exact: true })
   .waitFor();
 await page.reload();
-await page
-  .getByRole("heading", { name: "MQTT Explorer", exact: true })
-  .waitFor();
-assert.equal(
-  await page.getByRole("link", { name: /Get started/ }).getAttribute("href"),
-  "https://mqtt-explorer.com",
+await expect(
+  page.getByRole("link", { name: /Open the builder/ }),
+).toHaveAttribute(
+  "href",
+  "https://grindstone-systems.github.io/visual-toolkit/",
 );
 await page.getByText("Suggest a correction", { exact: true }).click();
 await page
@@ -153,7 +134,7 @@ const correctionDownload = page.waitForEvent("download");
 await page.getByRole("button", { name: "Download correction note" }).click();
 assert.equal(
   (await correctionDownload).suggestedFilename(),
-  "mqtt-explorer-correction.md",
+  "visual-toolkit-correction.md",
 );
 await expect(page.getByRole("status")).toHaveText(
   "Downloaded. No report has been sent.",
@@ -169,14 +150,10 @@ await expect(
   page.getByRole("img", { name: "Ignition by Inductive Automation®" }),
 ).toBeVisible();
 await page.getByRole("link", { name: "Find these tools" }).click();
-await expect(page.getByRole("status")).toHaveText(countLabel(noPaidSoftware));
-await page.getByLabel("Runs on", { exact: true }).selectOption("Raspberry Pi");
-await expect(page.getByRole("status")).toHaveText(
-  countLabel((p) => noPaidSoftware(p) && p.platforms.includes("Raspberry Pi")),
-);
-await expect(
-  page.getByRole("link", { name: "Node-RED", exact: true }),
-).toBeVisible();
+await expect(page.getByRole("status")).toHaveText(countLabel());
+await page.getByRole("checkbox", { name: "Ignition Perspective" }).check();
+await expect(page.getByRole("status")).toHaveText("1 tool");
+await expect(page.getByRole("link", { name: "Visual Toolkit", exact: true })).toBeVisible();
 await page.goto(base + "/how-it-works#quality");
 await expect(
   page.getByRole("heading", { name: "What keeps the catalog useful?" }),
@@ -365,7 +342,7 @@ for (const path of [
   "/charter",
   "/platforms",
   "/how-it-works",
-  "/projects/node-red",
+
   "/projects/dimension-engine-showcase",
   "/does-not-exist",
 ]) {

@@ -10,6 +10,7 @@ import {
   type Resource,
   type Media,
 } from "./profile";
+import { capabilities, productTypes } from "./discovery";
 import { categories, sourceLabels } from "./catalog";
 import { site } from "./site.config";
 import { ProfileText, ProfileSections } from "./ProfileContent";
@@ -53,7 +54,9 @@ export function ProfileEditor() {
     const keys = path.split(".");
     let parent: any = copy;
     for (const k of keys.slice(0, -1)) parent = parent[k] ??= {};
-    parent[keys.at(-1)!] = value;
+    if (path === "discovery.product_type" && !value)
+      delete parent[keys.at(-1)!];
+    else parent[keys.at(-1)!] = value;
     setDraft(copy as unknown as AuthoredProfile);
   };
   const field = (label: string, path: string, multiline = false) => {
@@ -113,7 +116,7 @@ export function ProfileEditor() {
         <span>{label}</span>
         <select
           aria-label={label}
-          value={String(value)}
+          value={value === undefined ? "" : String(value)}
           onChange={(e) =>
             set(
               path,
@@ -379,6 +382,73 @@ export function ProfileEditor() {
                       "Source repository",
                       isV2 ? "source.repository" : "repository",
                     )}
+                  {isV2 && (
+                    <details className="editor-discovery">
+                      <summary>Discovery details</summary>
+                      {draft.discovery ? (
+                        <>
+                          <div className="field-pair">
+                            {choose(
+                              "Primary capability",
+                              "discovery.primary",
+                              capabilities,
+                            )}
+                            {choose("Product type", "discovery.product_type", {
+                              "": "Not provided",
+                              ...productTypes,
+                            })}
+                          </div>
+                          <label className="field">
+                            <span>
+                              Specific capabilities · separate with commas
+                            </span>
+                            <input
+                              value={(draft.discovery.capabilities || []).join(
+                                ", ",
+                              )}
+                              onChange={(e) =>
+                                set(
+                                  "discovery.capabilities",
+                                  e.target.value
+                                    .split(",")
+                                    .map((v) => v.trim())
+                                    .filter(Boolean),
+                                )
+                              }
+                            />
+                          </label>
+                          <p className="field-hint">
+                            Use YAML for package options, platform relationships
+                            and evidence links.{" "}
+                            <Link to="/explore/glossary">
+                              See field definitions
+                            </Link>
+                            .
+                          </p>
+                        </>
+                      ) : (
+                        <button
+                          type="button"
+                          className="button"
+                          onClick={() =>
+                            set("discovery", {
+                              primary: (
+                                {
+                                  "Data & connectivity": "connectivity",
+                                  Visualization: "visualization",
+                                  Operations: "operations",
+                                  Engineering: "development",
+                                  "AI & automation": "automation",
+                                } as const
+                              )[draft.category],
+                            })
+                          }
+                        >
+                          Add discovery details
+                        </button>
+                      )}
+                    </details>
+                  )}
                   {(["tags", "platforms"] as const).map((key) => (
                     <label className="field" key={key}>
                       <span>
