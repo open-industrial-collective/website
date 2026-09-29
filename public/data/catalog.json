@@ -4,7 +4,7 @@
     "id": "dimension-engine-showcase",
     "name": "Dimension Engine Showcase",
     "summary": "Explore industrial 3D scenes and play a WebGPU factory platformer for free.",
-    "description": "A development preview for industrial visualization. Explore a synthetic process skid, a credited building capture, interactive facility and process diagrams, simulated plant scenarios, and Super Maintenance Bros., a playable WebGPU factory platformer with a guided demo, cinematic camera and FPS counter. Use Play in the showcase menu to run, jump and restart the factory. The hosted preview runs in a browser with synthetic or reference data; no plant or Ignition Gateway is connected. The development application can also run through Ignition Perspective and WebDev, but a native Dimension Engine module is not available yet.\n",
+    "description": "A development preview for industrial visualization. Explore a synthetic process skid, a credited building capture, interactive facility and process diagrams, and simulated plant scenarios.\n\n### Play Super Maintenance Bros.\n\nRun, jump and restart a procedural factory in a playable WebGPU platformer. Try a guided demo, cinematic camera and FPS counter from **Play** in the showcase menu.\n\nThe hosted preview runs in a browser with synthetic or reference data; no plant or Ignition Gateway is connected. The development application can also run through Ignition Perspective and WebDev, but a native Dimension Engine module is not available yet.\n",
     "category": "Visualization",
     "tags": [
       "Ignition",
@@ -288,8 +288,8 @@
       "submitted_by": "Grindstone Systems",
       "source": {
         "repository": "open-industrial-collective/dimension-engine-listing",
-        "commit": "9f2fe39a5ac6155e4ba1c38738529d759b6c1350",
-        "digest": "42fe85b979e780f6c020ebd221677353d8ba0da8072dbd89e92c23135adf58c9"
+        "commit": "52624b450ac23fa5e9a574fde10ecb4f1e6dc51c",
+        "digest": "85b04320375f90000b6528e8c2f89fa285b370c131aa43bc89d20dd847029d9c"
       }
     }
   },

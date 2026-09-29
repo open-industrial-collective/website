@@ -4,6 +4,10 @@
 
 Free industrial tool discovery. React + Vite, static at runtime. This public repository contains the website, profile standard, approved listing snapshots and review workflow. Application source belongs to each project and may remain private. The four curated examples are attributed to their actual creators and are not maintainer submissions.
 
+## People and participation
+
+The `/community` page explains how to participate and shows a small reviewed stewardship roster from `src/people.ts`. It currently lists Grindstone Systems as founding initiator. GitHub organization membership is private by default and is never imported into the public page. Add an individual only after they accept a scoped role and separately approve the displayed fields; keep the consent record outside the published bundle. The prepared `Offer a contribution` Issue template is a public first-step invitation, not an application for organization access. Link to it only after this repository has content, the template works and someone accepts triage responsibility. See the private coordination handbook's `docs/governance/MEMBERSHIP_AND_STEWARDSHIP.md` for the full working model.
+
 ## Run
 
 Node 22.13 or newer:
@@ -66,7 +70,7 @@ Listing submitters grant scoped permission to display, resize and cache submitte
 
 The site has no server functions, database, paid media pipeline or custom account service. The current deployment uses the existing Vercel Hobby account. GitHub standard hosted runners are free for public repositories; the refresh workflow has a 15-minute timeout and no stored build artifacts.
 
-A GitHub organization and a Vercel team are separate. The OIC organization owns the public website repository and listing repositories. Keep Vercel on its existing free account unless a separate team or plan is explicitly approved. No paid seat, Pro trial, metered service, paid runner or recurring commitment is authorized. Hobby is subject to eligibility and usage limits; a commercial change or exhausted allowance requires a fresh hosting decision before spending.
+A GitHub organization and a Vercel team are separate. The OIC organization owns the public website repository and listing repositories. The public website repository is connected to the existing Vercel project for Git deployments. Keep Vercel on its existing free account unless a separate team or plan is explicitly approved. No paid seat, Pro trial, metered service, paid runner or recurring commitment is authorized. Hobby is subject to eligibility and usage limits; a commercial change or exhausted allowance requires a fresh hosting decision before spending.
 
 The standalone public repository builds with `npm run build`, output `dist`. `vercel.json` defines routing and strict CSP. The private coordination root also has a reviewed-subset deployment helper; it must not expose its own Git history.
 
@@ -75,3 +79,5 @@ The standalone public repository builds with `npm run build`, output `dist`. `ve
 `npm run check` runs validation, normalization and ingestion tests, TypeScript and a production build. `OIC_BASE_URL=http://127.0.0.1:4180 node tests/browser.mjs` tests navigation, gallery/modal keyboard behavior, filtering, imports, exports and responsive layouts in installed Chrome. Test captures are local and excluded from publication.
 
 The UI uses local Inter fonts, Lucide icons and OIC's existing vector identity. Dimension Engine media depicts synthetic or reference data and retains its attribution. The importer never connects to a plant.
+
+The `main` branch requires a pull request and passing `check` status for non-admin updates. The sole bootstrap owner retains an admin override; independent multi-person review is not claimed. Force pushes and branch deletion are disabled. GitHub Actions may create candidate PRs, but this workflow never approves or merges them.

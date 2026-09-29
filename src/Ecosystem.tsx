@@ -182,8 +182,7 @@ get_started: https://example.org/start`}</code>
             <h3>Room for correction</h3>
             <p>
               People using a tool can spot missing requirements and misleading
-              claims. Project pages can prepare a correction note; shared
-              reporting and discussion are the next step.
+              claims. Project pages let you prepare a correction note and open an issue for review.
             </p>
             <span className="small-text">
               Save a note, then open a correction issue in the public catalog.
@@ -203,8 +202,7 @@ get_started: https://example.org/start`}</code>
           <h3>What happens when I open a YAML file here?</h3>
           <p>
             It stays in your browser for validation and preview. Download to
-            save your work. Nothing is sent to OIC. Public submissions,
-            unregistered repository discovery and automatic publication are not enabled. Registered profiles are checked daily and changes require review.
+            save your work. Nothing is sent until you open a listing request on GitHub. Registered profiles are checked daily; every published change requires review.
           </p>
           <Link className="text-link" to="/guide">
             Follow the listing guide <ArrowRight size={16} />

@@ -94,7 +94,7 @@
           "properties": {
             "file": {
               "type": "string",
-              "pattern": "^\\./(?:[A-Za-z0-9_-]+/)*[A-Za-z0-9_-]+\\.(?:png|jpg|jpeg|webp|md)$",
+              "pattern": "^\\./(?:[A-Za-z0-9_-]+/)*[A-Za-z0-9_-]+\\.md$",
               "maxLength": 240
             }
           },
@@ -114,12 +114,12 @@
           "properties": {
             "on_light": {
               "type": "string",
-              "pattern": "^\\./(?:[A-Za-z0-9_-]+/)*[A-Za-z0-9_-]+\\.(?:png|jpg|jpeg|webp|md)$",
+              "pattern": "^\\./(?:[A-Za-z0-9_-]+/)*[A-Za-z0-9_-]+\\.(?:png|jpg|jpeg|webp)$",
               "maxLength": 240
             },
             "on_dark": {
               "type": "string",
-              "pattern": "^\\./(?:[A-Za-z0-9_-]+/)*[A-Za-z0-9_-]+\\.(?:png|jpg|jpeg|webp|md)$",
+              "pattern": "^\\./(?:[A-Za-z0-9_-]+/)*[A-Za-z0-9_-]+\\.(?:png|jpg|jpeg|webp)$",
               "maxLength": 240
             },
             "alt": {
@@ -158,7 +158,7 @@
               },
               "src": {
                 "type": "string",
-                "pattern": "^\\./(?:[A-Za-z0-9_-]+/)*[A-Za-z0-9_-]+\\.(?:png|jpg|jpeg|webp|md)$",
+                "pattern": "^\\./(?:[A-Za-z0-9_-]+/)*[A-Za-z0-9_-]+\\.(?:png|jpg|jpeg|webp)$",
                 "maxLength": 240
               },
               "alt": {
@@ -218,7 +218,7 @@
               },
               "poster": {
                 "type": "string",
-                "pattern": "^\\./(?:[A-Za-z0-9_-]+/)*[A-Za-z0-9_-]+\\.(?:png|jpg|jpeg|webp|md)$",
+                "pattern": "^\\./(?:[A-Za-z0-9_-]+/)*[A-Za-z0-9_-]+\\.(?:png|jpg|jpeg|webp)$",
                 "maxLength": 240
               },
               "title": {
