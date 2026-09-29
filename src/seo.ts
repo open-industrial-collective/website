@@ -33,6 +33,10 @@ const pages: Record<string, [string, string]> = {
     "Industrial tool listing guide",
     "Describe a free industrial tool, explain its terms and requirements, and learn how OIC reviews catalog listings.",
   ],
+  "/charter": [
+    "OIC Listing Charter",
+    "The public standard for free industrial tool listings, admission review, automated checks, and the limits of catalog verification.",
+  ],
 };
 
 export function indexablePaths() {

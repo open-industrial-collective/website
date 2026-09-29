@@ -14,6 +14,7 @@ const routes = [
   "/community",
   "/about",
   "/guide",
+  "/charter",
   "/how-it-works",
   "/platforms",
   "/share",
@@ -143,11 +144,21 @@ for (const engine of engines) {
   await expect(
     page.getByRole("textbox", { name: "Project name", exact: true }),
   ).toHaveValue("Phone draft");
-  await page
-    .getByLabel("Open YAML file")
-    .setInputFiles(
-      new URL("../public/templates/project-v2.yaml", import.meta.url).pathname,
-    );
+  await page.getByLabel("Open YAML file").setInputFiles({
+    name: "project.yaml",
+    mimeType: "text/yaml",
+    buffer: Buffer.from(
+      (
+        await readFile(
+          new URL("../public/templates/project-v2.yaml", import.meta.url),
+          "utf8",
+        )
+      ).replaceAll(
+        "https://example.org",
+        "https://github.com/open-industrial-collective/website",
+      ),
+    ),
+  });
   await page.getByRole("link", { name: "Preview & save ↓", exact: true }).tap();
   const download = page.waitForEvent("download");
   await page.getByRole("button", { name: "Download project.yaml" }).tap();

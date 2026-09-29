@@ -23,11 +23,15 @@ The coordinated development workspace also keeps this directory under `website/`
 
 ## Author a profile
 
+Read the [public Listing Charter](CHARTER.md) before preparing a profile. It defines the admission standard, objective preflight checks, maintainer decision process, withdrawal path, and the limits of catalog review. The website renders this same document at `/charter`.
+
 Start with [the v2 template](public/templates/project-v2.yaml), or use [the editor](https://openindustrialcollective.org/share). Commit `.oic/project.yaml` and its declared files in a public repository. OIC can host a listing-only repository if your source is private. The current Dimension Engine example is [here](https://github.com/open-industrial-collective/dimension-engine-listing).
 
 The schema is [project-v2.schema.json](src/project-v2.schema.json), published at `https://openindustrialcollective.org/data/project-v2.schema.json`. V1 remains supported for existing listings. The editor imports and exports either version without dropping supported fields. Its form edits core details and resources; YAML exposes all rich fields. It does not load repository files in the browser and labels that limitation explicitly.
 
 Required: identity, publisher, description, category/tags/platforms, source availability, real license/terms URL, free-edition access notes, explicit requirements (including an empty list), actions with exactly one primary, lifecycle and visibility.
+
+The editor runs the same offline Charter preflight as the publication build. Known placeholder, local and IP-only link destinations block publication. Missing publisher checksums for fixed downloads, mutable container tags, account-gated access and unclear documentation are review prompts. A clean preflight never approves or publishes a listing, and it cannot verify the contents of a linked artifact.
 
 Optional: light/dark logos, ordered screenshots and external videos, captions/credits/rights, FAQs, documentation/wiki/support/issues/discussions/changelog links, and a release. No arbitrary page styling. Empty sections are hidden. `actions[].label` and `description` support useful project-specific calls to action without special page code.
 
@@ -88,7 +92,7 @@ The standalone public repository builds with `npm run build`, output `dist`. `ve
 
 ## Verification
 
-`npm run check` runs validation, normalization and ingestion tests, TypeScript and a production build. `OIC_BASE_URL=http://127.0.0.1:4180 node tests/browser.mjs` tests navigation, gallery/modal keyboard behavior, filtering, imports, exports and responsive layouts in installed Chrome. Run `OIC_BASE_URL=http://127.0.0.1:4180 node tests/mobile.mjs` for touch workflows and all 14 routes (including 404) across phone, tablet, landscape and desktop widths in Chrome and WebKit. Install the Playwright WebKit browser with `npx playwright install webkit` if needed. It checks collapsible filters, URL persistence, menu dismissal, gallery rotation, YAML import/export, touch targets, readable inputs and overflow under the deployment CSP. Test captures are local and excluded from publication.
+`npm run check` runs validation, Charter preflight, normalization and ingestion tests, TypeScript and a production build. `OIC_BASE_URL=http://127.0.0.1:4180 node tests/browser.mjs` tests navigation, gallery/modal keyboard behavior, filtering, imports, exports and responsive layouts in installed Chrome. Run `OIC_BASE_URL=http://127.0.0.1:4180 node tests/mobile.mjs` for touch workflows and all public routes (including 404) across phone, tablet, landscape and desktop widths in Chrome and WebKit. Install the Playwright WebKit browser with `npx playwright install webkit` if needed. It checks collapsible filters, URL persistence, menu dismissal, gallery rotation, YAML import/export, touch targets, readable inputs and overflow under the deployment CSP. Test captures are local and excluded from publication.
 
 The UI uses local Inter fonts, Lucide icons and OIC's existing vector identity. Dimension Engine media depicts synthetic or reference data and retains its attribution. The importer never connects to a plant.
 

@@ -5,6 +5,7 @@ import { parseProfile, normalizeProfile } from "../src/profile.ts";
 import { renderSnapshot, type Snapshot } from "./profile-snapshot.ts";
 import { parseDocument } from "yaml";
 import { parseProject, type Listing } from "../src/catalog.ts";
+import { admissionPreflight } from "../src/admission.ts";
 const root = fileURLToPath(new URL("../", import.meta.url));
 const reviewText = await readFile(
   resolve(root, "content/reviews.json"),
@@ -69,6 +70,14 @@ for (const filename of (await readdir(resolve(root, "content/projects")))
       throw error;
   }
   if (!project) throw new Error(`${filename}: ${errors.join("; ")}`);
+  if (!parsed.project) throw new Error(`${filename}: missing authored profile`);
+  const admissionBlocks = admissionPreflight(parsed.project).filter(
+    (finding) => finding.level === "block",
+  );
+  if (admissionBlocks.length)
+    throw new Error(
+      `${filename}: Charter preflight: ${admissionBlocks.map((finding) => finding.message).join("; ")}`,
+    );
   if (seen.has(project.id))
     throw new Error(`Duplicate project ID: ${project.id}`);
   if (filename !== `${project.id}.yaml`)

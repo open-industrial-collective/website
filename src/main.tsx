@@ -8,6 +8,7 @@ import "./discovery.css";
 import "./community.css";
 import "./mobile.css";
 import "./resources.css";
+import "./charter.css";
 const root = document.getElementById("root")!;
 const app = (
   <React.StrictMode>
