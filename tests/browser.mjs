@@ -6,7 +6,7 @@ const base = process.env.OIC_BASE_URL || "http://127.0.0.1:4173";
 const browser = await chromium.launch({ channel: "chrome", headless: true });
 const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
 const errors = [];
-page.on("pageerror", (e) => errors.push(e.message));
+page.on("pageerror", (e) => errors.push(`${page.url()}: ${e.message}`));
 const headers = JSON.parse(
   await readFile(new URL("../vercel.json", import.meta.url), "utf8"),
 ).headers[0].headers;
@@ -28,10 +28,9 @@ await expect(
   page.getByRole("link", { name: "Dimension Engine Showcase", exact: true }),
 ).toBeVisible();
 await expect(page.getByText("Browse 4 example listings")).toBeVisible();
-await expect(page.getByRole("link", { name: /Open browser preview/ })).toHaveAttribute(
-  "href",
-  "https://dimension-engine-showcase.vercel.app/",
-);
+await expect(
+  page.getByRole("link", { name: /Open browser preview/ }),
+).toHaveAttribute("href", "https://dimension-engine-showcase.vercel.app/");
 await page.getByRole("button", { name: "Process view", exact: true }).click();
 await expect(
   page.getByRole("button", { name: "Process view", exact: true }),
@@ -200,15 +199,32 @@ assert.match(
   /Free Test Tool/,
 );
 // Rich profiles keep every optional field when edited through the simple form.
-const richPath = new URL("../public/templates/project-v2.yaml", import.meta.url);
+const richPath = new URL(
+  "../public/templates/project-v2.yaml",
+  import.meta.url,
+);
 const originalRich = parse(await readFile(richPath, "utf8"));
-await page.getByLabel("Open YAML file", { exact: true }).setInputFiles(richPath.pathname);
-await expect(page.getByText(/repository files still need checking/)).toBeVisible();
+await page
+  .getByLabel("Open YAML file", { exact: true })
+  .setInputFiles(richPath.pathname);
+await expect(
+  page.getByText(/repository files still need checking/),
+).toBeVisible();
 await page.getByRole("button", { name: "Simple form", exact: true }).click();
-await page.getByRole("textbox", { name: "Project name", exact: true }).fill("Independent Rich Tool");
+await page
+  .getByRole("textbox", { name: "Project name", exact: true })
+  .fill("Independent Rich Tool");
 await page.getByRole("button", { name: "Edit YAML", exact: true }).click();
-assert.deepEqual(parse(await page.getByLabel("Project YAML", {exact:true}).inputValue()), {...originalRich, name:"Independent Rich Tool"});
-await expect(page.getByRole("link", {name:/Request a listing/})).toHaveAttribute("href", "https://github.com/open-industrial-collective/website/issues/new?template=listing.yml");
+assert.deepEqual(
+  parse(await page.getByLabel("Project YAML", { exact: true }).inputValue()),
+  { ...originalRich, name: "Independent Rich Tool" },
+);
+await expect(
+  page.getByRole("link", { name: /Request a listing/ }),
+).toHaveAttribute(
+  "href",
+  "https://github.com/open-industrial-collective/website/issues/new?template=listing.yml",
+);
 await page
   .getByLabel("Project YAML", { exact: true })
   .fill("name: bad\nid: invalid\n");
@@ -256,8 +272,12 @@ for (const path of [
     await page
       .getByRole("heading", { name: "Made useful together." })
       .waitFor();
-    await expect(page.getByRole("heading", { name: "Grindstone Systems" })).toBeVisible();
-    await expect(page.getByText("Interim website and program stewardship")).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Grindstone Systems" }),
+    ).toBeVisible();
+    await expect(
+      page.getByText("Interim website and program stewardship"),
+    ).toBeVisible();
   }
 }
 for (const width of [320, 768, 1024, 1440]) {

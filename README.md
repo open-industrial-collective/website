@@ -66,6 +66,12 @@ All updates require review in this first release, including image-only changes. 
 
 Listing submitters grant scoped permission to display, resize and cache submitted text/media for OIC. This does not relicense their software or third-party media. A blanket license for this website's own code has not been selected; do not infer one from public visibility.
 
+## Search discovery
+
+The production build prerenders every visible page and reviewed listing into route-specific HTML, emits `sitemap.xml`, and provides a real `404.html`. `robots.txt` points to the sitemap. Social previews use `public/brand/oic-social.png` or approved project imagery. Search metadata and routes come from `src/seo.ts`; update that file when adding a public page. `npm run check` validates the rendered output. Vercel serves the route files through clean URLs; do not restore a catch-all rewrite to the home page.
+
+Search Console and Bing Webmaster Tools still need an account owner to verify the domain and submit the live sitemap. Search inclusion and ranking are external decisions, not a deployment guarantee.
+
 ## Hosting and cost boundary
 
 The site has no server functions, database, paid media pipeline or custom account service. The current deployment uses the existing Vercel Hobby account. GitHub standard hosted runners are free for public repositories; the refresh workflow has a 15-minute timeout and no stored build artifacts.

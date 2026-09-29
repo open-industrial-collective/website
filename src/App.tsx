@@ -57,6 +57,7 @@ import { actionLabel } from "./profile";
 import { ProfileText, ProfileSections } from "./ProfileContent";
 import { CollectiveSculpture } from "./CollectiveSculpture";
 import { CommunityPage } from "./CommunityPage";
+import { pageSeo } from "./seo";
 const projects = data as Listing[];
 const publishedProjects = projects.filter(
   (project) => project.listing.origin === "community",
@@ -142,60 +143,48 @@ function download(name: string, value: string, type = "text/yaml") {
 function ScrollAndTitle() {
   const { pathname, hash } = useLocation();
   useEffect(() => {
-    const project = projects.find(
-      (project) => pathname === `/projects/${project.id}`,
-    );
-    const pages: Record<string, [string, string]> = {
-      "/": ["A better starting point for industrial work.", site.description],
-      "/explore": [
-        "Explore free industrial tools",
-        "Find industrial software by purpose and source availability. Compare free access, requirements and original project links.",
-      ],
-      "/share": [
-        "Share a project",
-        "Prepare a listing for your free industrial tool, module or solution. Keep your project home and make its terms and requirements clear.",
-      ],
-      "/community": [
-        "People and participation",
-        "See who currently stewards OIC and how builders and practitioners can contribute as the Collective grows.",
-      ],
-      "/about": [
-        "About the Collective",
-        "Open Industrial Collective brings free industrial tools together across vendors, industries and source models. Learn what open means here.",
-      ],
-      "/how-it-works": [
-        "How OIC works",
-        "Your project, your home. Portable YAML listings connect free industrial tools with people who can use them.",
-      ],
-      "/platforms": [
-        "Platforms & ecosystems",
-        "Free tools can run on commercial platforms. Understand platform costs and explore the Ignition ecosystem.",
-      ],
-      "/guide": [
-        "Listing guide",
-        "Describe a free industrial tool, explain its terms and requirements, and understand how OIC listing review differs from evaluation.",
-      ],
-    };
-    const [title, description] = project
-      ? [project.name, project.summary]
-      : pages[pathname] || ["Page not found", site.description];
-    document.title = `${title} — ${site.name}`;
-    const canonical = `${site.url}${pathname === "/" ? "/" : pathname}`;
+    const seo = pageSeo(pathname);
+    document.title = seo.title;
     document
       .querySelector('meta[name="description"]')
-      ?.setAttribute("content", description);
-    document
-      .querySelector('link[rel="canonical"]')
-      ?.setAttribute("href", canonical);
+      ?.setAttribute("content", seo.description);
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (seo.canonical) {
+      if (!canonical) {
+        canonical = document.createElement("link");
+        canonical.setAttribute("rel", "canonical");
+        document.head.append(canonical);
+      }
+      canonical.setAttribute("href", seo.canonical);
+    } else canonical?.remove();
+    let robots = document.querySelector('meta[name="robots"]');
+    if (seo.noindex) {
+      if (!robots) {
+        robots = document.createElement("meta");
+        robots.setAttribute("name", "robots");
+        document.head.append(robots);
+      }
+      robots.setAttribute("content", "noindex, follow");
+    } else robots?.remove();
     for (const [property, content] of Object.entries({
-      "og:title": document.title,
-      "og:description": description,
-      "og:url": canonical,
+      "og:title": seo.title,
+      "og:description": seo.description,
+      "og:url": seo.canonical || "",
+      "og:image": seo.image,
     })) {
       document
         .querySelector(`meta[property="${property}"]`)
         ?.setAttribute("content", content);
     }
+    document
+      .querySelector('meta[name="twitter:title"]')
+      ?.setAttribute("content", seo.title);
+    document
+      .querySelector('meta[name="twitter:description"]')
+      ?.setAttribute("content", seo.description);
+    document
+      .querySelector('meta[name="twitter:image"]')
+      ?.setAttribute("content", seo.image);
     const target = hash ? document.getElementById(hash.slice(1)) : null;
     if (target) target.scrollIntoView();
     else window.scrollTo(0, 0);
