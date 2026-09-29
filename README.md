@@ -70,7 +70,7 @@ Listing submitters grant scoped permission to display, resize and cache submitte
 
 The production build prerenders every visible page and reviewed listing into route-specific HTML, emits `sitemap.xml`, and provides a real `404.html`. `robots.txt` points to the sitemap. Social previews use `public/brand/oic-social.png` or approved project imagery. Search metadata and routes come from `src/seo.ts`; update that file when adding a public page. `npm run check` validates the rendered output. Vercel serves the route files through clean URLs; do not restore a catch-all rewrite to the home page.
 
-The domain is verified in Google Search Console under the founder's existing Google account, and the live sitemap has been submitted. Bing Webmaster Tools setup remains open. Search inclusion and ranking are external decisions, not a deployment guarantee.
+The domain is verified in Google Search Console under the founder's existing Google account. Bing Webmaster Tools is verified with its HTML meta tag in `index.html`; keep that tag while the account owns the property. The live sitemap has been submitted to both services. Search inclusion and ranking are external decisions, not a deployment guarantee.
 
 ## Hosting and cost boundary
 
