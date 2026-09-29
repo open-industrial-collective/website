@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Link,
   NavLink,
@@ -194,15 +194,48 @@ function ScrollAndTitle() {
 }
 export default function App() {
   const [menu, setMenu] = useState(false);
-  const { pathname } = useLocation();
-  useEffect(() => setMenu(false), [pathname]);
+  const { pathname, search, hash } = useLocation();
+  const header = useRef<HTMLElement>(null);
+  const menuToggle = useRef<HTMLButtonElement>(null);
+  useEffect(() => setMenu(false), [pathname, search, hash]);
+  useEffect(() => {
+    if (!menu) return;
+    const dismiss = (event: PointerEvent) => {
+      if (!header.current?.contains(event.target as Node)) setMenu(false);
+    };
+    const escape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setMenu(false);
+        menuToggle.current?.focus();
+      }
+    };
+    const desktop = window.matchMedia("(min-width: 901px)");
+    const resize = () => {
+      if (desktop.matches) setMenu(false);
+    };
+    document.addEventListener("pointerdown", dismiss);
+    document.addEventListener("keydown", escape);
+    desktop.addEventListener("change", resize);
+    return () => {
+      document.removeEventListener("pointerdown", dismiss);
+      document.removeEventListener("keydown", escape);
+      desktop.removeEventListener("change", resize);
+    };
+  }, [menu]);
   return (
     <>
       <ScrollAndTitle />
       <a className="skip" href="#main">
         Skip to content
       </a>
-      <header className={`header ${pathname === "/" ? "header-home" : ""}`}>
+      <header
+        ref={header}
+        onBlur={(event) => {
+          if (!event.currentTarget.contains(event.relatedTarget as Node))
+            setMenu(false);
+        }}
+        className={`header ${pathname === "/" ? "header-home" : ""}`}
+      >
         <div className="container header-inner">
           <Link
             className="brand"
@@ -219,14 +252,23 @@ export default function App() {
             </span>
           </Link>
           <button
+            ref={menuToggle}
             className="menu-toggle"
+            aria-controls="main-navigation"
             aria-label={menu ? "Close navigation" : "Open navigation"}
             aria-expanded={menu}
             onClick={() => setMenu(!menu)}
           >
             {menu ? <X /> : <Menu />}
           </button>
-          <nav aria-label="Main navigation" className={menu ? "open" : ""}>
+          <nav
+            id="main-navigation"
+            aria-label="Main navigation"
+            onClick={(event) => {
+              if ((event.target as HTMLElement).closest("a")) setMenu(false);
+            }}
+            className={menu ? "open" : ""}
+          >
             <NavLink to="/explore">Explore tools</NavLink>
             <NavLink to="/about">Why OIC</NavLink>
             <NavLink to="/how-it-works">How it works</NavLink>
@@ -553,6 +595,7 @@ function ProjectCard({
 }
 function Explore() {
   const [params, setParams] = useSearchParams();
+  const [filtersOpen, setFiltersOpen] = useState(false);
   const query = params.get("q") || "";
   const category = params.get("category") || "";
   const source = params.get("source") || "";
@@ -602,9 +645,10 @@ function Explore() {
   );
   const realResults = filtered.filter((p) => p.listing.origin === "community");
   const exampleResults = filtered.filter((p) => p.listing.origin === "curated");
-  const activeFilter = Boolean(
-    query || category || source || platform || software,
-  );
+  const filterCount = [category, source, platform, software].filter(
+    Boolean,
+  ).length;
+  const activeFilter = Boolean(query || filterCount);
   return (
     <div className="container page">
       <div className="page-heading">
@@ -616,9 +660,52 @@ function Explore() {
         </p>
       </div>
       <div className="explore-layout">
-        <aside className="filter-sidebar">
+        <div className="catalog-controls">
+          <div className="search-input">
+            <Search size={20} />
+            <input
+              type="search"
+              inputMode="search"
+              autoComplete="off"
+              aria-label="Search catalog"
+              placeholder="Search tools, tags, protocols…"
+              value={query}
+              onChange={(e) => update("q", e.target.value)}
+            />
+            {query && (
+              <button onClick={() => update("q", "")} aria-label="Clear search">
+                <X size={17} />
+              </button>
+            )}
+          </div>
+          <div className="filter-actions">
+            <button
+              className="button filter-toggle"
+              aria-expanded={filtersOpen}
+              aria-controls="catalog-filters"
+              onClick={() => setFiltersOpen(!filtersOpen)}
+            >
+              <Settings2 size={18} /> Filters
+              {filterCount > 0 && (
+                <span className="filter-count">{filterCount}</span>
+              )}
+              <ChevronRight size={16} />
+            </button>
+            {activeFilter && (
+              <button className="text-link" onClick={() => setParams({})}>
+                Reset filters
+              </button>
+            )}
+          </div>
+        </div>
+        <aside
+          id="catalog-filters"
+          aria-label="Catalog filters"
+          className={`filter-sidebar ${filtersOpen ? "filters-open" : ""}`}
+        >
           <h2>Categories</h2>
           <button
+            aria-pressed={!category}
             className={!category ? "selected" : ""}
             onClick={() => update("category", "")}
           >
@@ -629,6 +716,7 @@ function Explore() {
             const I = categoryIcons[c];
             return (
               <button
+                aria-pressed={category === c}
                 className={category === c ? "selected" : ""}
                 key={c}
                 onClick={() => update("category", c)}
@@ -684,6 +772,19 @@ function Explore() {
                 </option>
               ))}
           </select>
+          <button
+            className="button filter-done"
+            onClick={() => {
+              setFiltersOpen(false);
+              document
+                .querySelector<HTMLButtonElement>(".filter-toggle")
+                ?.focus();
+            }}
+          >
+            Show {filtered.length}{" "}
+            {filtered.length === 1 ? "result" : "results"}{" "}
+            <ArrowRight size={16} />
+          </button>
           <div className="sidebar-note">
             <CheckCircle2 size={19} />
             <strong>Free access. Clear terms.</strong>
@@ -695,20 +796,6 @@ function Explore() {
           </div>
         </aside>
         <section className="results">
-          <div className="search-input">
-            <Search size={20} />
-            <input
-              aria-label="Search catalog"
-              placeholder="Search tools, tags, protocols…"
-              value={query}
-              onChange={(e) => update("q", e.target.value)}
-            />
-            {query && (
-              <button onClick={() => update("q", "")} aria-label="Clear search">
-                <X size={17} />
-              </button>
-            )}
-          </div>
           <div className="results-toolbar">
             <span role="status">
               {realResults.length}{" "}

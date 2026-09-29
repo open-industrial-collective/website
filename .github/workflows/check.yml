@@ -14,3 +14,12 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run check
+      - name: Install mobile test browsers
+        run: npx playwright install --with-deps chromium webkit
+      - name: Check mobile experience in Chrome and WebKit
+        run: |
+          npm run preview -- --port 4173 --strictPort &
+          preview_pid=$!
+          trap 'kill "$preview_pid"' EXIT
+          curl --retry 10 --retry-connrefused --retry-delay 1 --fail --silent http://127.0.0.1:4173/ > /dev/null
+          node tests/mobile.mjs

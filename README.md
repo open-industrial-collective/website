@@ -82,7 +82,7 @@ The standalone public repository builds with `npm run build`, output `dist`. `ve
 
 ## Verification
 
-`npm run check` runs validation, normalization and ingestion tests, TypeScript and a production build. `OIC_BASE_URL=http://127.0.0.1:4180 node tests/browser.mjs` tests navigation, gallery/modal keyboard behavior, filtering, imports, exports and responsive layouts in installed Chrome. Test captures are local and excluded from publication.
+`npm run check` runs validation, normalization and ingestion tests, TypeScript and a production build. `OIC_BASE_URL=http://127.0.0.1:4180 node tests/browser.mjs` tests navigation, gallery/modal keyboard behavior, filtering, imports, exports and responsive layouts in installed Chrome. Run `OIC_BASE_URL=http://127.0.0.1:4180 node tests/mobile.mjs` for touch workflows and all 14 routes (including 404) across phone, tablet, landscape and desktop widths in Chrome and WebKit. Install the Playwright WebKit browser with `npx playwright install webkit` if needed. It checks collapsible filters, URL persistence, menu dismissal, gallery rotation, YAML import/export, touch targets, readable inputs and overflow under the deployment CSP. Test captures are local and excluded from publication.
 
 The UI uses local Inter fonts, Lucide icons and OIC's existing vector identity. Dimension Engine media depicts synthetic or reference data and retains its attribution. The importer never connects to a plant.
 
