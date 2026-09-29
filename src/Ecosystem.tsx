@@ -81,8 +81,8 @@ export function HowItWorks() {
           <p>
             The file describes the software; it does not upload the software.
             Include public information only, never secrets or plant data. Its
-            format is published, so another catalog could read it too. There is
-            no automatic discovery or synchronization today.
+            format is published, so another catalog could read it too. Registered repositories are
+            checked daily; reviewed updates populate your listing automatically.
           </p>
           <Link className="button primary" to="/share">
             Make your listing <ArrowRight size={16} />
