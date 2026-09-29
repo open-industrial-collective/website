@@ -1,7 +1,7 @@
 schema: oic/project/v2
 id: dimension-engine-showcase
 name: Dimension Engine Showcase
-summary: Explore industrial 3D scenes and play a WebGPU factory platformer for free.
+summary: Explore GPU-powered digital twins, live process maps and factory training in Ignition.
 category: Visualization
 tags:
   - Ignition
@@ -11,6 +11,7 @@ tags:
   - Interactive training
 platforms:
   - Web browser
+  - Ignition Perspective
 publisher:
   name: Grindstone Systems
   url: https://dimension-engine-showcase.vercel.app/
@@ -19,26 +20,41 @@ description:
 branding:
   logo:
     on_light: ./media/logo.png
-    alt: Dimension Engine logo
+    on_dark: ./media/logo.png
+    alt: Dimension Engine dimensional DE monogram in cyan and blue
 media:
-  - id: spatial
+  - id: factory
     type: image
-    src: ./media/spatial.jpg
-    title: Spatial view
-    alt: "Dimension Engine's spatial view: a synthetic process skid with equipment
-      markers and simulated pump readings."
-    caption: Synthetic demo data · No plant connection
+    src: ./media/factory.jpg
+    title: Automotive digital twin in Perspective
+    alt: A detailed automotive production floor with robotic cells, conveyors, live metrics and a synchronized process atlas inside Ignition Perspective.
+    caption: Native Perspective development preview · Synthetic production model
     credit: Grindstone Systems
-    rights: Provided for the OIC project listing.
-  - id: process
+    rights: Provided for display, resizing and caching in the OIC project listing.
+  - id: room
     type: image
-    src: ./media/process.jpg
-    title: Process view
-    alt: "Dimension Engine's process view: a heat recovery schematic with
-      circulation pumps, a vessel and a heat exchanger."
-    caption: Synthetic demo data · No plant connection
+    src: ./media/room.jpg
+    title: Captured space with live HMI context
+    alt: A Gaussian engine-room capture with equipment markers, utility trends and operating panels inside the native Perspective showcase.
+    caption: Native Perspective preview · Static reference capture with simulated utility overlays
+    credit: "Capture: Tugboat Bat, Trieste, by tosolini / XGRIDS PortalCam, CC BY 4.0; application and overlays: Grindstone Systems. Source: https://superspl.at/scene/1a14e1e7"
+    rights: "Capture used under CC BY 4.0, https://creativecommons.org/licenses/by/4.0/. Screenshot and overlays supplied for OIC listing use."
+  - id: game
+    type: image
+    src: ./media/game.jpg
+    title: Super Maintenance Bros. in Perspective
+    alt: A playable three-dimensional factory platformer with conveyors, presses, industrial effects and a native Ignition session connection.
+    caption: Native Perspective development preview · Synthetic training scenario
     credit: Grindstone Systems
-    rights: Provided for the OIC project listing.
+    rights: Provided for display, resizing and caching in the OIC project listing.
+  - id: lobby
+    type: image
+    src: ./media/lobby.jpg
+    title: A unified WebGPU experience library
+    alt: A dark showcase lobby with a persistent left menu, a particle-powered three-dimensional centerpiece, and live miniature previews for Automotive and Super Maintenance Bros.
+    caption: Browser development preview · Shared GPU renderer and simulated demonstration data
+    credit: Grindstone Systems
+    rights: Provided for display, resizing and caching in the OIC project listing.
 source:
   availability: closed-source
 license:
@@ -49,9 +65,9 @@ access:
   cost: free
   notes: The hosted browser preview is free to use for evaluation and learning,
     with no account or time limit. It uses synthetic or reference data and has
-    no Gateway save or plant connection. Running the separate local Ignition
-    version requires Perspective and WebDev trial time or licenses. No native
-    module is available yet.
+    no Gateway save or plant connection. The complete local development showcase runs inside Perspective using the
+    native Dimension Engine module. It requires Ignition Perspective trial time
+    or a license. The unsigned module is built locally; no public installer is offered yet.
   account_required: false
 requirements:
   - name: Modern desktop browser
@@ -65,12 +81,12 @@ requirements:
     notes: Required for the factory platformer. Touch controls are not included.
     applies_to:
       - play
-  - name: Ignition Perspective and WebDev
+  - name: Ignition Perspective
     kind: software
     cost: optional-paid
-    notes: Only needed for the separate local Ignition edition. Trial time or
-      separate licenses are required; neither is needed for the hosted browser
-      preview.
+    notes: Only needed for the native local Ignition project. An unsigned Dimension
+      Engine development module hosts the full showcase. WebDev is not required
+      by this native project; the hosted browser preview needs neither module.
 actions:
   - id: preview
     type: demo
@@ -92,8 +108,9 @@ faq:
     answer: No. The browser preview uses synthetic or reference data. No plant or
       Ignition Gateway is connected.
   - question: Can I download a native Ignition module?
-    answer: Not yet. This is an interactive development preview; a native Dimension
-      Engine module is not available yet.
+    answer: A native module now builds and runs locally with the complete showcase
+      in a Perspective project, including Super Maintenance Bros. It is still an
+      unsigned development preview; a signed public installer is not offered yet.
   - question: What is Super Maintenance Bros.?
     answer: A 2D platformer in a procedural 3D factory. Cross conveyors, power the
       lift, dodge presses and restore the line. Try “Watch a shift” for a guided

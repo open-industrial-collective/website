@@ -3,6 +3,13 @@ import assert from "node:assert/strict";
 import { parse } from "yaml";
 import { mkdir, readFile } from "node:fs/promises";
 const base = process.env.OIC_BASE_URL || "http://127.0.0.1:4173";
+const showcase = JSON.parse(
+  await readFile(new URL("../src/catalog.generated.json", import.meta.url), "utf8"),
+).find((project) => project.id === "dimension-engine-showcase");
+const [firstImage, secondImage] = showcase.profile.media.filter(
+  (media) => media.type === "image",
+);
+assert.ok(firstImage && secondImage, "Gallery switching needs two approved images");
 const browser = await chromium.launch({ channel: "chrome", headless: true });
 const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
 const errors = [];
@@ -31,20 +38,20 @@ await expect(page.getByText("Browse 4 example listings")).toBeVisible();
 await expect(
   page.getByRole("link", { name: /Open browser preview/ }),
 ).toHaveAttribute("href", "https://dimension-engine-showcase.vercel.app/");
-await page.getByRole("button", { name: "Process view", exact: true }).click();
+await page.getByRole("button", { name: secondImage.title, exact: true }).click();
 await expect(
-  page.getByRole("button", { name: "Process view", exact: true }),
+  page.getByRole("button", { name: secondImage.title, exact: true }),
 ).toHaveAttribute("aria-pressed", "true");
 await expect(
-  page.getByAltText(/^Dimension Engine's process view/),
+  page.getByAltText(secondImage.alt, { exact: true }),
 ).toBeVisible();
-await page.getByRole("button", { name: "Spatial view", exact: true }).click();
+await page.getByRole("button", { name: firstImage.title, exact: true }).click();
 await expect(
-  page.getByAltText(/^Dimension Engine's spatial view/),
+  page.getByAltText(firstImage.alt, { exact: true }),
 ).toBeVisible();
 await page.getByRole("button", { name: "Expand product screenshot" }).click();
 await expect(
-  page.getByRole("dialog", { name: "Spatial view screenshot" }),
+  page.getByRole("dialog", { name: `${firstImage.title} screenshot` }),
 ).toBeVisible();
 await page.keyboard.press("Escape");
 await expect(page.getByRole("dialog")).toBeHidden();
@@ -70,7 +77,7 @@ await page
   .click();
 await page.waitForURL("**/projects/dimension-engine-showcase");
 await expect(
-  page.getByText(/native Dimension Engine module is not available yet/).first(),
+  page.getByText(showcase.cost_notes, { exact: false }).first(),
 ).toBeVisible();
 assert.equal(
   await page
