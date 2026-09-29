@@ -3,5 +3,6 @@
   "fuxa": { "origin": "curated", "reviewed": "2026-09-28" },
   "mqtt-explorer": { "origin": "curated", "reviewed": "2026-09-28" },
   "mosquitto": { "origin": "curated", "reviewed": "2026-09-28" },
-  "dimension-engine-showcase": { "origin": "community", "reviewed": "2026-09-29", "submitted_by": "Grindstone Systems" }
+  "dimension-engine-showcase": { "origin": "community", "reviewed": "2026-09-29", "submitted_by": "Grindstone Systems" },
+  "visual-toolkit": { "origin": "community", "reviewed": "2026-09-29", "submitted_by": "Grindstone Systems" }
 }
