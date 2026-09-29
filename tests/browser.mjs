@@ -167,6 +167,16 @@ await page.getByRole("button", { name: "Download project.yaml" }).waitFor();
 await expect(
   page.getByRole("button", { name: "Download project.yaml" }),
 ).toBeDisabled();
+await page
+  .getByLabel("Open YAML file", { exact: true })
+  .setInputFiles(
+    new URL("../public/templates/project.yaml", import.meta.url).pathname,
+  );
+await page.getByRole("heading", { name: "Draft needs changes" }).waitFor();
+await expect(page.getByText(/Replace the blocked links/)).toBeVisible();
+await expect(
+  page.getByRole("button", { name: "Download project.yaml" }),
+).toBeEnabled();
 await page.getByLabel("Open YAML file", { exact: true }).setInputFiles({
   name: "project.yaml",
   mimeType: "text/yaml",

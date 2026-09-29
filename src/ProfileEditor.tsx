@@ -651,8 +651,10 @@ export function ProfileEditor() {
           )}
           <div className="validation">
             <h3>
-              {display && !blocked
-                ? "Ready to export"
+              {display
+                ? blocked
+                  ? "Draft needs changes"
+                  : "Ready to export"
                 : "A few details to finish"}
             </h3>
             {result.errors.length > 0 && (
@@ -698,9 +700,15 @@ export function ProfileEditor() {
               usefulness, terms and linked files before publication.{" "}
               <Link to="/charter">Read the Listing Charter</Link>.
             </p>
+            {blocked && (
+              <p className="small-text">
+                You can save this draft now. Replace the blocked links before
+                requesting publication.
+              </p>
+            )}
             <button
               className="button primary"
-              disabled={!display || blocked}
+              disabled={!display}
               onClick={save}
             >
               Download project.yaml
