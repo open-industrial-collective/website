@@ -8,6 +8,13 @@ const engines =
       ? [webkit]
       : [chromium, webkit];
 const base = process.env.OIC_BASE_URL || "http://127.0.0.1:4173";
+const showcase = JSON.parse(
+  await readFile(new URL("../src/catalog.generated.json", import.meta.url), "utf8"),
+).find((project) => project.id === "dimension-engine-showcase");
+const [firstImage, secondImage] = showcase.profile.media.filter(
+  (media) => media.type === "image",
+);
+assert.ok(firstImage && secondImage, "Gallery switching needs two approved images");
 const routes = [
   "/",
   "/explore",
@@ -109,9 +116,9 @@ for (const engine of engines) {
   await expect(
     page.getByRole("link", { name: /Open browser preview/ }),
   ).toBeInViewport();
-  await page.getByRole("button", { name: "Process view", exact: true }).tap();
+  await page.getByRole("button", { name: secondImage.title, exact: true }).tap();
   await expect(
-    page.getByRole("button", { name: "Process view", exact: true }),
+    page.getByRole("button", { name: secondImage.title, exact: true }),
   ).toHaveAttribute("aria-pressed", "true");
   await page.getByRole("button", { name: "Expand product screenshot" }).tap();
   await expect(page.getByRole("dialog")).toBeVisible();
