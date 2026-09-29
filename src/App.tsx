@@ -58,6 +58,7 @@ import { ProfileText, ProfileSections } from "./ProfileContent";
 import { CollectiveSculpture } from "./CollectiveSculpture";
 import { CommunityPage } from "./CommunityPage";
 import { pageSeo } from "./seo";
+import { CharterPage } from "./CharterPage";
 const projects = data as Listing[];
 const publishedProjects = projects.filter(
   (project) => project.listing.origin === "community",
@@ -292,6 +293,7 @@ export default function App() {
           <Route path="/community" element={<CommunityPage />} />
           <Route path="/about" element={<About />} />
           <Route path="/guide" element={<Guide />} />
+          <Route path="/charter" element={<CharterPage />} />
           <Route path="/how-it-works" element={<HowItWorks />} />
           <Route path="/platforms" element={<Platforms />} />
           <Route path="*" element={<NotFound />} />
@@ -308,6 +310,7 @@ export default function App() {
             <Link to="/how-it-works">How it works</Link>
             <Link to="/platforms">Platforms</Link>
             <Link to="/guide">Listing guide</Link>
+            <Link to="/charter">Listing Charter</Link>
             <Link to="/community">People & join</Link>
             <Link to="/guide#review">How we review</Link>
             <a href="/data/catalog.json">Catalog data</a>
@@ -1340,6 +1343,10 @@ function Guide() {
               <Link className="text-link" to="/how-it-works#quality">
                 What keeps the catalog useful <ArrowRight size={15} />
               </Link>
+              <p>
+                <Link to="/charter">Read the public Listing Charter</Link> for
+                the full admission standard and review limits.
+              </p>
               <details className="review-explainer">
                 <summary>What about evaluations?</summary>
                 <p>

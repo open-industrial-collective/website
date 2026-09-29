@@ -167,11 +167,21 @@ await page.getByRole("button", { name: "Download project.yaml" }).waitFor();
 await expect(
   page.getByRole("button", { name: "Download project.yaml" }),
 ).toBeDisabled();
-await page
-  .getByLabel("Open YAML file", { exact: true })
-  .setInputFiles(
-    new URL("../public/templates/project.yaml", import.meta.url).pathname,
-  );
+await page.getByLabel("Open YAML file", { exact: true }).setInputFiles({
+  name: "project.yaml",
+  mimeType: "text/yaml",
+  buffer: Buffer.from(
+    (
+      await readFile(
+        new URL("../public/templates/project.yaml", import.meta.url),
+        "utf8",
+      )
+    ).replaceAll(
+      "https://example.org",
+      "https://github.com/open-industrial-collective/website",
+    ),
+  ),
+});
 await page.getByRole("heading", { name: "Ready to export" }).waitFor();
 await expect(
   page.getByRole("button", { name: "Download project.yaml" }),
@@ -223,11 +233,15 @@ await page.getByRole("button", { name: "Simple form", exact: true }).click();
 await page.getByText("Files & resources 0", { exact: true }).click();
 await page.getByRole("button", { name: "Add resource" }).click();
 await expect(page.locator(".resource-editor-item")).toHaveCount(1);
-await page.getByLabel("Resource type", { exact: true }).selectOption("container");
+await page
+  .getByLabel("Resource type", { exact: true })
+  .selectOption("container");
 await page
   .getByRole("textbox", { name: "Image reference" })
   .fill("ghcr.io/example/tool:1.0");
-await page.getByLabel("Resource type", { exact: true }).selectOption("download");
+await page
+  .getByLabel("Resource type", { exact: true })
+  .selectOption("download");
 await expect(
   page.getByRole("textbox", { name: "Image reference" }),
 ).toHaveCount(0);
@@ -236,13 +250,15 @@ await page
   .fill("Ignition module");
 await page
   .getByRole("textbox", { name: "HTTPS destination" })
-  .fill("https://example.org/releases/tool.modl");
+  .fill(
+    "https://github.com/open-industrial-collective/website/releases/tool.modl",
+  );
 await page.getByRole("textbox", { name: "Format (optional)" }).fill(".modl");
 await page.getByText("Preview page content", { exact: true }).click();
 await expect(page.locator(".resource-card")).toContainText("Ignition module");
 await expect(page.locator(".resource-card .resource-action")).toHaveAttribute(
   "href",
-  "https://example.org/releases/tool.modl",
+  "https://github.com/open-industrial-collective/website/releases/tool.modl",
 );
 await page.screenshot({
   path: new URL("../qa/resource-editor-desktop.png", import.meta.url).pathname,
@@ -292,6 +308,7 @@ for (const path of [
   "/community",
   "/about",
   "/guide",
+  "/charter",
   "/platforms",
   "/how-it-works",
   "/projects/node-red",
@@ -341,6 +358,7 @@ for (const width of [320, 768, 1024, 1440]) {
     "/community",
     "/share",
     "/guide",
+    "/charter",
   ]) {
     await page.goto(base + path);
     await page.locator("h1").waitFor();

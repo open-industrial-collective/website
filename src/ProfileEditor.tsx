@@ -12,6 +12,7 @@ import {
 import { categories, sourceLabels } from "./catalog";
 import { site } from "./site.config";
 import { ProfileText, ProfileSections } from "./ProfileContent";
+import { admissionPreflight } from "./admission";
 const empty: Profile = {
   schema: "oic/project/v2",
   id: "",
@@ -42,6 +43,8 @@ export function ProfileEditor() {
   const [message, setMessage] = useState("");
   const yaml = mode === "yaml" ? text : stringify(draft);
   const result = useMemo(() => parseProfile(yaml), [yaml]);
+  const findings = result.project ? admissionPreflight(result.project) : [];
+  const blocked = findings.some((finding) => finding.level === "block");
   const display = result.project ? normalizeProfile(result.project) : null;
   const set = (path: string, value: unknown) => {
     const copy = structuredClone(draft) as unknown as Record<string, unknown>;
@@ -647,7 +650,11 @@ export function ProfileEditor() {
             </div>
           )}
           <div className="validation">
-            <h3>{display ? "Ready to export" : "A few details to finish"}</h3>
+            <h3>
+              {display && !blocked
+                ? "Ready to export"
+                : "A few details to finish"}
+            </h3>
             {result.errors.length > 0 && (
               <details>
                 <summary>{result.errors.length} items need attention</summary>
@@ -665,9 +672,35 @@ export function ProfileEditor() {
                 loaded by this browser preview.
               </p>
             )}
+            {findings.length > 0 && (
+              <details open={blocked}>
+                <summary>
+                  {findings.length} Charter preflight{" "}
+                  {findings.length === 1 ? "finding" : "findings"}
+                </summary>
+                <ul>
+                  {findings.map((finding, i) => (
+                    <li key={i}>
+                      <strong>
+                        {finding.level === "block"
+                          ? "Fix before publication"
+                          : "Review"}
+                        :
+                      </strong>{" "}
+                      {finding.message}
+                    </li>
+                  ))}
+                </ul>
+              </details>
+            )}
+            <p className="small-text">
+              Preflight checks the profile only. OIC reviews ownership,
+              usefulness, terms and linked files before publication.{" "}
+              <Link to="/charter">Read the Listing Charter</Link>.
+            </p>
             <button
               className="button primary"
-              disabled={!display}
+              disabled={!display || blocked}
               onClick={save}
             >
               Download project.yaml
@@ -697,8 +730,8 @@ export function ProfileEditor() {
             >
               Request a listing ↗
             </a>
-            <Link className="text-link" to="/guide">
-              How review works →
+            <Link className="text-link" to="/charter">
+              Read the Listing Charter →
             </Link>
           </div>
         </aside>

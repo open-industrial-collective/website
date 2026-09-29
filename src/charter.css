@@ -1,0 +1,64 @@
+.charter-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(250px, 310px);
+  gap: clamp(2rem, 6vw, 6rem);
+  align-items: start;
+}
+.charter-document {
+  max-width: 740px;
+}
+.charter-document h2 {
+  margin: 2.6rem 0 0.85rem;
+  font-size: clamp(1.35rem, 2vw, 1.8rem);
+  letter-spacing: -0.035em;
+}
+.charter-document h2:first-child {
+  margin-top: 0;
+}
+.charter-document p,
+.charter-document li {
+  line-height: 1.68;
+}
+.charter-document ol {
+  padding-left: 1.4rem;
+}
+.charter-document li {
+  padding-left: 0.25rem;
+  margin: 0.75rem 0;
+}
+.charter-document a {
+  text-underline-offset: 3px;
+}
+.charter-aside {
+  position: sticky;
+  top: 6rem;
+  padding: 1.6rem;
+  border-radius: 18px;
+  background: var(--surface, #fff);
+  border: 1px solid var(--line, #ddd);
+  box-shadow: 0 16px 36px #211b1720;
+}
+.charter-aside > svg {
+  margin-bottom: 1rem;
+}
+.charter-aside h2 {
+  margin: 0 0 0.6rem;
+  font-size: 1.3rem;
+  letter-spacing: -0.03em;
+}
+.charter-aside p {
+  line-height: 1.6;
+  margin: 0 0 1.3rem;
+}
+.charter-aside .button {
+  margin-bottom: 1rem;
+}
+@media (max-width: 800px) {
+  .charter-layout {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .charter-aside {
+    position: static;
+  }
+}
