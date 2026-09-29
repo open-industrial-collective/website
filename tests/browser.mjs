@@ -4,12 +4,18 @@ import { parse } from "yaml";
 import { mkdir, readFile } from "node:fs/promises";
 const base = process.env.OIC_BASE_URL || "http://127.0.0.1:4173";
 const showcase = JSON.parse(
-  await readFile(new URL("../src/catalog.generated.json", import.meta.url), "utf8"),
+  await readFile(
+    new URL("../src/catalog.generated.json", import.meta.url),
+    "utf8",
+  ),
 ).find((project) => project.id === "dimension-engine-showcase");
 const [firstImage, secondImage] = showcase.profile.media.filter(
   (media) => media.type === "image",
 );
-assert.ok(firstImage && secondImage, "Gallery switching needs two approved images");
+assert.ok(
+  firstImage && secondImage,
+  "Gallery switching needs two approved images",
+);
 const browser = await chromium.launch({ channel: "chrome", headless: true });
 const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
 const errors = [];
@@ -38,17 +44,20 @@ await expect(page.getByText("Browse 4 example listings")).toBeVisible();
 await expect(
   page.getByRole("link", { name: /Open browser preview/ }),
 ).toHaveAttribute("href", "https://dimension-engine-showcase.vercel.app/");
-await page.getByRole("button", { name: secondImage.title, exact: true }).click();
+await page
+  .getByRole("button", { name: secondImage.title, exact: true })
+  .click();
 await expect(
   page.getByRole("button", { name: secondImage.title, exact: true }),
 ).toHaveAttribute("aria-pressed", "true");
-await expect(
-  page.getByAltText(secondImage.alt, { exact: true }),
-).toBeVisible();
+await expect(page.getByAltText(secondImage.alt, { exact: true })).toBeVisible();
 await page.getByRole("button", { name: firstImage.title, exact: true }).click();
-await expect(
-  page.getByAltText(firstImage.alt, { exact: true }),
-).toBeVisible();
+await expect(page.getByAltText(firstImage.alt, { exact: true })).toBeVisible();
+await page.getByRole("button", { name: "Next media" }).first().click();
+await expect(page.getByAltText(secondImage.alt, { exact: true })).toBeVisible();
+await page.locator(".showcase-screen").first().focus();
+await page.keyboard.press("ArrowLeft");
+await expect(page.getByAltText(firstImage.alt, { exact: true })).toBeVisible();
 await page.getByRole("button", { name: "Expand product screenshot" }).click();
 await expect(
   page.getByRole("dialog", { name: `${firstImage.title} screenshot` }),
@@ -214,6 +223,7 @@ await page
 await page
   .getByRole("heading", { name: "Free Test Tool", exact: true })
   .waitFor();
+await page.getByRole("button", { name: "02 Access" }).click();
 await page
   .getByLabel("Software requirements", { exact: true })
   .selectOption("paid-platform-required");
@@ -247,9 +257,12 @@ assert.deepEqual(
   { ...originalRich, name: "Independent Rich Tool" },
 );
 await page.getByRole("button", { name: "Simple form", exact: true }).click();
+await page.getByRole("button", { name: "02 Access" }).click();
 await page.getByText("Files & resources 0", { exact: true }).click();
 await page.getByRole("button", { name: "Add resource" }).click();
-await expect(page.locator(".resource-editor-item")).toHaveCount(1);
+await expect(
+  page.locator(".resource-editor:not(.media-editor) .resource-editor-item"),
+).toHaveCount(1);
 await page
   .getByLabel("Resource type", { exact: true })
   .selectOption("container");
@@ -271,6 +284,21 @@ await page
     "https://github.com/open-industrial-collective/website/releases/tool.modl",
   );
 await page.getByRole("textbox", { name: "Format (optional)" }).fill(".modl");
+await page.locator(".media-editor > summary").click();
+await page.getByRole("button", { name: "Add screenshot" }).click();
+await page
+  .getByRole("textbox", { name: "Image file path" })
+  .last()
+  .fill("./media/screenshot.jpg");
+await page
+  .getByRole("textbox", { name: "What the image shows" })
+  .last()
+  .fill("A tool dashboard");
+await page
+  .locator(".media-editor .resource-editor-item")
+  .last()
+  .getByRole("textbox", { name: "Title", exact: true })
+  .fill("Tool dashboard");
 await page.getByText("Preview page content", { exact: true }).click();
 await expect(page.locator(".resource-card")).toContainText("Ignition module");
 await expect(page.locator(".resource-card .resource-action")).toHaveAttribute(
@@ -301,8 +329,14 @@ const editedResource = parse(
 ).resources[0];
 assert.equal(editedResource.format, ".modl");
 assert.equal(editedResource.image, undefined);
+assert.equal(
+  parse(
+    await page.getByLabel("Project YAML", { exact: true }).inputValue(),
+  ).media.at(-1).src,
+  "./media/screenshot.jpg",
+);
 await expect(
-  page.getByRole("link", { name: /Request a listing/ }),
+  page.getByRole("link", { name: /Open listing request/ }),
 ).toHaveAttribute(
   "href",
   "https://github.com/open-industrial-collective/website/issues/new?template=listing.yml",

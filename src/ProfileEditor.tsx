@@ -8,6 +8,7 @@ import {
   type AuthoredProfile,
   type Profile,
   type Resource,
+  type Media,
 } from "./profile";
 import { categories, sourceLabels } from "./catalog";
 import { site } from "./site.config";
@@ -39,6 +40,7 @@ const empty: Profile = {
 export function ProfileEditor() {
   const [text, setText] = useState(stringify(empty));
   const [mode, setMode] = useState<"form" | "yaml">("form");
+  const [step, setStep] = useState(0);
   const [draft, setDraft] = useState<AuthoredProfile>(empty);
   const [message, setMessage] = useState("");
   const yaml = mode === "yaml" ? text : stringify(draft);
@@ -140,6 +142,7 @@ export function ProfileEditor() {
         return;
       }
       setDraft(parsed.project);
+      setStep(0);
     }
     setMode(next);
     setMessage("");
@@ -147,6 +150,25 @@ export function ProfileEditor() {
   const isV2 = draft.schema === "oic/project/v2";
   const updateResources = (resources: Resource[]) =>
     set("resources", resources);
+  const updateMedia = (media: Media[]) => set("media", media);
+  const addMedia = (type: Media["type"]) => {
+    if (draft.schema !== "oic/project/v2") return;
+    const media = draft.media || [];
+    let number = 1;
+    while (media.some((item) => item.id === `media-${number}`)) number++;
+    updateMedia([
+      ...media,
+      type === "image"
+        ? { id: `media-${number}`, type, src: "", alt: "", title: "" }
+        : { id: `media-${number}`, type, url: "", title: "" },
+    ]);
+  };
+  const updateMediaItem = (index: number, patch: Partial<Media>) => {
+    if (draft.schema !== "oic/project/v2") return;
+    const media = structuredClone(draft.media || []);
+    media[index] = { ...media[index], ...patch } as Media;
+    updateMedia(media);
+  };
   const addResource = () => {
     if (draft.schema !== "oic/project/v2") return;
     const resources = draft.resources || [];
@@ -187,14 +209,52 @@ export function ProfileEditor() {
   };
   return (
     <div className="container page">
-      <div className="page-heading">
-        <div className="eyebrow">BUILT BY YOU · SHARED THROUGH OIC</div>
-        <h1>Give your project a home.</h1>
+      <div className="page-heading share-heading">
+        <div className="eyebrow">SHARE A PROJECT</div>
+        <h1>Show people what you’ve built.</h1>
         <p>
-          Keep a profile in your repository. OIC turns it into a clear, useful
-          project page.
+          Create a clear listing for a useful industrial tool people can use for
+          free. Keep the profile in a public repository; OIC reviews it before
+          it appears in the catalog.
         </p>
       </div>
+      <section className="share-criteria" aria-label="Before you start">
+        <div className="share-criteria-title">
+          <span>BEFORE YOU START</span>
+          <Link to="/charter">Full Listing Charter ↗</Link>
+        </div>
+        <div className="share-criteria-grid">
+          <div>
+            <b>01</b>
+            <strong>A real free path</strong>
+            <p>
+              Ongoing free use, not just a trial. Disclose limits and any
+              required paid host or hardware.
+            </p>
+          </div>
+          <div>
+            <b>02</b>
+            <strong>Clear ownership & rights</strong>
+            <p>
+              Name the publisher, link the actual terms, and have permission to
+              share the profile and media.
+            </p>
+          </div>
+          <div>
+            <b>03</b>
+            <strong>Useful, honest detail</strong>
+            <p>
+              Show what it does, how to start, what it needs, and whether it is
+              open source, source available, or closed source.
+            </p>
+          </div>
+        </div>
+        <p className="share-criteria-note">
+          A public repo alone does not qualify. OIC checks the listing and its
+          links, then a maintainer decides whether to publish it. Catalog review
+          is not a security certification.
+        </p>
+      </section>
       <a
         className="mobile-editor-jump text-link"
         href="#listing-preview"
@@ -207,6 +267,38 @@ export function ProfileEditor() {
       </a>
       <div className="share-layout">
         <section className="form-panel" id="listing-form" tabIndex={-1}>
+          <div className="share-wizard-heading">
+            <span className="eyebrow">PREPARE YOUR LISTING</span>
+            <h2>
+              {mode === "yaml"
+                ? "Edit the full profile"
+                : ["The essentials", "Access & details", "Review & save"][step]}
+            </h2>
+            <p>
+              {mode === "yaml"
+                ? "All supported fields stay in this file. Switch back to the form at any time."
+                : [
+                    "Tell visitors what this tool is and who makes it.",
+                    "Make free access, terms and requirements clear.",
+                    "Check your draft, then download the YAML to your repository.",
+                  ][step]}
+            </p>
+          </div>
+          {mode === "form" && (
+            <nav className="share-stepper" aria-label="Listing steps">
+              {["Project", "Access", "Review"].map((label, index) => (
+                <button
+                  key={label}
+                  type="button"
+                  aria-current={step === index ? "step" : undefined}
+                  onClick={() => setStep(index)}
+                >
+                  <span>{String(index + 1).padStart(2, "0")}</span>
+                  {label}
+                </button>
+              ))}
+            </nav>
+          )}
           <div className="form-toolbar">
             <div className="segmented">
               <button
@@ -256,348 +348,629 @@ export function ProfileEditor() {
             </label>
           ) : (
             <div className="fields">
-              {field("Project name", "name")}
-              {field("URL slug", "id")}
-              {field("One-line description", "summary")}
-              {field("Publisher", isV2 ? "publisher.name" : "maintainer")}
-              <div className="field-pair">
-                {choose(
-                  "Category",
-                  "category",
-                  Object.fromEntries(categories.map((c) => [c, c])),
-                )}
-                {choose(
-                  "Source availability",
-                  isV2 ? "source.availability" : "source",
-                  sourceLabels,
-                )}
-              </div>
-              {(isV2 ? draft.source.availability : draft.source) !==
-                "closed-source" &&
-                field(
-                  "Source repository",
-                  isV2 ? "source.repository" : "repository",
-                )}
-              {(["tags", "platforms"] as const).map((key) => (
-                <label className="field" key={key}>
-                  <span>
-                    {key === "tags" ? "Tags" : "Platforms"} · separate with
-                    commas
-                  </span>
-                  <input
-                    value={draft[key].join(",")}
-                    onChange={(e) =>
-                      set(
-                        key,
-                        e.target.value.split(",").map((v) => v.trim()),
-                      )
-                    }
-                  />
-                </label>
-              ))}
-              {isV2 && (
-                <div className="field-pair">
-                  {field("Free edition name", "access.edition")}
-                  {choose("Account required", "access.account_required", {
-                    unknown: "Check the terms",
-                    false: "No account needed",
-                    true: "Account required",
-                  })}
-                </div>
+              {step === 0 && (
+                <>
+                  {field("Project name", "name")}
+                  {field("Listing URL name", "id")}
+                  <p className="field-hint">
+                    Short lowercase name for the page address, such as{" "}
+                    <code>my-industrial-tool</code>.
+                  </p>
+                  {field("One-sentence summary", "summary")}
+                  {field(
+                    "Project publisher",
+                    isV2 ? "publisher.name" : "maintainer",
+                  )}
+                  <div className="field-pair">
+                    {choose(
+                      "Category",
+                      "category",
+                      Object.fromEntries(categories.map((c) => [c, c])),
+                    )}
+                    {choose(
+                      "Source availability",
+                      isV2 ? "source.availability" : "source",
+                      sourceLabels,
+                    )}
+                  </div>
+                  {(isV2 ? draft.source.availability : draft.source) !==
+                    "closed-source" &&
+                    field(
+                      "Source repository",
+                      isV2 ? "source.repository" : "repository",
+                    )}
+                  {(["tags", "platforms"] as const).map((key) => (
+                    <label className="field" key={key}>
+                      <span>
+                        {key === "tags" ? "Tags" : "Platforms"} · separate with
+                        commas
+                      </span>
+                      <input
+                        value={draft[key].join(",")}
+                        onChange={(e) =>
+                          set(
+                            key,
+                            e.target.value.split(",").map((v) => v.trim()),
+                          )
+                        }
+                      />
+                    </label>
+                  ))}
+                </>
               )}
+              {step === 1 && (
+                <>
+                  {isV2 && (
+                    <div className="field-pair">
+                      {field("Free edition name", "access.edition")}
+                      {choose("Account required", "access.account_required", {
+                        unknown: "Check the terms",
+                        false: "No account needed",
+                        true: "Account required",
+                      })}
+                    </div>
+                  )}
 
-              {isV2 && "file" in draft.description
-                ? field("Overview file", "description.file")
-                : field(
-                    "About the project",
-                    isV2 ? "description.text" : "description",
+                  {isV2 && "file" in draft.description
+                    ? field("Overview file", "description.file")
+                    : field(
+                        "About the project",
+                        isV2 ? "description.text" : "description",
+                        true,
+                      )}
+                  {field(
+                    "License or free-use terms",
+                    isV2 ? "license.name" : "license",
+                  )}
+                  {field(
+                    "License / terms URL",
+                    isV2 ? "license.url" : "license_url",
+                  )}
+                  {field(
+                    "What’s free & what it requires",
+                    isV2 ? "access.notes" : "cost_notes",
                     true,
                   )}
-              {field(
-                "License or free-use terms",
-                isV2 ? "license.name" : "license",
-              )}
-              {field(
-                "License / terms URL",
-                isV2 ? "license.url" : "license_url",
-              )}
-              {field(
-                "What’s free & what it requires",
-                isV2 ? "access.notes" : "cost_notes",
-                true,
-              )}
-              {field(
-                "Primary destination",
-                isV2
-                  ? `actions.${draft.actions.findIndex((a) => a.primary)}.url`
-                  : "get_started",
-              )}
-              {isV2 && (
-                <details className="resource-editor">
-                  <summary>
-                    Files & resources{" "}
-                    <span>{draft.resources?.length || 0}</span>
-                  </summary>
-                  <p>
-                    Offer a repository, package, container image or document.
-                    Each item links to the location you manage. Add separate
-                    terms when an item uses a different license.
-                  </p>
-                  {(draft.resources || []).map((resource, index) => (
-                    <div className="resource-editor-item" key={index}>
-                      <div className="resource-editor-title">
-                        <h3>{resource.title || `Resource ${index + 1}`}</h3>
+                  {field(
+                    "Primary destination",
+                    isV2
+                      ? `actions.${draft.actions.findIndex((a) => a.primary)}.url`
+                      : "get_started",
+                  )}
+                  {isV2 && (
+                    <details className="resource-editor media-editor">
+                      <summary>
+                        Images & video <span>{draft.media?.length || 0}</span>
+                      </summary>
+                      <p>
+                        Add up to eight items in the order visitors should see
+                        them. Put screenshots beside{" "}
+                        <code>.oic/project.yaml</code> and use relative paths
+                        such as <code>./media/screen.jpg</code>. Videos open at
+                        your HTTPS link; they do not autoplay.
+                      </p>
+                      {(draft.media || []).map((item, index) => (
+                        <div className="resource-editor-item" key={item.id}>
+                          <div className="resource-editor-title">
+                            <h3>
+                              {item.title ||
+                                (item.type === "image"
+                                  ? "Screenshot"
+                                  : "Video")}{" "}
+                              {index + 1}
+                            </h3>
+                            <button
+                              type="button"
+                              className="text-link"
+                              onClick={() =>
+                                updateMedia(
+                                  (draft.media || []).filter(
+                                    (_, i) => i !== index,
+                                  ),
+                                )
+                              }
+                            >
+                              Remove
+                            </button>
+                          </div>
+                          <div className="field-pair">
+                            <label className="field">
+                              <span>Media ID</span>
+                              <input
+                                value={item.id}
+                                autoCapitalize="none"
+                                spellCheck={false}
+                                onChange={(e) =>
+                                  updateMediaItem(index, { id: e.target.value })
+                                }
+                              />
+                            </label>
+                            <label className="field">
+                              <span>Title</span>
+                              <input
+                                value={item.title || ""}
+                                onChange={(e) =>
+                                  updateMediaItem(index, {
+                                    title: e.target.value,
+                                  })
+                                }
+                              />
+                            </label>
+                          </div>
+                          {item.type === "image" ? (
+                            <>
+                              <label className="field">
+                                <span>Image file path</span>
+                                <input
+                                  value={item.src}
+                                  autoCapitalize="none"
+                                  spellCheck={false}
+                                  placeholder="./media/screenshot.jpg"
+                                  onChange={(e) =>
+                                    updateMediaItem(index, {
+                                      src: e.target.value,
+                                    })
+                                  }
+                                />
+                              </label>
+                              <label className="field">
+                                <span>What the image shows</span>
+                                <input
+                                  value={item.alt}
+                                  onChange={(e) =>
+                                    updateMediaItem(index, {
+                                      alt: e.target.value,
+                                    })
+                                  }
+                                />
+                              </label>
+                              <label className="field">
+                                <span>Caption (optional)</span>
+                                <input
+                                  value={item.caption || ""}
+                                  onChange={(e) =>
+                                    updateMediaItem(index, {
+                                      caption: e.target.value || undefined,
+                                    })
+                                  }
+                                />
+                              </label>
+                              <div className="field-pair">
+                                <label className="field">
+                                  <span>Credit (optional)</span>
+                                  <input
+                                    value={item.credit || ""}
+                                    onChange={(e) =>
+                                      updateMediaItem(index, {
+                                        credit: e.target.value || undefined,
+                                      })
+                                    }
+                                  />
+                                </label>
+                                <label className="field">
+                                  <span>Display rights (optional)</span>
+                                  <input
+                                    value={item.rights || ""}
+                                    onChange={(e) =>
+                                      updateMediaItem(index, {
+                                        rights: e.target.value || undefined,
+                                      })
+                                    }
+                                  />
+                                </label>
+                              </div>
+                            </>
+                          ) : (
+                            <>
+                              <label className="field">
+                                <span>Video HTTPS URL</span>
+                                <input
+                                  type="url"
+                                  value={item.url}
+                                  autoCapitalize="none"
+                                  spellCheck={false}
+                                  onChange={(e) =>
+                                    updateMediaItem(index, {
+                                      url: e.target.value,
+                                    })
+                                  }
+                                />
+                              </label>
+                              <label className="field">
+                                <span>Poster image path (optional)</span>
+                                <input
+                                  value={item.poster || ""}
+                                  autoCapitalize="none"
+                                  spellCheck={false}
+                                  placeholder="./media/video-poster.jpg"
+                                  onChange={(e) =>
+                                    updateMediaItem(index, {
+                                      poster: e.target.value || undefined,
+                                    })
+                                  }
+                                />
+                              </label>
+                              <label className="field">
+                                <span>Transcript HTTPS URL (optional)</span>
+                                <input
+                                  type="url"
+                                  value={item.transcript || ""}
+                                  onChange={(e) =>
+                                    updateMediaItem(index, {
+                                      transcript: e.target.value || undefined,
+                                    })
+                                  }
+                                />
+                              </label>
+                            </>
+                          )}
+                        </div>
+                      ))}
+                      <div className="media-editor-actions">
                         <button
                           type="button"
-                          className="text-link"
-                          onClick={() =>
-                            updateResources(
-                              (draft.resources || []).filter(
-                                (_, i) => i !== index,
-                              ),
-                            )
-                          }
+                          className="button"
+                          onClick={() => addMedia("image")}
+                          disabled={(draft.media?.length || 0) >= 8}
                         >
-                          Remove
+                          Add screenshot
+                        </button>
+                        <button
+                          type="button"
+                          className="button"
+                          onClick={() => addMedia("video")}
+                          disabled={(draft.media?.length || 0) >= 8}
+                        >
+                          Add video
                         </button>
                       </div>
-                      <div className="field-pair">
-                        <label className="field">
-                          <span>Type</span>
-                          <select
-                            aria-label="Resource type"
-                            value={resource.kind}
-                            onChange={(e) =>
-                              updateResource(index, {
-                                kind: e.target.value as Resource["kind"],
-                              })
-                            }
-                          >
-                            <option value="download">Downloadable file</option>
-                            <option value="source">Source repository</option>
-                            <option value="container">Container image</option>
-                            <option value="document">Document</option>
-                          </select>
-                        </label>
-                        <label className="field">
-                          <span>Access</span>
-                          <select
-                            aria-label="Resource access"
-                            value={resource.access}
-                            onChange={(e) =>
-                              updateResource(index, {
-                                access: e.target.value as Resource["access"],
-                              })
-                            }
-                          >
-                            <option value="public">Public access</option>
-                            <option value="account-required">
-                              Account required
-                            </option>
-                            <option value="see-provider">
-                              Check provider access
-                            </option>
-                          </select>
-                        </label>
-                      </div>
-                      <label className="field">
-                        <span>Resource ID</span>
-                        <input
-                          value={resource.id}
-                          autoCapitalize="none"
-                          spellCheck={false}
-                          onChange={(e) =>
-                            updateResource(index, { id: e.target.value })
-                          }
-                        />
-                      </label>
-                      <label className="field">
-                        <span>Title</span>
-                        <input
-                          value={resource.title}
-                          onChange={(e) =>
-                            updateResource(index, { title: e.target.value })
-                          }
-                          placeholder="Ignition module · Windows ZIP · Installation guide"
-                        />
-                      </label>
-                      <label className="field">
-                        <span>HTTPS destination</span>
-                        <input
-                          type="url"
-                          autoCapitalize="none"
-                          spellCheck={false}
-                          value={resource.url}
-                          onChange={(e) =>
-                            updateResource(index, { url: e.target.value })
-                          }
-                          placeholder="https://example.org/releases/..."
-                        />
-                      </label>
-                      <label className="field">
-                        <span>What’s included</span>
-                        <textarea
-                          rows={2}
-                          value={resource.description || ""}
-                          onChange={(e) =>
-                            updateResource(index, {
-                              description: e.target.value || undefined,
-                            })
-                          }
-                        />
-                      </label>
-                      <div className="field-pair">
-                        <label className="field">
-                          <span>Format (optional)</span>
-                          <input
-                            value={resource.format || ""}
-                            onChange={(e) =>
-                              updateResource(index, {
-                                format: e.target.value || undefined,
-                              })
-                            }
-                            placeholder=".modl, .zip, PDF"
-                          />
-                        </label>
-                        <label className="field">
-                          <span>Version (optional)</span>
-                          <input
-                            value={resource.version || ""}
-                            onChange={(e) =>
-                              updateResource(index, {
-                                version: e.target.value || undefined,
-                              })
-                            }
-                          />
-                        </label>
-                      </div>
-                      {resource.kind === "container" && (
-                        <label className="field">
-                          <span>Image reference</span>
-                          <input
-                            value={resource.image || ""}
-                            autoCapitalize="none"
-                            spellCheck={false}
-                            onChange={(e) =>
-                              updateResource(index, { image: e.target.value })
-                            }
-                            placeholder="ghcr.io/publisher/image:1.0"
-                          />
-                        </label>
-                      )}
-                      {resource.kind === "download" && (
-                        <label className="field">
-                          <span>SHA-256 checksum (optional)</span>
-                          <input
-                            value={resource.sha256 || ""}
-                            autoCapitalize="none"
-                            spellCheck={false}
-                            onChange={(e) =>
-                              updateResource(index, {
-                                sha256: e.target.value || undefined,
-                              })
-                            }
-                          />
-                        </label>
-                      )}
-                      <label className="field">
-                        <span>Setup or platform requirement (optional)</span>
-                        <input
-                          value={resource.setup || ""}
-                          onChange={(e) =>
-                            updateResource(index, {
-                              setup: e.target.value || undefined,
-                            })
-                          }
-                          placeholder="Ignition 8.1 with Perspective"
-                        />
-                      </label>
-                      <label className="resource-license-toggle">
-                        <input
-                          type="checkbox"
-                          checked={!!resource.license}
-                          onChange={(e) =>
-                            updateResource(index, {
-                              license: e.target.checked
-                                ? { name: "", url: "" }
-                                : undefined,
-                            })
-                          }
-                        />{" "}
-                        Different terms for this resource
-                      </label>
-                      {resource.license && (
-                        <div className="field-pair">
+                      <p className="small-text">
+                        Only share images and footage you have permission to
+                        display. OIC asks for scoped display, resize and cache
+                        permission during the listing request.
+                      </p>
+                    </details>
+                  )}
+                  {isV2 && (
+                    <details className="resource-editor">
+                      <summary>
+                        Files & resources{" "}
+                        <span>{draft.resources?.length || 0}</span>
+                      </summary>
+                      <p>
+                        Offer a repository, package, container image or
+                        document. Each item links to the location you manage.
+                        Add separate terms when an item uses a different
+                        license.
+                      </p>
+                      {(draft.resources || []).map((resource, index) => (
+                        <div className="resource-editor-item" key={index}>
+                          <div className="resource-editor-title">
+                            <h3>{resource.title || `Resource ${index + 1}`}</h3>
+                            <button
+                              type="button"
+                              className="text-link"
+                              onClick={() =>
+                                updateResources(
+                                  (draft.resources || []).filter(
+                                    (_, i) => i !== index,
+                                  ),
+                                )
+                              }
+                            >
+                              Remove
+                            </button>
+                          </div>
+                          <div className="field-pair">
+                            <label className="field">
+                              <span>Type</span>
+                              <select
+                                aria-label="Resource type"
+                                value={resource.kind}
+                                onChange={(e) =>
+                                  updateResource(index, {
+                                    kind: e.target.value as Resource["kind"],
+                                  })
+                                }
+                              >
+                                <option value="download">
+                                  Downloadable file
+                                </option>
+                                <option value="source">
+                                  Source repository
+                                </option>
+                                <option value="container">
+                                  Container image
+                                </option>
+                                <option value="document">Document</option>
+                              </select>
+                            </label>
+                            <label className="field">
+                              <span>Access</span>
+                              <select
+                                aria-label="Resource access"
+                                value={resource.access}
+                                onChange={(e) =>
+                                  updateResource(index, {
+                                    access: e.target
+                                      .value as Resource["access"],
+                                  })
+                                }
+                              >
+                                <option value="public">Public access</option>
+                                <option value="account-required">
+                                  Account required
+                                </option>
+                                <option value="see-provider">
+                                  Check provider access
+                                </option>
+                              </select>
+                            </label>
+                          </div>
                           <label className="field">
-                            <span>Resource terms name</span>
+                            <span>Resource ID</span>
                             <input
-                              value={resource.license.name}
+                              value={resource.id}
+                              autoCapitalize="none"
+                              spellCheck={false}
                               onChange={(e) =>
-                                updateResource(index, {
-                                  license: {
-                                    ...resource.license!,
-                                    name: e.target.value,
-                                  },
-                                })
+                                updateResource(index, { id: e.target.value })
                               }
                             />
                           </label>
                           <label className="field">
-                            <span>Resource terms URL</span>
+                            <span>Title</span>
+                            <input
+                              value={resource.title}
+                              onChange={(e) =>
+                                updateResource(index, { title: e.target.value })
+                              }
+                              placeholder="Ignition module · Windows ZIP · Installation guide"
+                            />
+                          </label>
+                          <label className="field">
+                            <span>HTTPS destination</span>
                             <input
                               type="url"
-                              value={resource.license.url}
+                              autoCapitalize="none"
+                              spellCheck={false}
+                              value={resource.url}
+                              onChange={(e) =>
+                                updateResource(index, { url: e.target.value })
+                              }
+                              placeholder="https://example.org/releases/..."
+                            />
+                          </label>
+                          <label className="field">
+                            <span>What’s included</span>
+                            <textarea
+                              rows={2}
+                              value={resource.description || ""}
                               onChange={(e) =>
                                 updateResource(index, {
-                                  license: {
-                                    ...resource.license!,
-                                    url: e.target.value,
-                                  },
+                                  description: e.target.value || undefined,
                                 })
                               }
                             />
                           </label>
+                          <div className="field-pair">
+                            <label className="field">
+                              <span>Format (optional)</span>
+                              <input
+                                value={resource.format || ""}
+                                onChange={(e) =>
+                                  updateResource(index, {
+                                    format: e.target.value || undefined,
+                                  })
+                                }
+                                placeholder=".modl, .zip, PDF"
+                              />
+                            </label>
+                            <label className="field">
+                              <span>Version (optional)</span>
+                              <input
+                                value={resource.version || ""}
+                                onChange={(e) =>
+                                  updateResource(index, {
+                                    version: e.target.value || undefined,
+                                  })
+                                }
+                              />
+                            </label>
+                          </div>
+                          {resource.kind === "container" && (
+                            <label className="field">
+                              <span>Image reference</span>
+                              <input
+                                value={resource.image || ""}
+                                autoCapitalize="none"
+                                spellCheck={false}
+                                onChange={(e) =>
+                                  updateResource(index, {
+                                    image: e.target.value,
+                                  })
+                                }
+                                placeholder="ghcr.io/publisher/image:1.0"
+                              />
+                            </label>
+                          )}
+                          {resource.kind === "download" && (
+                            <label className="field">
+                              <span>SHA-256 checksum (optional)</span>
+                              <input
+                                value={resource.sha256 || ""}
+                                autoCapitalize="none"
+                                spellCheck={false}
+                                onChange={(e) =>
+                                  updateResource(index, {
+                                    sha256: e.target.value || undefined,
+                                  })
+                                }
+                              />
+                            </label>
+                          )}
+                          <label className="field">
+                            <span>
+                              Setup or platform requirement (optional)
+                            </span>
+                            <input
+                              value={resource.setup || ""}
+                              onChange={(e) =>
+                                updateResource(index, {
+                                  setup: e.target.value || undefined,
+                                })
+                              }
+                              placeholder="Ignition 8.1 with Perspective"
+                            />
+                          </label>
+                          <label className="resource-license-toggle">
+                            <input
+                              type="checkbox"
+                              checked={!!resource.license}
+                              onChange={(e) =>
+                                updateResource(index, {
+                                  license: e.target.checked
+                                    ? { name: "", url: "" }
+                                    : undefined,
+                                })
+                              }
+                            />{" "}
+                            Different terms for this resource
+                          </label>
+                          {resource.license && (
+                            <div className="field-pair">
+                              <label className="field">
+                                <span>Resource terms name</span>
+                                <input
+                                  value={resource.license.name}
+                                  onChange={(e) =>
+                                    updateResource(index, {
+                                      license: {
+                                        ...resource.license!,
+                                        name: e.target.value,
+                                      },
+                                    })
+                                  }
+                                />
+                              </label>
+                              <label className="field">
+                                <span>Resource terms URL</span>
+                                <input
+                                  type="url"
+                                  value={resource.license.url}
+                                  onChange={(e) =>
+                                    updateResource(index, {
+                                      license: {
+                                        ...resource.license!,
+                                        url: e.target.value,
+                                      },
+                                    })
+                                  }
+                                />
+                              </label>
+                            </div>
+                          )}
                         </div>
-                      )}
-                    </div>
-                  ))}
+                      ))}
+                      <button
+                        type="button"
+                        className="button"
+                        onClick={addResource}
+                        disabled={(draft.resources?.length || 0) >= 20}
+                      >
+                        Add resource
+                      </button>
+                    </details>
+                  )}
+                  {!isV2 && (
+                    <label className="field">
+                      <span>Software requirements</span>
+                      <select
+                        aria-label="Software requirements"
+                        value={draft.software_requirements || "see-terms"}
+                        onChange={(e) =>
+                          set("software_requirements", e.target.value)
+                        }
+                      >
+                        <option value="see-terms">
+                          Check software requirements
+                        </option>
+                        <option value="no-paid-required">
+                          Free software setup available
+                        </option>
+                        <option value="paid-platform-required">
+                          Paid platform required
+                        </option>
+                      </select>
+                    </label>
+                  )}
+                  <p className="small-text">
+                    Use Edit YAML for logos, detailed requirements, FAQs, links
+                    and release details. Switching views preserves every
+                    supported field.
+                  </p>
+                </>
+              )}
+              {step === 2 && (
+                <div className="share-review-guide">
+                  <h3>Before you request a listing</h3>
+                  <ol>
+                    <li>
+                      <strong>Check the preview.</strong> Fix missing fields and
+                      blocked links. Preflight checks file structure and obvious
+                      link problems only.
+                    </li>
+                    <li>
+                      <strong>Save the profile.</strong> Put{" "}
+                      <code>project.yaml</code> at{" "}
+                      <code>.oic/project.yaml</code> with its declared images
+                      and text in a public repository. A listing-only repo is
+                      fine when your software source is private.
+                    </li>
+                    <li>
+                      <strong>Request review.</strong> Send the public profile
+                      repository URL in the issue form. OIC confirms control,
+                      the free path, terms, media permission and practical value
+                      before approving an exact snapshot. Updates receive the
+                      same review.
+                    </li>
+                  </ol>
+                  <p>
+                    No listing is sent from this page. Downloading YAML or
+                    passing preflight does not publish it.
+                  </p>
+                  <a
+                    className="text-link"
+                    href="#listing-preview"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      document.getElementById("listing-preview")?.focus();
+                    }}
+                  >
+                    See preview and download ↓
+                  </a>
+                </div>
+              )}
+              <div className="share-step-actions">
+                {step > 0 && (
                   <button
                     type="button"
                     className="button"
-                    onClick={addResource}
-                    disabled={(draft.resources?.length || 0) >= 20}
+                    onClick={() => setStep(step - 1)}
                   >
-                    Add resource
+                    ← Back
                   </button>
-                </details>
-              )}
-              {!isV2 && (
-                <label className="field">
-                  <span>Software requirements</span>
-                  <select
-                    aria-label="Software requirements"
-                    value={draft.software_requirements || "see-terms"}
-                    onChange={(e) =>
-                      set("software_requirements", e.target.value)
-                    }
+                )}
+                {step < 2 && (
+                  <button
+                    type="button"
+                    className="button primary"
+                    onClick={() => setStep(step + 1)}
                   >
-                    <option value="see-terms">
-                      Check software requirements
-                    </option>
-                    <option value="no-paid-required">
-                      Free software setup available
-                    </option>
-                    <option value="paid-platform-required">
-                      Paid platform required
-                    </option>
-                  </select>
-                </label>
-              )}
-              <p className="small-text">
-                Use Edit YAML for logos, galleries, videos, requirements, FAQs,
-                links and release details. Switching views preserves every
-                supported field.
-              </p>
+                    Continue <span aria-hidden="true">→</span>
+                  </button>
+                )}
+              </div>
             </div>
           )}
           <div className="form-foot">
@@ -622,7 +995,7 @@ export function ProfileEditor() {
           >
             ↑ Back to editing
           </a>
-          <div className="eyebrow">YOUR LISTING PREVIEW</div>
+          <div className="eyebrow">LIVE LISTING PREVIEW</div>
           {display ? (
             <article className="project-card preview-card">
               <span className="card-category">{display.category}</span>
@@ -716,7 +1089,7 @@ export function ProfileEditor() {
             <p role="status">{message}</p>
           </div>
           <div className="next-step">
-            <h3>Publish from your repository.</h3>
+            <h3>Submit for review</h3>
             <ol>
               <li>
                 Commit project.yaml and its files under <code>.oic/</code>.
@@ -736,7 +1109,7 @@ export function ProfileEditor() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              Request a listing ↗
+              Open listing request ↗
             </a>
             <Link className="text-link" to="/charter">
               Read the Listing Charter →
