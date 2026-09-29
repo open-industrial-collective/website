@@ -10,6 +10,7 @@ const visible = catalog.filter((project) => project.visibility !== "withdrawn");
 const paths = [
   "/",
   "/explore",
+  "/explore/glossary",
   "/share",
   "/community",
   "/about",

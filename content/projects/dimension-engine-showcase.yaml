@@ -122,3 +122,15 @@ lifecycle:
   stage: preview
   maintenance: active
 visibility: listed
+discovery:
+  primary: visualization
+  secondary: [development]
+  capabilities: [Digital twins, Process visualization, Interactive training]
+  product_type: application
+  options:
+    - delivery: web
+      environments: [Browser]
+      deployment: [hosted]
+  offline: unknown
+  air_gap: unknown
+  commercial_use: unknown

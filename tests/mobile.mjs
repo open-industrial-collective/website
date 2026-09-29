@@ -1,7 +1,7 @@
+import { countLabel } from "./catalog-counts.mjs";
 import { chromium, webkit, expect } from "@playwright/test";
 import assert from "node:assert/strict";
 import { mkdir, readFile } from "node:fs/promises";
-import { countLabel } from "./catalog-counts.mjs";
 const engines =
   process.env.OIC_BROWSER === "chromium"
     ? [chromium]
@@ -10,15 +10,22 @@ const engines =
       : [chromium, webkit];
 const base = process.env.OIC_BASE_URL || "http://127.0.0.1:4173";
 const showcase = JSON.parse(
-  await readFile(new URL("../src/catalog.generated.json", import.meta.url), "utf8"),
+  await readFile(
+    new URL("../src/catalog.generated.json", import.meta.url),
+    "utf8",
+  ),
 ).find((project) => project.id === "dimension-engine-showcase");
 const [firstImage, secondImage] = showcase.profile.media.filter(
   (media) => media.type === "image",
 );
-assert.ok(firstImage && secondImage, "Gallery switching needs two approved images");
+assert.ok(
+  firstImage && secondImage,
+  "Gallery switching needs two approved images",
+);
 const routes = [
   "/",
   "/explore",
+  "/explore/glossary",
   "/community",
   "/about",
   "/guide",
@@ -27,10 +34,8 @@ const routes = [
   "/platforms",
   "/share",
   "/projects/dimension-engine-showcase",
-  "/projects/node-red",
-  "/projects/fuxa",
-  "/projects/mosquitto",
-  "/projects/mqtt-explorer",
+
+  "/projects/visual-toolkit",
   "/missing-page",
 ];
 const headers = JSON.parse(
@@ -83,14 +88,15 @@ for (const engine of engines) {
     page.getByRole("searchbox", { name: "Search catalog" }),
   ).toBeInViewport();
   await expect(
-    page.getByLabel("Source availability", { exact: true }),
+    page.getByRole("checkbox", { name: "Open source", exact: false }),
   ).toBeHidden();
-  await page.getByRole("searchbox", { name: "Search catalog" }).fill("MQTT");
-  await expect(page.getByRole("status")).toHaveText(/0 projects · 3 examples/);
+  await page.getByRole("searchbox", { name: "Search catalog" }).fill("symbols");
+  await expect(page.getByRole("status")).toHaveText(/1 tool/);
   await page.getByRole("button", { name: "Filters", exact: true }).tap();
   await page
-    .getByLabel("Source availability", { exact: true })
-    .selectOption("source-available");
+    .getByRole("dialog", { name: "Filters", exact: true })
+    .getByRole("checkbox", { name: "Open source", exact: false })
+    .check();
   await page.getByRole("button", { name: "Show 1 result", exact: true }).tap();
   await expect(
     page.getByRole("button", { name: "Filters 1", exact: true }),
@@ -100,24 +106,26 @@ for (const engine of engines) {
     page.getByRole("button", { name: "Filters 1", exact: true }),
   ).toHaveAttribute("aria-expanded", "false");
   await expect(
-    page.getByRole("link", { name: "MQTT Explorer", exact: true }),
+    page.getByRole("link", { name: "Visual Toolkit", exact: true }),
   ).toBeVisible();
-  await page.getByRole("button", { name: "Reset filters" }).tap();
+  await page.getByRole("button", { name: "Clear all", exact: true }).tap();
   await expect(page.getByRole("status")).toHaveText(countLabel());
   await page
     .getByRole("searchbox", { name: "Search catalog" })
     .fill("no-such-tool");
   await expect(
-    page.getByRole("heading", { name: "No tools found." }),
+    page.getByRole("heading", { name: "No tools match just yet." }),
   ).toBeVisible();
-  await page.getByRole("button", { name: "Clear search" }).tap();
+  await page.getByRole("button", { name: "Clear search", exact: true }).tap();
   await page
     .getByRole("link", { name: "Dimension Engine Showcase", exact: true })
     .tap();
   await expect(
     page.getByRole("link", { name: /Open browser preview/ }),
   ).toBeInViewport();
-  await page.getByRole("button", { name: secondImage.title, exact: true }).tap();
+  await page
+    .getByRole("button", { name: secondImage.title, exact: true })
+    .tap();
   await expect(
     page.getByRole("button", { name: secondImage.title, exact: true }),
   ).toHaveAttribute("aria-pressed", "true");

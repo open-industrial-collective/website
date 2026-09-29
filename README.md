@@ -2,7 +2,7 @@
 
 [Live website](https://openindustrialcollective.org) · [Offer a contribution](https://github.com/open-industrial-collective/website/issues/new?template=participation.yml) · [Submit a listing](https://github.com/open-industrial-collective/website/issues/new?template=listing.yml) · [Report a correction](https://github.com/open-industrial-collective/website/issues/new?template=correction.yml)
 
-Free industrial tool discovery. React + Vite, static at runtime. This public repository contains the website, profile standard, approved listing snapshots and review workflow. Application source belongs to each project and may remain private. The four curated examples are attributed to their actual creators and are not maintainer submissions.
+Free industrial tool discovery. React + Vite, static at runtime. This public repository contains the website, profile standard, approved listing snapshots and review workflow. Application source belongs to each project and may remain private. The active catalog contains the publisher-submitted Dimension Engine Showcase and Visual Toolkit. The four initial example listings have been retired.
 
 ## People and participation
 
@@ -25,7 +25,7 @@ The coordinated development workspace also keeps this directory under `website/`
 
 Read the [public Listing Charter](CHARTER.md) before preparing a profile. It defines the admission standard, objective preflight checks, maintainer decision process, withdrawal path, and the limits of catalog review. The website renders this same document at `/charter`.
 
-Start with [the v2 template](public/templates/project-v2.yaml), or use [the editor](https://openindustrialcollective.org/share). Commit `.oic/project.yaml` and its declared files in a public repository. OIC can host a listing-only repository if your source is private. The current Dimension Engine example is [here](https://github.com/open-industrial-collective/dimension-engine-listing).
+Start with [the v2 template](public/templates/project-v2.yaml), or use [the editor](https://openindustrialcollective.org/share). Commit `.oic/project.yaml` and its declared files in a public repository. OIC can host a listing-only repository if your source is private. The Dimension Engine profile is [here](https://github.com/open-industrial-collective/dimension-engine-listing).
 
 The schema is [project-v2.schema.json](src/project-v2.schema.json), published at `https://openindustrialcollective.org/data/project-v2.schema.json`. V1 remains supported for existing listings. The editor imports and exports either version without dropping supported fields. Its guided form edits core details, ordered image/video media and resources; YAML exposes all rich fields. It does not load repository files in the browser and labels that limitation explicitly.
 
@@ -75,6 +75,16 @@ All updates require review in this first release, including image-only changes. 
 `visibility: withdrawn` hides an approved profile; `maintenance: archived` retains a visible status label. Reverting the manifest and snapshot together restores an earlier approved version. A missing repo does not silently delete its listing. Candidate PRs include the pinned commit and content digest; published pages link to their approved source commit.
 
 Listing submitters grant scoped permission to display, resize and cache submitted text/media for OIC. This does not relicense their software or third-party media. A blanket license for this website's own code has not been selected; do not infer one from public visibility.
+
+## Explore metadata and behavior
+
+Optional v2 `discovery` separates stable capability IDs, product type, platform relationships, delivery options, environments, deployment, interfaces and access declarations. The [filter glossary](https://openindustrialcollective.org/explore/glossary) documents the taxonomy. Existing v1/v2 profiles remain valid. Legacy categories map to stable IDs; unprovided compatibility, use rights, offline operation and release data stay unknown. The form edits the primary capability, product type and specific capabilities; YAML exposes the complete optional structure without dropping it on round trip.
+
+Each `options[]` entry describes one valid delivery/environment/deployment combination and can reference an existing `resources[].id`. A match across these dimensions must fit one option. Only describe packages actually offered by the listing. Platform relationships distinguish `requires`, `integrates` and `exports`; a version or evidence link is optional and never implies independent testing. `air_gap: documented` requires `air_gap_url`. It is separate from offline runtime operation.
+
+Explore supports OR within filter groups, AND across groups, facets that respect the other constraints, aliases, explicit zero-result relaxations, and shareable search/filter/sort/view/comparison URLs. Filter and view changes create history entries; typing updates the current entry. Desktop filters use a sidebar; mobile uses a modal drawer. Compare up to three listings without scores. Collection shortcuts derive from the same records and show only when matching inventory exists. Listing `added` is the original publication date, separate from `reviewed` and software `release.date`; unknown dates sort last.
+
+The catalog does not add analytics or activity claims. `npm run check` covers schema, package matching, facets, aliases, sorting and prerender output; `node tests/explore.mjs` covers navigation, keyboard focus, comparison and mobile return context against a running preview.
 
 ## Search discovery
 

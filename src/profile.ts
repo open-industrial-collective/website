@@ -44,6 +44,7 @@ export type Resource = {
 };
 export type Profile = {
   schema: "oic/project/v2";
+  discovery?: import("./discovery").Discovery;
   id: string;
   name: string;
   summary: string;
@@ -135,6 +136,14 @@ export function parseProfile(text: string): {
       if (resource.sha256 && resource.kind !== "download")
         errors.push(`Only downloadable files can have a SHA-256 checksum.`);
     }
+    for (const option of p.discovery?.options || [])
+      if (
+        option.resource_id &&
+        !p.resources?.some((r) => r.id === option.resource_id)
+      )
+        errors.push(`Unknown discovery resource: ${option.resource_id}`);
+    if (p.discovery?.air_gap === "documented" && !p.discovery.air_gap_url)
+      errors.push("Documented air-gap installation needs an evidence URL.");
     if (p.source.availability !== "closed-source" && !p.source.repository)
       errors.push("Public source availability requires a repository URL.");
     for (const r of p.requirements)

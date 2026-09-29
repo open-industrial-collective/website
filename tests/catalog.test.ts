@@ -50,16 +50,12 @@ test("reject alias expansion, custom YAML tags, multiple documents and oversized
   ])
     assert.ok(parseProject(text).errors.length);
 });
-test("all curated listings validate and name their access terms", () => {
-  for (const id of ["fuxa", "mosquitto", "mqtt-explorer", "node-red"]) {
-    const p = parseProject(
-      readFileSync(
-        new URL(`../content/projects/${id}.yaml`, import.meta.url),
-        "utf8",
-      ),
-    );
-    assert.equal(p.errors.length, 0, p.errors.join(";"));
-    assert.equal(p.project?.cost, "free");
+test("published profiles validate and retain free access", () => {
+  for (const id of ["dimension-engine-showcase", "visual-toolkit"]) {
+    const p = parseProfile(readFileSync(new URL(`../content/projects/${id}.yaml`, import.meta.url), "utf8"));
+    assert.deepEqual(p.errors, []);
+    assert.ok(p.project);
+    assert.equal(normalizeProfile(p.project!).cost, "free");
   }
 });
 

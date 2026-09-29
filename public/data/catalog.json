@@ -175,7 +175,33 @@
         "stage": "preview",
         "maintenance": "active"
       },
-      "visibility": "listed"
+      "visibility": "listed",
+      "discovery": {
+        "primary": "visualization",
+        "secondary": [
+          "development"
+        ],
+        "capabilities": [
+          "Digital twins",
+          "Process visualization",
+          "Interactive training"
+        ],
+        "product_type": "application",
+        "options": [
+          {
+            "delivery": "web",
+            "environments": [
+              "Browser"
+            ],
+            "deployment": [
+              "hosted"
+            ]
+          }
+        ],
+        "offline": "unknown",
+        "air_gap": "unknown",
+        "commercial_use": "unknown"
+      }
     },
     "authored": {
       "schema": "oic/project/v2",
@@ -325,150 +351,44 @@
         "stage": "preview",
         "maintenance": "active"
       },
-      "visibility": "listed"
+      "visibility": "listed",
+      "discovery": {
+        "primary": "visualization",
+        "secondary": [
+          "development"
+        ],
+        "capabilities": [
+          "Digital twins",
+          "Process visualization",
+          "Interactive training"
+        ],
+        "product_type": "application",
+        "options": [
+          {
+            "delivery": "web",
+            "environments": [
+              "Browser"
+            ],
+            "deployment": [
+              "hosted"
+            ]
+          }
+        ],
+        "offline": "unknown",
+        "air_gap": "unknown",
+        "commercial_use": "unknown"
+      }
     },
     "listing": {
       "origin": "community",
       "reviewed": "2026-09-29",
       "submitted_by": "Grindstone Systems",
+      "added": "2026-09-28",
       "source": {
         "repository": "open-industrial-collective/dimension-engine-listing",
-        "commit": "62d9df44c200c038db632d91c7e9064fe8b132aa",
-        "digest": "cb6acb90f4fb90e4d4445a87525e3e34c39379eaaae0ab4d7947748cce10c3a3"
+        "commit": "f2907377b2573071a7de5b731b572227ebb98020",
+        "digest": "542592c1f46e872de01efbc71fe193397b3a02c345a913e66888878fb2300aee"
       }
-    }
-  },
-  {
-    "schema": "oic/project/v1",
-    "id": "fuxa",
-    "name": "FUXA",
-    "summary": "Build web-based dashboards and process visualizations for your machines.",
-    "description": "A web-based SCADA and HMI editor with support for industrial protocols including MQTT, Modbus and OPC UA. This listing covers the free open-source edition.",
-    "category": "Visualization",
-    "tags": [
-      "SCADA",
-      "HMI",
-      "OPC UA"
-    ],
-    "platforms": [
-      "Linux",
-      "Windows",
-      "macOS",
-      "Docker"
-    ],
-    "source": "open-source",
-    "license": "MIT",
-    "license_url": "https://github.com/frangoteam/FUXA/blob/master/LICENSE",
-    "cost": "free",
-    "software_requirements": "no-paid-required",
-    "cost_notes": "The open-source edition is free to self-host. Optional paid Pro features are outside this listing. Hardware and hosting are your own.",
-    "homepage": "https://github.com/frangoteam/FUXA",
-    "get_started": "https://frangoteam.github.io/FUXA/",
-    "repository": "https://github.com/frangoteam/FUXA",
-    "documentation": "https://frangoteam.github.io/FUXA/",
-    "maintainer": "frangoteam and contributors",
-    "listing": {
-      "origin": "curated",
-      "reviewed": "2026-09-28"
-    }
-  },
-  {
-    "schema": "oic/project/v1",
-    "id": "mosquitto",
-    "name": "Eclipse Mosquitto",
-    "summary": "A lightweight MQTT broker for connecting devices and applications.",
-    "description": "Run a publish-subscribe messaging broker on your own infrastructure. Mosquitto implements MQTT and includes command-line clients for publishing and subscribing to topics.",
-    "category": "Data & connectivity",
-    "tags": [
-      "MQTT",
-      "Edge",
-      "Messaging"
-    ],
-    "platforms": [
-      "Linux",
-      "Windows",
-      "macOS"
-    ],
-    "source": "open-source",
-    "license": "EPL-2.0 OR BSD-3-Clause",
-    "license_url": "https://github.com/eclipse-mosquitto/mosquitto/blob/master/LICENSE.txt",
-    "cost": "free",
-    "software_requirements": "no-paid-required",
-    "cost_notes": "Free to download and self-host. Hardware, network access and any external hosting are supplied separately.",
-    "homepage": "https://mosquitto.org",
-    "get_started": "https://mosquitto.org/download/",
-    "repository": "https://github.com/eclipse-mosquitto/mosquitto",
-    "documentation": "https://mosquitto.org/documentation/",
-    "maintainer": "Eclipse Foundation and Mosquitto contributors",
-    "listing": {
-      "origin": "curated",
-      "reviewed": "2026-09-28"
-    }
-  },
-  {
-    "schema": "oic/project/v1",
-    "id": "mqtt-explorer",
-    "name": "MQTT Explorer",
-    "summary": "See your MQTT topics, inspect messages and understand your data.",
-    "description": "A desktop MQTT client that organizes topics as a tree. Explore payloads and topic activity when developing or troubleshooting a messaging system.",
-    "category": "Data & connectivity",
-    "tags": [
-      "MQTT",
-      "Debugging",
-      "Desktop"
-    ],
-    "platforms": [
-      "Linux",
-      "Windows",
-      "macOS"
-    ],
-    "source": "source-available",
-    "license": "CC-BY-ND-4.0",
-    "license_url": "https://github.com/thomasnordquist/MQTT-Explorer/blob/master/LICENSE.md",
-    "cost": "free",
-    "software_requirements": "no-paid-required",
-    "cost_notes": "Free desktop client. Connect to your own MQTT broker. The upstream license restricts redistribution of modified versions; review its terms.",
-    "homepage": "https://mqtt-explorer.com",
-    "get_started": "https://mqtt-explorer.com",
-    "repository": "https://github.com/thomasnordquist/MQTT-Explorer",
-    "maintainer": "Thomas Nordquist and contributors",
-    "listing": {
-      "origin": "curated",
-      "reviewed": "2026-09-28"
-    }
-  },
-  {
-    "schema": "oic/project/v1",
-    "id": "node-red",
-    "name": "Node-RED",
-    "summary": "Connect devices, APIs and services with visual, event-driven flows.",
-    "description": "Build flows in a browser-based editor and run them on your own machine or server. A useful starting point for moving industrial data between systems and prototyping integrations.",
-    "category": "AI & automation",
-    "tags": [
-      "Low-code",
-      "Integration",
-      "Flows"
-    ],
-    "platforms": [
-      "Linux",
-      "Windows",
-      "macOS",
-      "Raspberry Pi"
-    ],
-    "source": "open-source",
-    "license": "Apache-2.0",
-    "license_url": "https://github.com/node-red/node-red/blob/main/LICENSE",
-    "cost": "free",
-    "software_requirements": "no-paid-required",
-    "cost_notes": "The self-hosted software is free. You provide the computer or hosting; optional third-party services may have their own costs.",
-    "homepage": "https://nodered.org",
-    "get_started": "https://nodered.org/docs/getting-started/",
-    "repository": "https://github.com/node-red/node-red",
-    "documentation": "https://nodered.org/docs/",
-    "maintainer": "OpenJS Foundation and Node-RED contributors",
-    "listing": {
-      "origin": "curated",
-      "reviewed": "2026-09-28"
     }
   },
   {
@@ -705,7 +625,50 @@
         "stage": "preview",
         "maintenance": "active"
       },
-      "visibility": "listed"
+      "visibility": "listed",
+      "discovery": {
+        "primary": "visualization",
+        "capabilities": [
+          "Symbol generation",
+          "SVG export",
+          "3D asset generation",
+          "HMI design"
+        ],
+        "product_type": "application",
+        "works_with": [
+          {
+            "name": "Ignition Perspective",
+            "relationship": "exports",
+            "evidence_url": "https://github.com/Grindstone-Systems/visual-toolkit#readme"
+          }
+        ],
+        "options": [
+          {
+            "delivery": "web",
+            "environments": [
+              "Browser"
+            ],
+            "deployment": [
+              "hosted"
+            ]
+          },
+          {
+            "resource_id": "source",
+            "delivery": "source",
+            "environments": [
+              "Browser"
+            ],
+            "deployment": [
+              "local",
+              "server",
+              "cloud"
+            ]
+          }
+        ],
+        "offline": "unknown",
+        "air_gap": "unknown",
+        "commercial_use": "yes"
+      }
     },
     "authored": {
       "schema": "oic/project/v2",
@@ -910,16 +873,60 @@
         "stage": "preview",
         "maintenance": "active"
       },
-      "visibility": "listed"
+      "visibility": "listed",
+      "discovery": {
+        "primary": "visualization",
+        "capabilities": [
+          "Symbol generation",
+          "SVG export",
+          "3D asset generation",
+          "HMI design"
+        ],
+        "product_type": "application",
+        "works_with": [
+          {
+            "name": "Ignition Perspective",
+            "relationship": "exports",
+            "evidence_url": "https://github.com/Grindstone-Systems/visual-toolkit#readme"
+          }
+        ],
+        "options": [
+          {
+            "delivery": "web",
+            "environments": [
+              "Browser"
+            ],
+            "deployment": [
+              "hosted"
+            ]
+          },
+          {
+            "resource_id": "source",
+            "delivery": "source",
+            "environments": [
+              "Browser"
+            ],
+            "deployment": [
+              "local",
+              "server",
+              "cloud"
+            ]
+          }
+        ],
+        "offline": "unknown",
+        "air_gap": "unknown",
+        "commercial_use": "yes"
+      }
     },
     "listing": {
       "origin": "community",
       "reviewed": "2026-09-29",
       "submitted_by": "Grindstone Systems",
+      "added": "2026-09-29",
       "source": {
         "repository": "Grindstone-Systems/visual-toolkit",
-        "commit": "725176ae1007e7b5d06e3015a3f977908cda8e62",
-        "digest": "ac79591e93228f80dbb081c413fb61c95de2d94747de3e58d85e091c3ec54ecb"
+        "commit": "2509a8ccf7786e362363c0e4e70526734ffe2093",
+        "digest": "843bd8e1a7f8bbd7a71c05ea7e2a148f7d0eb3316928bd1e752342d3545adea9"
       }
     }
   }
