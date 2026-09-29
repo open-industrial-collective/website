@@ -263,22 +263,7 @@ function FilterGroup({
   );
 }
 export default function Explore() {
-  const [urlParams, setUrlParams] = useSearchParams(),
-    location = useLocation();
-  // Keep controls responsive while React Router commits its navigation transition.
-  const [params, setDisplayParams] = useState(urlParams);
-  useEffect(() => {
-    setDisplayParams(urlParams);
-  }, [urlParams]);
-  function setParams(
-    next: URLSearchParams | ((prev: URLSearchParams) => URLSearchParams),
-    options?: { replace?: boolean },
-  ) {
-    const resolved =
-      typeof next === "function" ? next(new URLSearchParams(params)) : next;
-    setDisplayParams(resolved);
-    setUrlParams(resolved, options);
-  }
+  const [params, setParams] = useSearchParams(), location = useLocation();
   const [drawer, setDrawer] = useState(false),
     [compareOpen, setCompareOpen] = useState(false),
     [suggesting, setSuggesting] = useState(false);

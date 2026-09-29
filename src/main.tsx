@@ -14,7 +14,7 @@ import "./explore.css";
 const root = document.getElementById("root")!;
 const app = (
   <React.StrictMode>
-    <BrowserRouter>
+    <BrowserRouter useTransitions={false}>
       <App />
     </BrowserRouter>
   </React.StrictMode>
