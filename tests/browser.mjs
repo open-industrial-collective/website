@@ -2,6 +2,7 @@ import { chromium, expect } from "@playwright/test";
 import assert from "node:assert/strict";
 import { parse } from "yaml";
 import { mkdir, readFile } from "node:fs/promises";
+import { countLabel, noPaidSoftware } from "./catalog-counts.mjs";
 const base = process.env.OIC_BASE_URL || "http://127.0.0.1:4173";
 const showcase = JSON.parse(
   await readFile(
@@ -115,7 +116,7 @@ await page
   .fill("no-matching-tool");
 await expect(page.getByRole("status")).toHaveText(/0 projects/);
 await page.getByRole("button", { name: "Clear filters" }).click();
-await expect(page.getByRole("status")).toHaveText(/2 projects · 4 examples/);
+await expect(page.getByRole("status")).toHaveText(countLabel());
 await expect(
   page
     .getByLabel("Source availability", { exact: true })
@@ -124,14 +125,14 @@ await expect(
 await page
   .getByLabel("Source availability", { exact: true })
   .selectOption("closed-source");
-await expect(page.getByRole("status")).toHaveText(/1 project/);
+await expect(page.getByRole("status")).toHaveText(countLabel((p) => p.source === "closed-source"));
 await expect(
   page.getByRole("link", { name: "Dimension Engine Showcase", exact: true }),
 ).toBeVisible();
 await page
   .getByLabel("Source availability", { exact: true })
   .selectOption("source-available");
-await expect(page.getByRole("status")).toHaveText(/0 projects · 1 example/);
+await expect(page.getByRole("status")).toHaveText(countLabel((p) => p.source === "source-available"));
 await page.getByRole("link", { name: "MQTT Explorer", exact: true }).click();
 await page
   .getByRole("heading", { name: "MQTT Explorer", exact: true })
@@ -168,9 +169,11 @@ await expect(
   page.getByRole("img", { name: "Ignition by Inductive Automation®" }),
 ).toBeVisible();
 await page.getByRole("link", { name: "Find these tools" }).click();
-await expect(page.getByRole("status")).toHaveText(/2 projects · 4 examples/);
+await expect(page.getByRole("status")).toHaveText(countLabel(noPaidSoftware));
 await page.getByLabel("Runs on", { exact: true }).selectOption("Raspberry Pi");
-await expect(page.getByRole("status")).toHaveText(/0 projects · 1 example/);
+await expect(page.getByRole("status")).toHaveText(
+  countLabel((p) => noPaidSoftware(p) && p.platforms.includes("Raspberry Pi")),
+);
 await expect(
   page.getByRole("link", { name: "Node-RED", exact: true }),
 ).toBeVisible();
