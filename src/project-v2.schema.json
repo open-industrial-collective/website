@@ -438,6 +438,108 @@
       },
       "minItems": 1
     },
+    "resources": {
+      "type": "array",
+      "maxItems": 20,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+            "maxLength": 64
+          },
+          "kind": {
+            "enum": [
+              "source",
+              "download",
+              "container",
+              "document"
+            ]
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100,
+            "pattern": "\\S"
+          },
+          "url": {
+            "type": "string",
+            "format": "https-url",
+            "maxLength": 2048
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500,
+            "pattern": "\\S"
+          },
+          "format": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 60,
+            "pattern": "\\S"
+          },
+          "version": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80,
+            "pattern": "\\S"
+          },
+          "access": {
+            "enum": [
+              "public",
+              "account-required",
+              "see-provider"
+            ]
+          },
+          "license": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100,
+                "pattern": "\\S"
+              },
+              "url": {
+                "type": "string",
+                "format": "https-url",
+                "maxLength": 2048
+              }
+            },
+            "required": [
+              "name",
+              "url"
+            ]
+          },
+          "setup": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 300,
+            "pattern": "\\S"
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-fA-F0-9]{64}$"
+          },
+          "image": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/@-]{1,300}$",
+            "maxLength": 301
+          }
+        },
+        "required": [
+          "id",
+          "kind",
+          "title",
+          "url",
+          "access"
+        ]
+      }
+    },
     "links": {
       "type": "object",
       "additionalProperties": false,

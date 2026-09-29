@@ -44,6 +44,39 @@ actions:
     type: demo
     url: https://example.org/demo
     primary: true
+# Optional files and resources. Link to locations you control; OIC does not host the payload.
+# A resource without its own license uses the project license above.
+# Uncomment and replace only the resources you actually offer.
+# resources:
+#   - id: source
+#     kind: source
+#     title: Source repository
+#     url: https://github.com/example/project
+#     access: public
+#     license:
+#       name: Apache-2.0
+#       url: https://github.com/example/project/blob/main/LICENSE
+#   - id: ignition-module
+#     kind: download
+#     title: Ignition module
+#     format: .modl
+#     version: "1.0.0"
+#     url: https://github.com/example/project/releases/download/v1.0.0/project.modl
+#     access: public
+#     setup: Requires a separately licensed Ignition Gateway.
+#     sha256: 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
+#   - id: container
+#     kind: container
+#     title: Container image
+#     url: https://github.com/example/project/pkgs/container/project
+#     image: ghcr.io/example/project:1.0.0
+#     access: public
+#   - id: install-guide
+#     kind: document
+#     title: Installation guide
+#     format: PDF
+#     url: https://example.org/docs/install.pdf
+#     access: public
 links:
   docs: https://example.org/docs
   wiki: https://example.org/wiki

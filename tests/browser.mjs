@@ -219,6 +219,55 @@ assert.deepEqual(
   parse(await page.getByLabel("Project YAML", { exact: true }).inputValue()),
   { ...originalRich, name: "Independent Rich Tool" },
 );
+await page.getByRole("button", { name: "Simple form", exact: true }).click();
+await page.getByText("Files & resources 0", { exact: true }).click();
+await page.getByRole("button", { name: "Add resource" }).click();
+await expect(page.locator(".resource-editor-item")).toHaveCount(1);
+await page.getByLabel("Resource type", { exact: true }).selectOption("container");
+await page
+  .getByRole("textbox", { name: "Image reference" })
+  .fill("ghcr.io/example/tool:1.0");
+await page.getByLabel("Resource type", { exact: true }).selectOption("download");
+await expect(
+  page.getByRole("textbox", { name: "Image reference" }),
+).toHaveCount(0);
+await page
+  .getByRole("textbox", { name: "Title", exact: true })
+  .fill("Ignition module");
+await page
+  .getByRole("textbox", { name: "HTTPS destination" })
+  .fill("https://example.org/releases/tool.modl");
+await page.getByRole("textbox", { name: "Format (optional)" }).fill(".modl");
+await page.getByText("Preview page content", { exact: true }).click();
+await expect(page.locator(".resource-card")).toContainText("Ignition module");
+await expect(page.locator(".resource-card .resource-action")).toHaveAttribute(
+  "href",
+  "https://example.org/releases/tool.modl",
+);
+await page.screenshot({
+  path: new URL("../qa/resource-editor-desktop.png", import.meta.url).pathname,
+  fullPage: true,
+  animations: "disabled",
+});
+await page.setViewportSize({ width: 390, height: 844 });
+assert.ok(
+  await page.evaluate(
+    () => document.documentElement.scrollWidth <= window.innerWidth,
+  ),
+  "resource editor overflows on mobile",
+);
+await page.screenshot({
+  path: new URL("../qa/resource-editor-mobile.png", import.meta.url).pathname,
+  fullPage: true,
+  animations: "disabled",
+});
+await page.setViewportSize({ width: 1440, height: 1000 });
+await page.getByRole("button", { name: "Edit YAML", exact: true }).click();
+const editedResource = parse(
+  await page.getByLabel("Project YAML", { exact: true }).inputValue(),
+).resources[0];
+assert.equal(editedResource.format, ".modl");
+assert.equal(editedResource.image, undefined);
 await expect(
   page.getByRole("link", { name: /Request a listing/ }),
 ).toHaveAttribute(

@@ -1076,6 +1076,12 @@ function Detail() {
               Get started
             </External>
           )}
+          {p.profile?.resources?.length ? (
+            <a className="resource-jump" href="#get-files">
+              <Download size={16} /> Browse files & resources{" "}
+              <ArrowRight size={15} />
+            </a>
+          ) : null}
           <div className="resource-links">
             <External href={p.homepage}>
               <Globe2 size={17} />
@@ -1283,6 +1289,12 @@ function Guide() {
                 Closed-source tools don’t need a public code repository. They do
                 need a legitimate way to access the free software and read its
                 terms.
+              </p>
+              <p>
+                Add the files and resources people need: a repository, release
+                package, container image or document. Link each item to the
+                location you manage, and name separate terms or platform
+                requirements when they differ.
               </p>
             </div>
           </section>

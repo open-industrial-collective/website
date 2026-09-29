@@ -25,11 +25,17 @@ The coordinated development workspace also keeps this directory under `website/`
 
 Start with [the v2 template](public/templates/project-v2.yaml), or use [the editor](https://openindustrialcollective.org/share). Commit `.oic/project.yaml` and its declared files in a public repository. OIC can host a listing-only repository if your source is private. The current Dimension Engine example is [here](https://github.com/open-industrial-collective/dimension-engine-listing).
 
-The schema is [project-v2.schema.json](src/project-v2.schema.json), published at `https://openindustrialcollective.org/data/project-v2.schema.json`. V1 remains supported for existing listings. The editor imports and exports either version without dropping supported fields. Its simple form edits core details; YAML exposes all rich fields. It does not load repository files in the browser and labels that limitation explicitly.
+The schema is [project-v2.schema.json](src/project-v2.schema.json), published at `https://openindustrialcollective.org/data/project-v2.schema.json`. V1 remains supported for existing listings. The editor imports and exports either version without dropping supported fields. Its form edits core details and resources; YAML exposes all rich fields. It does not load repository files in the browser and labels that limitation explicitly.
 
 Required: identity, publisher, description, category/tags/platforms, source availability, real license/terms URL, free-edition access notes, explicit requirements (including an empty list), actions with exactly one primary, lifecycle and visibility.
 
 Optional: light/dark logos, ordered screenshots and external videos, captions/credits/rights, FAQs, documentation/wiki/support/issues/discussions/changelog links, and a release. No arbitrary page styling. Empty sections are hidden. `actions[].label` and `description` support useful project-specific calls to action without special page code.
+
+### Files and resources
+
+Use optional `resources[]` for the actual things a visitor can obtain: a source repository, release asset (`.zip`, `.modl`, etc.), container image, or document. Each resource has a title, HTTPS destination and access status; optional fields cover description, format, version, setup requirements, a file's SHA-256 checksum, and a container image reference. A resource uses the project license unless `resources[].license` supplies distinct terms. Add a separate resource for every materially different package or rights set. A public repository is not automatically an open-source claim; the `source.availability` field and actual terms still govern that label.
+
+OIC displays reviewed links and metadata. The submitter hosts or selects the actual file/registry destination and controls releases there. Prefer versioned release URLs and immutable container digests when possible; update the profile when a resource moves or its terms change. The browser opens publisher URLs and does not copy or rehost binaries, containers or documents. `Get file` opens an external destination and may lead to a provider page or prompt for an account as declared. Review checks that a destination is relevant, free for the listed edition, and consistent with the declared license and requirements, but OIC does not independently attest binary contents or ongoing availability.
 
 Descriptions use `{text: ...}` or `{file: ./overview.md}`. Markdown supports paragraphs, lists, headings, emphasis, code and HTTPS links. HTML, embedded images and executable content are not rendered. Videos open their external destination; no autoplay, tracking iframe or OIC video hosting.
 

@@ -7,6 +7,7 @@ import "./refinement.css";
 import "./discovery.css";
 import "./community.css";
 import "./mobile.css";
+import "./resources.css";
 const root = document.getElementById("root")!;
 const app = (
   <React.StrictMode>
