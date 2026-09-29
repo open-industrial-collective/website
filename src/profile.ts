@@ -28,6 +28,20 @@ export type Action = {
   label?: string;
   description?: string;
 };
+export type Resource = {
+  id: string;
+  kind: "source" | "download" | "container" | "document";
+  title: string;
+  url: string;
+  description?: string;
+  format?: string;
+  version?: string;
+  access: "public" | "account-required" | "see-provider";
+  license?: { name: string; url: string };
+  setup?: string;
+  sha256?: string;
+  image?: string;
+};
 export type Profile = {
   schema: "oic/project/v2";
   id: string;
@@ -58,6 +72,7 @@ export type Profile = {
     applies_to?: string[];
   }[];
   actions: Action[];
+  resources?: Resource[];
   links?: Partial<
     Record<
       | "homepage"
@@ -109,9 +124,17 @@ export function parseProfile(text: string): {
     const errors: string[] = [];
     if (p.actions.filter((a) => a.primary).length !== 1)
       errors.push("Choose exactly one primary action.");
-    for (const group of [p.actions, p.media || []])
+    for (const group of [p.actions, p.media || [], p.resources || []])
       if (new Set(group.map((a) => a.id)).size !== group.length)
-        errors.push("Action and media IDs must be unique within each section.");
+        errors.push("IDs must be unique within each section.");
+    for (const resource of p.resources || []) {
+      if (resource.kind === "container" && !resource.image)
+        errors.push(`Container ${resource.id} needs an image reference.`);
+      if (resource.image && resource.kind !== "container")
+        errors.push(`Only container resources can have an image reference.`);
+      if (resource.sha256 && resource.kind !== "download")
+        errors.push(`Only downloadable files can have a SHA-256 checksum.`);
+    }
     if (p.source.availability !== "closed-source" && !p.source.repository)
       errors.push("Public source availability requires a repository URL.");
     for (const r of p.requirements)

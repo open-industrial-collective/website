@@ -47,6 +47,58 @@ test("v2 rich and minimal profiles validate and round trip without losing option
   }
   assert.equal(normalizeProfile(minimal()).profile?.media?.length, 0);
 });
+test("v2 resources preserve mixed packages and their distinct terms", () => {
+  const p = minimal();
+  p.resources = [
+    {
+      id: "repo",
+      kind: "source",
+      title: "Source repository",
+      url: "https://example.org/repo",
+      access: "public",
+      license: { name: "MIT", url: "https://example.org/repo/LICENSE" },
+    },
+    {
+      id: "module",
+      kind: "download",
+      title: "Ignition module",
+      url: "https://example.org/release/tool.modl",
+      format: ".modl",
+      access: "public",
+      setup: "Ignition Gateway license required",
+      sha256: "a".repeat(64),
+    },
+    {
+      id: "image",
+      kind: "container",
+      title: "Container",
+      url: "https://example.org/packages/tool",
+      image: "ghcr.io/example/tool@sha256:" + "b".repeat(64),
+      access: "public",
+    },
+    {
+      id: "manual",
+      kind: "document",
+      title: "Install guide",
+      url: "https://example.org/install.pdf",
+      access: "account-required",
+    },
+  ];
+  assert.deepEqual(parseProfile(stringify(p)).errors, []);
+  assert.deepEqual(normalizeProfile(p).profile?.resources, p.resources);
+  const invalidResources = [
+    [p.resources[1], { ...p.resources[0], id: "module" }],
+    [{ ...p.resources[1], url: "javascript:alert(1)" }],
+    [{ ...p.resources[1], sha256: "bad" }],
+    [{ ...p.resources[2], image: undefined }],
+    [{ ...p.resources[3], image: "ghcr.io/example/tool" }],
+  ];
+  for (const resources of invalidResources)
+    assert.ok(
+      parseProfile(stringify({ ...p, resources })).errors.length,
+      JSON.stringify(resources),
+    );
+});
 test("v2 rejects dangerous paths, invalid relationships, paid editions and forged publication decisions", () => {
   const bad = [
     { ...base, access: { ...base.access, cost: "paid" } },

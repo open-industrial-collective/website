@@ -7,6 +7,7 @@ import {
   referencedFiles,
   type AuthoredProfile,
   type Profile,
+  type Resource,
 } from "./profile";
 import { categories, sourceLabels } from "./catalog";
 import { site } from "./site.config";
@@ -141,6 +142,33 @@ export function ProfileEditor() {
     setMessage("");
   };
   const isV2 = draft.schema === "oic/project/v2";
+  const updateResources = (resources: Resource[]) =>
+    set("resources", resources);
+  const addResource = () => {
+    if (draft.schema !== "oic/project/v2") return;
+    const resources = draft.resources || [];
+    let number = 1;
+    while (resources.some((r) => r.id === `resource-${number}`)) number++;
+    updateResources([
+      ...resources,
+      {
+        id: `resource-${number}`,
+        kind: "download",
+        title: "",
+        url: "",
+        access: "public",
+      },
+    ]);
+  };
+  const updateResource = (index: number, patch: Partial<Resource>) => {
+    if (draft.schema !== "oic/project/v2") return;
+    const resources = structuredClone(draft.resources || []);
+    const next = { ...resources[index], ...patch };
+    if (next.kind !== "container") delete next.image;
+    if (next.kind !== "download") delete next.sha256;
+    resources[index] = next;
+    updateResources(resources);
+  };
   const files =
     result.project?.schema === "oic/project/v2"
       ? referencedFiles(result.project)
@@ -300,6 +328,245 @@ export function ProfileEditor() {
                 isV2
                   ? `actions.${draft.actions.findIndex((a) => a.primary)}.url`
                   : "get_started",
+              )}
+              {isV2 && (
+                <details className="resource-editor">
+                  <summary>
+                    Files & resources{" "}
+                    <span>{draft.resources?.length || 0}</span>
+                  </summary>
+                  <p>
+                    Offer a repository, package, container image or document.
+                    Each item links to the location you manage. Add separate
+                    terms when an item uses a different license.
+                  </p>
+                  {(draft.resources || []).map((resource, index) => (
+                    <div className="resource-editor-item" key={index}>
+                      <div className="resource-editor-title">
+                        <h3>{resource.title || `Resource ${index + 1}`}</h3>
+                        <button
+                          type="button"
+                          className="text-link"
+                          onClick={() =>
+                            updateResources(
+                              (draft.resources || []).filter(
+                                (_, i) => i !== index,
+                              ),
+                            )
+                          }
+                        >
+                          Remove
+                        </button>
+                      </div>
+                      <div className="field-pair">
+                        <label className="field">
+                          <span>Type</span>
+                          <select
+                            aria-label="Resource type"
+                            value={resource.kind}
+                            onChange={(e) =>
+                              updateResource(index, {
+                                kind: e.target.value as Resource["kind"],
+                              })
+                            }
+                          >
+                            <option value="download">Downloadable file</option>
+                            <option value="source">Source repository</option>
+                            <option value="container">Container image</option>
+                            <option value="document">Document</option>
+                          </select>
+                        </label>
+                        <label className="field">
+                          <span>Access</span>
+                          <select
+                            aria-label="Resource access"
+                            value={resource.access}
+                            onChange={(e) =>
+                              updateResource(index, {
+                                access: e.target.value as Resource["access"],
+                              })
+                            }
+                          >
+                            <option value="public">Public access</option>
+                            <option value="account-required">
+                              Account required
+                            </option>
+                            <option value="see-provider">
+                              Check provider access
+                            </option>
+                          </select>
+                        </label>
+                      </div>
+                      <label className="field">
+                        <span>Resource ID</span>
+                        <input
+                          value={resource.id}
+                          autoCapitalize="none"
+                          spellCheck={false}
+                          onChange={(e) =>
+                            updateResource(index, { id: e.target.value })
+                          }
+                        />
+                      </label>
+                      <label className="field">
+                        <span>Title</span>
+                        <input
+                          value={resource.title}
+                          onChange={(e) =>
+                            updateResource(index, { title: e.target.value })
+                          }
+                          placeholder="Ignition module · Windows ZIP · Installation guide"
+                        />
+                      </label>
+                      <label className="field">
+                        <span>HTTPS destination</span>
+                        <input
+                          type="url"
+                          autoCapitalize="none"
+                          spellCheck={false}
+                          value={resource.url}
+                          onChange={(e) =>
+                            updateResource(index, { url: e.target.value })
+                          }
+                          placeholder="https://example.org/releases/..."
+                        />
+                      </label>
+                      <label className="field">
+                        <span>What’s included</span>
+                        <textarea
+                          rows={2}
+                          value={resource.description || ""}
+                          onChange={(e) =>
+                            updateResource(index, {
+                              description: e.target.value || undefined,
+                            })
+                          }
+                        />
+                      </label>
+                      <div className="field-pair">
+                        <label className="field">
+                          <span>Format (optional)</span>
+                          <input
+                            value={resource.format || ""}
+                            onChange={(e) =>
+                              updateResource(index, {
+                                format: e.target.value || undefined,
+                              })
+                            }
+                            placeholder=".modl, .zip, PDF"
+                          />
+                        </label>
+                        <label className="field">
+                          <span>Version (optional)</span>
+                          <input
+                            value={resource.version || ""}
+                            onChange={(e) =>
+                              updateResource(index, {
+                                version: e.target.value || undefined,
+                              })
+                            }
+                          />
+                        </label>
+                      </div>
+                      {resource.kind === "container" && (
+                        <label className="field">
+                          <span>Image reference</span>
+                          <input
+                            value={resource.image || ""}
+                            autoCapitalize="none"
+                            spellCheck={false}
+                            onChange={(e) =>
+                              updateResource(index, { image: e.target.value })
+                            }
+                            placeholder="ghcr.io/publisher/image:1.0"
+                          />
+                        </label>
+                      )}
+                      {resource.kind === "download" && (
+                        <label className="field">
+                          <span>SHA-256 checksum (optional)</span>
+                          <input
+                            value={resource.sha256 || ""}
+                            autoCapitalize="none"
+                            spellCheck={false}
+                            onChange={(e) =>
+                              updateResource(index, {
+                                sha256: e.target.value || undefined,
+                              })
+                            }
+                          />
+                        </label>
+                      )}
+                      <label className="field">
+                        <span>Setup or platform requirement (optional)</span>
+                        <input
+                          value={resource.setup || ""}
+                          onChange={(e) =>
+                            updateResource(index, {
+                              setup: e.target.value || undefined,
+                            })
+                          }
+                          placeholder="Ignition 8.1 with Perspective"
+                        />
+                      </label>
+                      <label className="resource-license-toggle">
+                        <input
+                          type="checkbox"
+                          checked={!!resource.license}
+                          onChange={(e) =>
+                            updateResource(index, {
+                              license: e.target.checked
+                                ? { name: "", url: "" }
+                                : undefined,
+                            })
+                          }
+                        />{" "}
+                        Different terms for this resource
+                      </label>
+                      {resource.license && (
+                        <div className="field-pair">
+                          <label className="field">
+                            <span>Resource terms name</span>
+                            <input
+                              value={resource.license.name}
+                              onChange={(e) =>
+                                updateResource(index, {
+                                  license: {
+                                    ...resource.license!,
+                                    name: e.target.value,
+                                  },
+                                })
+                              }
+                            />
+                          </label>
+                          <label className="field">
+                            <span>Resource terms URL</span>
+                            <input
+                              type="url"
+                              value={resource.license.url}
+                              onChange={(e) =>
+                                updateResource(index, {
+                                  license: {
+                                    ...resource.license!,
+                                    url: e.target.value,
+                                  },
+                                })
+                              }
+                            />
+                          </label>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                  <button
+                    type="button"
+                    className="button"
+                    onClick={addResource}
+                    disabled={(draft.resources?.length || 0) >= 20}
+                  >
+                    Add resource
+                  </button>
+                </details>
               )}
               {!isV2 && (
                 <label className="field">
