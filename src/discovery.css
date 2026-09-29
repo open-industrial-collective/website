@@ -710,7 +710,10 @@ select,
   margin-bottom: 30px;
 }
 .detail-layout .showcase-screen {
-  aspect-ratio: 1048 / 762;
+  aspect-ratio: 16 / 9;
+}
+.detail-layout .showcase-screen img {
+  object-fit: contain;
 }
 .results > .project-grid:has(> .project-card:only-child) {
   grid-template-columns: minmax(0, 1fr);
