@@ -1,0 +1,38 @@
+name: Offer a contribution
+description: Suggest a concrete way to help OIC's catalog, guides or community.
+title: "Contribution idea: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This is a public Issue, not a membership application. You can contribute without joining the GitHub organization. Describe a small, useful first step. Do not post private plant information, credentials, a résumé, or personal contact details here.
+  - type: dropdown
+    id: area
+    attributes:
+      label: Where could you help?
+      options:
+        - Catalog accuracy or project listing
+        - Industrial operator perspective
+        - Documentation or design
+        - Website or tooling
+        - Community welcome or moderation
+        - Something else
+    validations:
+      required: true
+  - type: textarea
+    id: contribution
+    attributes:
+      label: What useful first contribution do you have in mind?
+      description: A specific correction, question, example or bounded task is enough.
+      placeholder: I can help explain...
+    validations:
+      required: true
+  - type: input
+    id: reference
+    attributes:
+      label: Relevant public link (optional)
+      description: Link to a project, document or issue if it helps explain your idea.
+  - type: markdown
+    attributes:
+      value: |
+        An OIC steward will respond when capacity allows. Posting here does not create an OIC steward role or grant repository access. If a scoped responsibility becomes useful, it will be discussed and accepted separately.

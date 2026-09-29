@@ -5,6 +5,7 @@ import App from "./App";
 import "./styles.css";
 import "./refinement.css";
 import "./discovery.css";
+import "./community.css";
 createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <BrowserRouter>

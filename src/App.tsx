@@ -56,6 +56,7 @@ import { ProfileEditor } from "./ProfileEditor";
 import { actionLabel } from "./profile";
 import { ProfileText, ProfileSections } from "./ProfileContent";
 import { CollectiveSculpture } from "./CollectiveSculpture";
+import { CommunityPage } from "./CommunityPage";
 const projects = data as Listing[];
 const publishedProjects = projects.filter(
   (project) => project.listing.origin === "community",
@@ -90,7 +91,17 @@ const categoryDescriptions: Record<Category, string> = {
   "AI & automation": "Turn ideas into working flows.",
 };
 function Icon({ project, size = 26 }: { project: Project; size?: number }) {
-  if(project.profile?.branding?.logo.on_light) return <span className="project-icon"><img width={size} height={size} src={project.profile.branding.logo.on_light} alt={project.profile.branding.logo.alt}/></span>;
+  if (project.profile?.branding?.logo.on_light)
+    return (
+      <span className="project-icon">
+        <img
+          width={size}
+          height={size}
+          src={project.profile.branding.logo.on_light}
+          alt={project.profile.branding.logo.alt}
+        />
+      </span>
+    );
   const I = projectIcons[project.id] || categoryIcons[project.category];
   return (
     <span className={`project-icon ${project.id}`}>
@@ -145,8 +156,8 @@ function ScrollAndTitle() {
         "Prepare a listing for your free industrial tool, module or solution. Keep your project home and make its terms and requirements clear.",
       ],
       "/community": [
-        "Community",
-        "Builders, operators, integrators, vendors and domain experts shaping a shared home for free industrial tools.",
+        "People and participation",
+        "See who currently stewards OIC and how builders and practitioners can contribute as the Collective grows.",
       ],
       "/about": [
         "About the Collective",
@@ -230,7 +241,7 @@ export default function App() {
             <NavLink to="/explore">Explore tools</NavLink>
             <NavLink to="/about">Why OIC</NavLink>
             <NavLink to="/how-it-works">How it works</NavLink>
-            <NavLink to="/community">Community</NavLink>
+            <NavLink to="/community">People & join</NavLink>
             <NavLink className="nav-share" to="/share">
               Share a project
             </NavLink>
@@ -247,7 +258,7 @@ export default function App() {
           <Route path="/explore" element={<Explore />} />
           <Route path="/projects/:id" element={<Detail />} />
           <Route path="/share" element={<ProfileEditor />} />
-          <Route path="/community" element={<Community />} />
+          <Route path="/community" element={<CommunityPage />} />
           <Route path="/about" element={<About />} />
           <Route path="/guide" element={<Guide />} />
           <Route path="/how-it-works" element={<HowItWorks />} />
@@ -266,6 +277,7 @@ export default function App() {
             <Link to="/how-it-works">How it works</Link>
             <Link to="/platforms">Platforms</Link>
             <Link to="/guide">Listing guide</Link>
+            <Link to="/community">People & join</Link>
             <Link to="/guide#review">How we review</Link>
             <a href="/data/catalog.json">Catalog data</a>
             <Link to="/about">About</Link>
@@ -341,7 +353,9 @@ function Home() {
         >
           <div className="workshop-section-label">
             <span>Something worth exploring</span>
-            <span className="feature-kind">{featured.profile?.access.edition || featured.category}</span>
+            <span className="feature-kind">
+              {featured.profile?.access.edition || featured.category}
+            </span>
           </div>
           <article className="workshop-project">
             <div className="workshop-project-title">
@@ -358,7 +372,11 @@ function Home() {
             </div>
             <div className="workshop-project-actions">
               <External className="button primary" href={featured.get_started}>
-                {featured.profile ? actionLabel(featured.profile.actions.find(a=>a.primary)!) : "Get started"}
+                {featured.profile
+                  ? actionLabel(
+                      featured.profile.actions.find((a) => a.primary)!,
+                    )
+                  : "Get started"}
               </External>
               <Link
                 className="workshop-details"
@@ -366,7 +384,11 @@ function Home() {
               >
                 Project details & requirements <ArrowRight size={16} />
               </Link>
-              <span>By {featured.maintainer}{featured.profile?.access.account_required === false && " · No account needed"}</span>
+              <span>
+                By {featured.maintainer}
+                {featured.profile?.access.account_required === false &&
+                  " · No account needed"}
+              </span>
             </div>
           </article>
         </section>
@@ -486,8 +508,16 @@ function ProjectCard({
       {p.profile?.media?.[0]?.type === "image" && !preview && (
         <img
           className="card-preview-image"
-          src={p.profile!.media![0].type === "image" ? p.profile!.media![0].src : ""}
-          alt={p.profile!.media![0].type === "image" ? p.profile!.media![0].alt : ""}
+          src={
+            p.profile!.media![0].type === "image"
+              ? p.profile!.media![0].src
+              : ""
+          }
+          alt={
+            p.profile!.media![0].type === "image"
+              ? p.profile!.media![0].alt
+              : ""
+          }
           width="1048"
           height="762"
           loading="lazy"
@@ -809,9 +839,15 @@ function ListingCorrection({ project }: { project: Listing }) {
         Download correction note
       </button>
       <p className="small-text">
-        Download your note, then attach it to a correction issue in the public catalog.
+        Download your note, then attach it to a correction issue in the public
+        catalog.
       </p>
-      <a className="text-link" href={`${site.repository}/issues/new?template=correction.yml`}>Open a correction issue ↗</a>
+      <a
+        className="text-link"
+        href={`${site.repository}/issues/new?template=correction.yml`}
+      >
+        Open a correction issue ↗
+      </a>
       <p role="status" className="feedback">
         {saved ? "Downloaded. No report has been sent." : ""}
       </p>
@@ -826,7 +862,7 @@ function Detail() {
     .filter((project) => project.id !== p.id)
     .slice(0, 3);
   const manifest = () => {
-    if(p.authored) return stringify(p.authored);
+    if (p.authored) return stringify(p.authored);
     const { listing: _, ...manifest } = p;
     return stringify(manifest);
   };
@@ -914,7 +950,17 @@ function Detail() {
               Listing reviewed {p.listing.reviewed}. This does not establish
               affiliation, a security audit, or production certification.
             </p>
-            {p.listing.source && <p>Profile source: <External href={`https://github.com/${p.listing.source.repository}/tree/${p.listing.source.commit}`}>Approved repository snapshot · {p.listing.source.commit.slice(0,7)}</External></p>}
+            {p.listing.source && (
+              <p>
+                Profile source:{" "}
+                <External
+                  href={`https://github.com/${p.listing.source.repository}/tree/${p.listing.source.commit}`}
+                >
+                  Approved repository snapshot ·{" "}
+                  {p.listing.source.commit.slice(0, 7)}
+                </External>
+              </p>
+            )}
             <button
               className="text-link"
               onClick={() => download(`${p.id}.yaml`, manifest())}
@@ -929,10 +975,31 @@ function Detail() {
           <ListingCorrection project={p} />
         </div>
         <aside className="get-started">
-          <div className="eyebrow">{p.profile?.access.edition || "MAKE SOMETHING WITH IT"}</div>
+          <div className="eyebrow">
+            {p.profile?.access.edition || "MAKE SOMETHING WITH IT"}
+          </div>
           <h2>Start exploring.</h2>
-          <p>{p.profile?.actions.find(a=>a.primary)?.description || "Get the tool and setup instructions directly from its creators."}</p>
-          {p.profile ? [...p.profile.actions].sort((a,b)=>Number(b.primary)-Number(a.primary)).map(a=><External key={a.id} className={`button ${a.primary?'primary':'secondary'}`} href={a.url}>{actionLabel(a)}</External>) : <External className="button primary" href={p.get_started}>Get started</External>}
+          <p>
+            {p.profile?.actions.find((a) => a.primary)?.description ||
+              "Get the tool and setup instructions directly from its creators."}
+          </p>
+          {p.profile ? (
+            [...p.profile.actions]
+              .sort((a, b) => Number(b.primary) - Number(a.primary))
+              .map((a) => (
+                <External
+                  key={a.id}
+                  className={`button ${a.primary ? "primary" : "secondary"}`}
+                  href={a.url}
+                >
+                  {actionLabel(a)}
+                </External>
+              ))
+          ) : (
+            <External className="button primary" href={p.get_started}>
+              Get started
+            </External>
+          )}
           <div className="resource-links">
             <External href={p.homepage}>
               <Globe2 size={17} />
@@ -951,8 +1018,17 @@ function Detail() {
               </External>
             )}
           </div>
-          {p.profile?.links && Object.entries(p.profile.links).filter(([key])=>!['homepage','docs'].includes(key)).map(([key,url])=><External className="text-link" key={key} href={url!}>{key[0].toUpperCase()+key.slice(1)}</External>)}
-          <span className="small-text">Downloads and support are provided by the project.</span>
+          {p.profile?.links &&
+            Object.entries(p.profile.links)
+              .filter(([key]) => !["homepage", "docs"].includes(key))
+              .map(([key, url]) => (
+                <External className="text-link" key={key} href={url!}>
+                  {key[0].toUpperCase() + key.slice(1)}
+                </External>
+              ))}
+          <span className="small-text">
+            Downloads and support are provided by the project.
+          </span>
         </aside>
       </div>
       {related.length > 0 && (
@@ -970,82 +1046,6 @@ function Detail() {
           </div>
         </section>
       )}
-    </div>
-  );
-}
-function Community() {
-  return (
-    <div className="container page">
-      <div className="page-heading">
-        <div className="eyebrow">PEOPLE MAKE THE COLLECTIVE</div>
-        <h1>A shared workshop for industry.</h1>
-        <p>
-          Builders, operators, integrators, vendors, and domain experts.
-          Different perspectives, useful work in common.
-        </p>
-      </div>
-      <div className="community-feature">
-        <Users size={48} strokeWidth={1} />
-        <div>
-          <span className="eyebrow">WE’RE JUST GETTING STARTED</span>
-          <h2>Help shape this place.</h2>
-          <p>
-            Start with the catalog: find a tool, inspect its requirements, or
-            prepare a listing. Request a listing or suggest a correction in our public GitHub repository.
-          </p>
-        </div>
-      </div>
-      <div className="three-columns">
-        {[
-          {
-            icon: Code2,
-            title: "Share a tool",
-            body: "Developers, integrators, and vendors: describe a useful free edition while keeping your project and terms.",
-            link: "/share",
-            action: "Prepare a listing",
-          },
-          {
-            icon: MessageSquare,
-            title: "Share what you know",
-            body: "Operators and domain experts: spot a missing requirement, unclear term, or practical setup detail.",
-            link: "/guide",
-            action: "See how to contribute",
-          },
-          {
-            icon: Boxes,
-            title: "Find your next project",
-            body: "Explore the toolbox and go directly to the people who build the software.",
-            link: "/explore",
-            action: "Explore the tools",
-          },
-        ].map(({ icon: I, title, body, link, action }) => (
-          <section className="info-card" key={title}>
-            <I size={25} />
-            <h2>{title}</h2>
-            <p>{body}</p>
-            <Link to={link} className="text-link">
-              {action}
-              <ArrowRight size={16} />
-            </Link>
-          </section>
-        ))}
-      </div>
-      <div className="notice">
-        <MessageSquare size={22} />
-        <div>
-          <h3>Community conversations</h3>
-          <p>
-            {site.discussions
-              ? "Our discussion space is open. Bring a question or share what you’ve learned."
-              : "A public discussion space is still being set up. There’s no OIC account to create and no membership fee."}
-          </p>
-          {site.discussions && (
-            <External href={site.discussions} className="text-link">
-              Join the discussion
-            </External>
-          )}
-        </div>
-      </div>
     </div>
   );
 }
@@ -1105,9 +1105,9 @@ function About() {
           <p>
             Today, OIC offers a small reviewed catalog, including our first
             owner-authored preview, and a way to prepare project listings.
-            Public listing requests and corrections are open on GitHub.
-            Listing review checks the description and access information; it
-            does not establish production suitability.
+            Public listing requests and corrections are open on GitHub. Listing
+            review checks the description and access information; it does not
+            establish production suitability.
           </p>
           <p>
             Scoped evaluation reports may add detail over time: what was tested,
@@ -1169,8 +1169,8 @@ function Guide() {
         <div className="eyebrow">CONTRIBUTOR GUIDE</div>
         <h1>One small file. A useful connection.</h1>
         <p>
-          Your project stays in its own home. Prepare its description, then
-          propose it for the catalog when submissions open.
+          Your project stays in its own home. Publish a profile in your
+          repository, then request a listing.
         </p>
       </div>
       <div className="guide-layout">
@@ -1216,9 +1216,10 @@ function Guide() {
               <h2>Preview, then propose</h2>
               <p>
                 Use the form or open an existing YAML file to preview the
-                listing. Download it as <code>project.yaml</code>, optionally
-                keep it at <code>.oic/project.yaml</code> in your project, then
-                propose it to the OIC catalog.
+                listing. Save it as <code>.oic/project.yaml</code> with your
+                logo, screenshots and optional overview file. Commit them to
+                your repository, then request a listing. A public listing-only
+                repository works for private software.
               </p>
               <p>
                 {site.repository
@@ -1276,9 +1277,10 @@ function Guide() {
                 with the detail and its source.
               </p>
               <p>
-                Correction notes stay on your device. A public reporting
-                destination is still being connected; downloading does not send
-                a report.
+                Correction notes stay on your device until you attach them to an
+                issue in the public catalog. For profile updates, edit your
+                repository: OIC checks registered sources daily and prepares
+                changes for review.
               </p>
             </div>
           </section>
@@ -1293,11 +1295,11 @@ function Guide() {
           <Link className="button primary" to="/share">
             Prepare a listing <ArrowRight size={16} />
           </Link>
-          <a className="button" href="/templates/project.yaml" download>
+          <a className="button" href="/templates/project-v2.yaml" download>
             <Download size={16} />
             Download template
           </a>
-          <a className="text-link" href="/data/project-schema.json">
+          <a className="text-link" href="/data/project-v2.schema.json">
             View the schema <ArrowUpRight size={16} />
           </a>
         </aside>

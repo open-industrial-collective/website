@@ -1,5 +1,6 @@
 import { chromium, expect } from "@playwright/test";
 import assert from "node:assert/strict";
+import { parse } from "yaml";
 import { mkdir, readFile } from "node:fs/promises";
 const base = process.env.OIC_BASE_URL || "http://127.0.0.1:4173";
 const browser = await chromium.launch({ channel: "chrome", headless: true });
@@ -198,6 +199,16 @@ assert.match(
   await page.getByLabel("Project YAML", { exact: true }).inputValue(),
   /Free Test Tool/,
 );
+// Rich profiles keep every optional field when edited through the simple form.
+const richPath = new URL("../public/templates/project-v2.yaml", import.meta.url);
+const originalRich = parse(await readFile(richPath, "utf8"));
+await page.getByLabel("Open YAML file", { exact: true }).setInputFiles(richPath.pathname);
+await expect(page.getByText(/repository files still need checking/)).toBeVisible();
+await page.getByRole("button", { name: "Simple form", exact: true }).click();
+await page.getByRole("textbox", { name: "Project name", exact: true }).fill("Independent Rich Tool");
+await page.getByRole("button", { name: "Edit YAML", exact: true }).click();
+assert.deepEqual(parse(await page.getByLabel("Project YAML", {exact:true}).inputValue()), {...originalRich, name:"Independent Rich Tool"});
+await expect(page.getByRole("link", {name:/Request a listing/})).toHaveAttribute("href", "https://github.com/open-industrial-collective/website/issues/new?template=listing.yml");
 await page
   .getByLabel("Project YAML", { exact: true })
   .fill("name: bad\nid: invalid\n");
@@ -240,11 +251,13 @@ for (const path of [
     await page.getByRole("button", { name: "Open navigation" }).click();
     await page
       .getByRole("navigation", { name: "Main navigation" })
-      .getByRole("link", { name: "Community", exact: true })
+      .getByRole("link", { name: "People & join", exact: true })
       .click();
     await page
-      .getByRole("heading", { name: "A shared workshop for industry." })
+      .getByRole("heading", { name: "Made useful together." })
       .waitFor();
+    await expect(page.getByRole("heading", { name: "Grindstone Systems" })).toBeVisible();
+    await expect(page.getByText("Interim website and program stewardship")).toBeVisible();
   }
 }
 for (const width of [320, 768, 1024, 1440]) {

@@ -2707,3 +2707,6 @@ main:focus {
 .profile-requirement h3 { margin-bottom: .6rem; }
 .project-icon img { object-fit: contain; }
 .showcase-switcher { flex-wrap: wrap; }
+.profile-faq { border-bottom: 1px solid var(--line); padding: 1rem 0; }
+.profile-faq summary { cursor: pointer; font-weight: 600; line-height: 1.5; }
+.profile-faq p { margin-top: .9rem; }

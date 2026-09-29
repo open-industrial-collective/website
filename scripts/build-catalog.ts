@@ -6,13 +6,20 @@ import { renderSnapshot, type Snapshot } from "./profile-snapshot.ts";
 import { parseDocument } from "yaml";
 import { parseProject, type Listing } from "../src/catalog.ts";
 const root = fileURLToPath(new URL("../", import.meta.url));
-const reviewText = await readFile(resolve(root, "content/reviews.json"), "utf8");
+const reviewText = await readFile(
+  resolve(root, "content/reviews.json"),
+  "utf8",
+);
 // JSON.parse silently accepts duplicate IDs; a later entry could override a review.
 const reviewDocument = parseDocument(reviewText, { uniqueKeys: true });
 if (reviewDocument.errors.length || reviewDocument.warnings.length)
-  throw new Error(`Invalid review records: ${[...reviewDocument.errors, ...reviewDocument.warnings].map((e) => e.message).join("; ")}`);
+  throw new Error(
+    `Invalid review records: ${[...reviewDocument.errors, ...reviewDocument.warnings].map((e) => e.message).join("; ")}`,
+  );
 const reviews = JSON.parse(reviewText);
-const sources = JSON.parse(await readFile(resolve(root,"content/sources.json"),"utf8"));
+const sources = JSON.parse(
+  await readFile(resolve(root, "content/sources.json"), "utf8"),
+);
 const projects: Listing[] = [];
 const seen = new Set<string>();
 for (const filename of (await readdir(resolve(root, "content/projects")))
@@ -23,15 +30,44 @@ for (const filename of (await readdir(resolve(root, "content/projects")))
   );
   let project = parsed.project ? normalizeProfile(parsed.project) : undefined;
   let errors = parsed.errors;
-  let provenance: {repository:string;commit:string;digest:string} | undefined;
+  let provenance:
+    { repository: string; commit: string; digest: string } | undefined;
   try {
-    const snapshot: Snapshot = JSON.parse(await readFile(resolve(root, 'content/snapshots', filename.replace('.yaml','.json')), 'utf8'));
-    if(snapshot.manifest !== await readFile(resolve(root, 'content/projects', filename), 'utf8')) throw new Error('Author manifest differs from approved snapshot: '+filename);
-    project = renderSnapshot(snapshot); errors=[];
-    if(sources[project.id]) provenance={repository:sources[project.id].repository,commit:snapshot.commit,digest:snapshot.digest};
-    await mkdir(resolve(root,'public/images/projects'),{recursive:true});
-    for (const file of Object.values(snapshot.files)) if(file.kind==='image') await writeFile(resolve(root,`public/images/projects/${file.digest}.webp`),Buffer.from(file.content,'base64'));
-  } catch(error) { if((error as NodeJS.ErrnoException).code!=='ENOENT' || parsed.project?.schema==='oic/project/v2') throw error; }
+    const snapshot: Snapshot = JSON.parse(
+      await readFile(
+        resolve(root, "content/snapshots", filename.replace(".yaml", ".json")),
+        "utf8",
+      ),
+    );
+    if (
+      snapshot.manifest !==
+      (await readFile(resolve(root, "content/projects", filename), "utf8"))
+    )
+      throw new Error(
+        "Author manifest differs from approved snapshot: " + filename,
+      );
+    project = renderSnapshot(snapshot);
+    errors = [];
+    if (sources[project.id])
+      provenance = {
+        repository: sources[project.id].repository,
+        commit: snapshot.commit,
+        digest: snapshot.digest,
+      };
+    await mkdir(resolve(root, "public/images/projects"), { recursive: true });
+    for (const file of Object.values(snapshot.files))
+      if (file.kind === "image")
+        await writeFile(
+          resolve(root, `public/images/projects/${file.digest}.webp`),
+          Buffer.from(file.content, "base64"),
+        );
+  } catch (error) {
+    if (
+      (error as NodeJS.ErrnoException).code !== "ENOENT" ||
+      parsed.project?.schema === "oic/project/v2"
+    )
+      throw error;
+  }
   if (!project) throw new Error(`${filename}: ${errors.join("; ")}`);
   if (seen.has(project.id))
     throw new Error(`Duplicate project ID: ${project.id}`);
@@ -46,7 +82,11 @@ for (const filename of (await readdir(resolve(root, "content/projects")))
   )
     throw new Error(`${filename}: missing maintainer review record`);
   // Publication decisions are separate from contributor-authored YAML.
-  if(project.profile?.visibility!=="withdrawn") projects.push({ ...project, listing: {...review, ...(provenance?{source:provenance}:{})} });
+  if (project.profile?.visibility !== "withdrawn")
+    projects.push({
+      ...project,
+      listing: { ...review, ...(provenance ? { source: provenance } : {}) },
+    });
 }
 for (const id of Object.keys(reviews))
   if (!seen.has(id)) throw new Error(`Stale review record: ${id}`);
@@ -60,4 +100,7 @@ await writeFile(
 );
 console.log(`Validated and built ${projects.length} free project listings.`);
 
-await writeFile(resolve(root,"public/data/project-v2.schema.json"),await readFile(resolve(root,"src/project-v2.schema.json")));
+await writeFile(
+  resolve(root, "public/data/project-v2.schema.json"),
+  await readFile(resolve(root, "src/project-v2.schema.json")),
+);
