@@ -1,0 +1,19 @@
+schema: oic/project/v1
+id: fuxa
+name: FUXA
+summary: Build web-based dashboards and process visualizations for your machines.
+description: A web-based SCADA and HMI editor with support for industrial protocols including MQTT, Modbus and OPC UA. This listing covers the free open-source edition.
+category: Visualization
+tags: [SCADA, HMI, OPC UA]
+platforms: [Linux, Windows, macOS, Docker]
+source: open-source
+license: MIT
+license_url: https://github.com/frangoteam/FUXA/blob/master/LICENSE
+cost: free
+software_requirements: no-paid-required
+cost_notes: The open-source edition is free to self-host. Optional paid Pro features are outside this listing. Hardware and hosting are your own.
+homepage: https://github.com/frangoteam/FUXA
+get_started: https://frangoteam.github.io/FUXA/
+repository: https://github.com/frangoteam/FUXA
+documentation: https://frangoteam.github.io/FUXA/
+maintainer: frangoteam and contributors

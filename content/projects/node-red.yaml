@@ -1,0 +1,19 @@
+schema: oic/project/v1
+id: node-red
+name: Node-RED
+summary: Connect devices, APIs and services with visual, event-driven flows.
+description: Build flows in a browser-based editor and run them on your own machine or server. A useful starting point for moving industrial data between systems and prototyping integrations.
+category: AI & automation
+tags: [Low-code, Integration, Flows]
+platforms: [Linux, Windows, macOS, Raspberry Pi]
+source: open-source
+license: Apache-2.0
+license_url: https://github.com/node-red/node-red/blob/main/LICENSE
+cost: free
+software_requirements: no-paid-required
+cost_notes: The self-hosted software is free. You provide the computer or hosting; optional third-party services may have their own costs.
+homepage: https://nodered.org
+get_started: https://nodered.org/docs/getting-started/
+repository: https://github.com/node-red/node-red
+documentation: https://nodered.org/docs/
+maintainer: OpenJS Foundation and Node-RED contributors

@@ -1,0 +1,8 @@
+node_modules/
+dist/
+qa/
+.vercel/
+.env*
+content/candidates/
+*.tmp
+.DS_Store

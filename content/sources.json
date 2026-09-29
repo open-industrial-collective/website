@@ -1,0 +1,11 @@
+{
+  "dimension-engine-showcase": {
+    "repository_id": 1394170399,
+    "repository": "open-industrial-collective/dimension-engine-listing",
+    "path": ".oic/project.yaml",
+    "ref": "main",
+    "controller_account_id": 10232151,
+    "review_policy": "all-updates",
+    "listing_permission": "Owner authorized OIC publication of the profile and approved media in this task. Software source and software license are separate."
+  }
+}

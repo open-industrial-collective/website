@@ -1,0 +1,1036 @@
+/* Modern product surfaces. Color tokens are shared with every route. */
+:root {
+  --display: "Inter Variable", -apple-system, BlinkMacSystemFont, sans-serif;
+  --soft-shadow: 0 12px 35px #27292508, 0 2px 5px #27292504;
+}
+.header {
+  background: #f3f1e9e8;
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid #d4d3c866;
+}
+.header .brand-symbol {
+  color: var(--accent);
+}
+.header nav a {
+  font-size: 13px;
+}
+.header nav a.active {
+  color: var(--ink);
+  text-decoration: none;
+}
+.header-share {
+  background: var(--ink);
+  color: var(--on-dark);
+  border-color: var(--ink);
+  border-radius: 100px;
+  padding: 12px 18px;
+}
+.header-share svg {
+  color: var(--on-dark);
+}
+.header-share:hover {
+  background: #42453d;
+  border-color: #42453d;
+}
+.button {
+  border-radius: 100px;
+  padding: 13px 20px;
+  gap: 14px;
+  font-size: 13px;
+  transition:
+    background 0.2s,
+    box-shadow 0.2s,
+    transform 0.2s;
+}
+.button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px #27292510;
+}
+input,
+textarea,
+select,
+.search-input {
+  border-radius: 12px;
+}
+.page {
+  padding-top: 60px;
+}
+.page-heading {
+  padding-bottom: 0;
+  border: 0;
+  margin-bottom: 42px;
+}
+.page-heading h1 {
+  font-family: var(--display);
+  font-weight: 560;
+  font-size: clamp(40px, 4.6vw, 62px);
+  letter-spacing: -0.06em;
+  line-height: 1.08;
+  text-wrap: balance;
+}
+.page-heading h1 span {
+  color: var(--ink) !important;
+}
+.page-heading .eyebrow {
+  margin-bottom: 17px;
+}
+.page-heading p {
+  max-width: 650px;
+  margin-top: 21px;
+  line-height: 1.7;
+}
+.eyebrow {
+  font-family: var(--display);
+  font-size: 12px;
+  font-weight: 550;
+  letter-spacing: 0.015em;
+  text-transform: none;
+}
+.project-card,
+.form-panel,
+.validation,
+.info-card,
+.values,
+.guide-aside {
+  border-radius: 18px;
+  box-shadow: var(--soft-shadow);
+  border-color: #d4d3c877;
+}
+.project-card {
+  transition:
+    box-shadow 0.25s,
+    border-color 0.25s,
+    transform 0.25s;
+}
+.project-card:hover {
+  box-shadow: 0 18px 40px #27292510;
+  border-color: #b9b9ad;
+  transform: translateY(-3px);
+}
+.project-icon {
+  border-radius: 14px;
+}
+.info-card {
+  border: 1px solid #d4d3c877;
+  background: var(--surface);
+  padding: 28px;
+}
+.get-started,
+.community-feature,
+.platform-feature,
+.yaml-example {
+  border-radius: 22px;
+  box-shadow: var(--soft-shadow);
+}
+.filter-sidebar > button,
+.segmented,
+.segmented button {
+  border-radius: 10px;
+}
+.free-label {
+  letter-spacing: 0.035em;
+  font-size: 10px;
+}
+.footer-brand svg {
+  color: var(--on-dark);
+}
+
+.workshop-home {
+  color: var(--ink);
+}
+.workshop-home h1,
+.workshop-home h2 {
+  font-family: var(--display);
+  letter-spacing: -0.055em;
+  font-weight: 560;
+  color: var(--ink);
+}
+.workshop-opening {
+  padding-top: 18px;
+}
+.workshop-hero-layout {
+  display: grid;
+  grid-template-columns: 1.17fr 1fr;
+  gap: 10px;
+  align-items: center;
+  padding: 44px 0 36px;
+}
+.workshop-edition {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 550;
+  margin-bottom: 23px;
+}
+.workshop-edition::before {
+  content: "";
+  width: 19px;
+  height: 2px;
+  background: var(--accent);
+}
+.workshop-opening h1 {
+  font-size: clamp(43px, 4.35vw, 63px);
+  line-height: 1.08;
+  margin: 0 0 24px;
+  letter-spacing: -0.065em;
+}
+.workshop-intro {
+  font-size: 16px;
+  line-height: 1.75;
+  max-width: 440px;
+  margin-bottom: 26px;
+}
+.workshop-actions {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.workshop-actions .button {
+  background: var(--accent);
+  border-color: var(--accent);
+  padding: 14px 20px;
+}
+.workshop-actions .button:hover {
+  background: #96361f;
+  border-color: #96361f;
+}
+.workshop-why {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.workshop-why:hover {
+  color: var(--ink);
+}
+.workshop-brand-art {
+  min-width: 0;
+  position: relative;
+  margin-right: -32px;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.collective-sculpture {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.sculpture-mark {
+  transition: transform 0.65s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.workshop-brand-art:hover .sculpture-mark {
+  transform: translateY(-10px);
+}
+.workshop-brand-art > span {
+  color: var(--muted);
+  text-align: center;
+  font-size: 11px;
+  margin-top: -12px;
+}
+.workshop-search-row {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  padding: 18px 0 22px;
+}
+.workshop-search {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  min-width: 0;
+  flex: 1.3;
+  background: var(--surface);
+  border: 1px solid #d4d3c8a0;
+  border-radius: 100px;
+  padding: 5px 6px 5px 20px;
+  box-shadow: 0 5px 20px #27292504;
+  transition: box-shadow 0.2s;
+}
+.workshop-search:focus-within {
+  box-shadow: 0 0 0 3px #b8442818;
+  border-color: var(--accent);
+}
+.workshop-search > svg {
+  color: var(--muted);
+  flex-shrink: 0;
+}
+.workshop-search input {
+  flex: 1;
+  width: 0;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  font-size: 14px;
+  padding: 12px 0;
+}
+.workshop-search input:focus {
+  outline: 0;
+}
+.workshop-search input::placeholder {
+  color: var(--muted);
+}
+.workshop-search button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 19px;
+  border: 0;
+  border-radius: 100px;
+  background: var(--ink);
+  color: var(--on-dark);
+  font-size: 12px;
+}
+.workshop-search button:hover {
+  background: #42453d;
+}
+.workshop-search-row > p {
+  flex: 1;
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.8;
+  color: var(--ink);
+}
+.workshop-search-row > p > span {
+  color: var(--muted);
+  display: block;
+}
+.workshop-feature {
+  padding-top: 22px;
+  padding-bottom: 45px;
+}
+.workshop-section-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 550;
+}
+.feature-kind {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 400;
+}
+.workshop-section-label > a {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.workshop-section-label > a:hover {
+  color: var(--accent);
+}
+.workshop-project {
+  margin-top: 18px;
+  padding: 30px;
+  background: var(--ink);
+  border-radius: 26px;
+  display: grid;
+  grid-template-columns: 0.85fr 1.6fr;
+  grid-template-rows: auto auto 1fr;
+  gap: 20px 35px;
+  overflow: hidden;
+  box-shadow: 0 18px 45px #2729250e;
+}
+.workshop-project-title {
+  padding-top: 4px;
+}
+.project-byline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--on-dark-muted);
+  font-size: 11px;
+}
+.project-byline > span {
+  width: 5px;
+  height: 5px;
+  background: #e7a98f;
+  border-radius: 50%;
+}
+.workshop-project h2 {
+  color: var(--on-dark);
+  font-size: clamp(26px, 2.3vw, 34px);
+  line-height: 1.12;
+  margin-top: 19px;
+}
+.workshop-project h2 a:hover {
+  color: #efae92;
+}
+.workshop-project > .showcase-preview {
+  grid-column: 2;
+  grid-row: 1 / 4;
+  align-self: center;
+}
+.workshop-project-copy p:first-child {
+  color: var(--on-dark);
+  font-size: 14px;
+  margin-bottom: 11px;
+}
+.workshop-project-copy p {
+  color: var(--on-dark-muted);
+  font-size: 12px;
+  line-height: 1.75;
+  margin: 0;
+}
+.workshop-project-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 16px;
+  align-self: end;
+}
+.workshop-project-actions .button.primary {
+  background: var(--paper);
+  color: var(--ink);
+  border-color: transparent;
+  font-size: 12px;
+  padding: 12px 18px;
+}
+.workshop-project-actions .button.primary:hover {
+  background: white;
+}
+.workshop-details {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--on-dark-muted);
+  font-size: 11px;
+}
+.workshop-details:hover {
+  color: white;
+}
+.workshop-project-actions > span {
+  font-size: 10px;
+  color: var(--on-dark-muted);
+}
+.showcase-preview {
+  margin: 0;
+  min-width: 0;
+}
+.showcase-screen {
+  position: relative;
+  aspect-ratio: 1.7;
+  overflow: hidden;
+  border-radius: 14px;
+  background: #101a1f;
+  border: 1px solid #ffffff1f;
+}
+.showcase-screen img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 44%;
+  display: block;
+}
+.showcase-screen img[hidden] {
+  display: none;
+}
+.preview-expand {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  border: 1px solid #ffffff40;
+  background: #272925e0;
+  color: white;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  width: 37px;
+  height: 37px;
+  backdrop-filter: blur(12px);
+  transition:
+    background 0.2s,
+    transform 0.2s;
+}
+.preview-expand:hover {
+  background: var(--accent);
+  transform: scale(1.06);
+}
+.showcase-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding-top: 15px;
+}
+.showcase-switcher {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--tint);
+  padding: 4px;
+  border-radius: 100px;
+}
+.showcase-switcher button {
+  padding: 8px 12px;
+  border: 0;
+  border-radius: 100px;
+  color: var(--ink);
+  background: transparent;
+  font-size: 11px;
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+.showcase-switcher button[aria-pressed="true"] {
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: 0 2px 5px #0000000b;
+}
+.showcase-preview figcaption {
+  font-size: 10px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.workshop-project .showcase-switcher {
+  background: #ffffff10;
+}
+.workshop-project .showcase-switcher button {
+  color: var(--on-dark-muted);
+}
+.workshop-project .showcase-switcher button[aria-pressed="true"] {
+  background: var(--paper);
+  color: var(--ink);
+}
+.workshop-project .showcase-preview figcaption {
+  color: var(--on-dark-muted);
+}
+.preview-dialog {
+  position: fixed;
+  inset: 0;
+  width: min(1100px, 94vw);
+  max-height: 94vh;
+  padding: 18px;
+  border: 1px solid #ffffff20;
+  border-radius: 20px;
+  background: var(--ink);
+  color: var(--on-dark);
+  box-shadow: 0 35px 100px #0005;
+}
+.preview-dialog::backdrop {
+  background: #171916bc;
+  backdrop-filter: blur(10px);
+}
+.preview-dialog-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  font-size: 13px;
+  padding-bottom: 15px;
+}
+.preview-dialog-heading button {
+  border: 0;
+  background: #ffffff15;
+  color: white;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+}
+.preview-dialog img {
+  width: 100%;
+  height: auto;
+  max-height: 75vh;
+  object-fit: contain;
+  border-radius: 10px;
+}
+.preview-dialog p {
+  font-size: 11px;
+  color: var(--on-dark-muted);
+  margin: 12px 0 0;
+}
+.workshop-index {
+  padding-bottom: 60px;
+}
+.workshop-categories {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+.workshop-categories > a {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 23px 20px;
+  background: var(--surface);
+  border: 1px solid #d4d3c866;
+  border-radius: 17px;
+  font-size: 14px;
+  font-weight: 550;
+  box-shadow: var(--soft-shadow);
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+.workshop-categories > a > svg {
+  margin-left: auto;
+  flex-shrink: 0;
+  color: var(--muted);
+}
+.category-symbol {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 43px;
+  height: 43px;
+  border-radius: 13px;
+  background: #f1e5dc;
+  color: var(--accent);
+}
+.workshop-categories > a:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 25px #2729250c;
+}
+.workshop-examples {
+  margin-top: 18px;
+  border: 0;
+}
+.workshop-examples summary {
+  font-size: 12px;
+}
+.workshop-examples summary small {
+  margin-left: 20px;
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 400;
+}
+.workshop-purpose {
+  padding-block: 58px;
+  background: #e9e7df;
+  scroll-margin-top: 84px;
+}
+.workshop-purpose:focus {
+  outline: none;
+}
+.workshop-purpose-inner {
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: 35px 100px;
+}
+.workshop-purpose .workshop-section-label {
+  grid-column: 1 / -1;
+  color: var(--muted);
+  font-size: 12px;
+}
+.workshop-purpose .workshop-section-label > svg {
+  color: var(--accent);
+  width: 33px;
+  height: 33px;
+}
+.workshop-purpose h2 {
+  font-size: clamp(34px, 3.6vw, 50px);
+  line-height: 1.1;
+}
+.workshop-purpose-copy p {
+  font-size: 14px;
+  line-height: 1.75;
+}
+.workshop-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 20px;
+  font-size: 13px;
+  font-weight: 550;
+}
+.workshop-link:hover {
+  color: var(--accent);
+}
+.workshop-principles {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  padding-top: 25px;
+  border-top: 1px solid #c9c8bc;
+  font-size: 12px;
+  color: var(--muted);
+}
+.workshop-principles span::before {
+  content: "✓";
+  color: var(--accent);
+  margin-right: 10px;
+}
+.workshop-contribute {
+  padding-block: 65px 70px;
+}
+.workshop-small-label {
+  color: var(--muted);
+  font-size: 12px;
+}
+.workshop-contribute h2 {
+  font-size: 43px;
+  line-height: 1.12;
+  margin: 19px 0 25px;
+}
+.workshop-contribute > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+}
+.workshop-contribute p {
+  font-size: 14px;
+  margin: 0;
+}
+.workshop-contribute-note {
+  display: block;
+  margin-top: 28px;
+  font-size: 11px;
+  color: var(--muted);
+}
+.workshop-contribute-note a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--ink);
+  margin-left: 12px;
+}
+.card-preview-image {
+  width: calc(100% + 52px);
+  max-width: none;
+  height: 180px;
+  object-fit: cover;
+  object-position: 50% 42%;
+  margin: -26px -26px 25px;
+  border-radius: 17px 17px 0 0;
+}
+.detail-layout > div > .showcase-preview {
+  margin-bottom: 30px;
+}
+.detail-layout .showcase-screen {
+  aspect-ratio: 1048 / 762;
+}
+.results > .project-grid:has(> .project-card:only-child) {
+  grid-template-columns: minmax(0, 1fr);
+}
+.results > .project-grid > .project-card:only-child .card-preview-image {
+  height: 260px;
+}
+@media (max-width: 1100px) {
+  .workshop-hero-layout {
+    grid-template-columns: 1.15fr 1fr;
+  }
+  .workshop-opening h1 {
+    font-size: 47px;
+  }
+  .workshop-project {
+    padding: 24px;
+    gap: 18px 25px;
+    grid-template-columns: 0.9fr 1.4fr;
+  }
+  .workshop-project h2 {
+    font-size: 27px;
+  }
+  .workshop-project .showcase-screen {
+    aspect-ratio: 1.35;
+  }
+  .workshop-categories > a {
+    padding: 19px 15px;
+    font-size: 12px;
+    gap: 10px;
+  }
+  .workshop-purpose-inner {
+    gap: 30px 55px;
+  }
+}
+@media (max-width: 800px) {
+  .workshop-hero-layout {
+    grid-template-columns: 1.2fr 0.8fr;
+    padding-block: 35px;
+  }
+  .workshop-opening h1 {
+    font-size: 42px;
+  }
+  .desktop-break {
+    display: none;
+  }
+  .workshop-intro {
+    font-size: 14px;
+  }
+  .workshop-brand-art {
+    margin-right: -20px;
+  }
+  .workshop-brand-art > span {
+    display: none;
+  }
+  .workshop-actions {
+    gap: 20px;
+  }
+  .workshop-project {
+    grid-template-columns: 0.9fr 1.1fr;
+  }
+  .workshop-project h2 {
+    font-size: 25px;
+  }
+  .workshop-project-actions {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .workshop-project > .showcase-preview {
+    grid-row: 1 / 3;
+  }
+  .workshop-project-actions > span {
+    display: none;
+  }
+  .workshop-categories {
+    gap: 12px;
+  }
+  .workshop-categories > a {
+    flex-wrap: wrap;
+  }
+  .workshop-categories > a > span:nth-child(2) {
+    order: 2;
+    width: 100%;
+  }
+  .workshop-purpose-inner {
+    gap: 25px 35px;
+  }
+  .workshop-contribute h2 {
+    font-size: 37px;
+  }
+}
+@media (max-width: 600px) {
+  .header nav {
+    background: var(--paper);
+    border-bottom-color: var(--line);
+  }
+  .page {
+    padding-top: 36px;
+  }
+  .page-heading h1 {
+    font-size: 38px;
+  }
+  .page-heading p {
+    font-size: 15px;
+  }
+  .workshop-opening {
+    padding-top: 0;
+  }
+  .workshop-hero-layout {
+    display: block;
+    padding: 34px 0 0;
+    position: relative;
+  }
+  .workshop-edition {
+    font-size: 11px;
+    margin-bottom: 21px;
+  }
+  .workshop-opening h1 {
+    font-size: clamp(36px, 9.8vw, 51px);
+    line-height: 1.07;
+    max-width: 430px;
+    margin-bottom: 20px;
+  }
+  .workshop-intro {
+    font-size: 15px;
+    max-width: 380px;
+    margin-bottom: 24px;
+  }
+  .workshop-actions .button {
+    padding: 13px 18px;
+    font-size: 12px;
+  }
+  .workshop-why {
+    font-size: 12px;
+  }
+  .workshop-brand-art {
+    width: min(85%, 330px);
+    margin: -4px auto -18px;
+    pointer-events: none;
+  }
+  .workshop-search-row {
+    display: block;
+    padding: 0 0 15px;
+  }
+  .workshop-search {
+    padding: 4px 5px 4px 15px;
+    gap: 10px;
+  }
+  .workshop-search input {
+    font-size: 16px;
+  }
+  .workshop-search button {
+    padding: 12px;
+    gap: 0;
+    font-size: 0;
+  }
+  .workshop-search-row > p {
+    margin: 15px 0 0 4px;
+    font-size: 11px;
+  }
+  .workshop-feature {
+    padding-top: 20px;
+    padding-bottom: 35px;
+  }
+  .workshop-section-label {
+    font-size: 13px;
+  }
+  .feature-kind {
+    display: none;
+  }
+  .workshop-project {
+    padding: 21px;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 19px;
+    margin-top: 17px;
+    border-radius: 22px;
+  }
+  .workshop-project h2 {
+    font-size: 29px;
+    max-width: 350px;
+    margin-top: 13px;
+  }
+  .workshop-project > .showcase-preview {
+    grid-column: 1;
+    grid-row: 2;
+    margin-inline: -9px;
+  }
+  .workshop-project .showcase-screen {
+    aspect-ratio: 1.3;
+    border-radius: 12px;
+  }
+  .workshop-project-copy p {
+    font-size: 13px;
+  }
+  .workshop-project-copy p:first-child {
+    font-size: 14px;
+  }
+  .workshop-project-actions {
+    flex-direction: column;
+    align-items: start;
+    gap: 18px;
+  }
+  .workshop-project-actions .button {
+    min-height: 44px;
+  }
+  .showcase-controls {
+    gap: 11px;
+    padding-top: 11px;
+  }
+  .showcase-switcher button {
+    min-height: 36px;
+  }
+  .preview-dialog {
+    padding: 12px;
+    border-radius: 16px;
+  }
+  .preview-dialog-heading {
+    font-size: 11px;
+  }
+  .workshop-index {
+    padding-bottom: 34px;
+  }
+  .workshop-categories {
+    grid-template-columns: 1fr;
+    gap: 11px;
+    margin-top: 16px;
+  }
+  .workshop-categories > a {
+    flex-wrap: nowrap;
+    padding: 16px;
+    font-size: 14px;
+    gap: 14px;
+    border-radius: 15px;
+  }
+  .workshop-categories > a > span:nth-child(2) {
+    order: 0;
+    width: auto;
+  }
+  .category-symbol {
+    width: 39px;
+    height: 39px;
+    border-radius: 12px;
+  }
+  .workshop-examples {
+    margin-top: 13px;
+  }
+  .workshop-examples summary small {
+    display: block;
+    margin: 6px 0 0;
+    line-height: 1.7;
+  }
+  .workshop-examples .home-grid {
+    grid-template-columns: 1fr;
+  }
+  .workshop-purpose {
+    padding-block: 33px 38px;
+    scroll-margin-top: 67px;
+  }
+  .workshop-purpose-inner {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+  .workshop-purpose h2 {
+    font-size: 34px;
+  }
+  .workshop-purpose .workshop-section-label > svg {
+    width: 28px;
+    height: 28px;
+  }
+  .workshop-principles {
+    flex-direction: column;
+    gap: 17px;
+    font-size: 12px;
+  }
+  .workshop-contribute {
+    padding-block: 40px 45px;
+  }
+  .workshop-small-label {
+    font-size: 11px;
+  }
+  .workshop-contribute h2 {
+    font-size: 33px;
+    margin: 18px 0 23px;
+  }
+  .workshop-contribute > div {
+    flex-direction: column;
+    align-items: start;
+    gap: 25px;
+  }
+  .workshop-contribute-note {
+    font-size: 11px;
+    line-height: 1.8;
+  }
+  .workshop-contribute-note a {
+    display: flex;
+    width: fit-content;
+    margin: 13px 0 0;
+  }
+  .card-preview-image {
+    width: calc(100% + 44px);
+    margin: -22px -22px 22px;
+  }
+  .results > .project-grid > .project-card:only-child .card-preview-image {
+    height: 180px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .button,
+  .project-card,
+  .sculpture-mark,
+  .workshop-categories > a,
+  .preview-expand {
+    transition: none;
+  }
+  .button:hover,
+  .project-card:hover,
+  .workshop-brand-art:hover .sculpture-mark,
+  .workshop-categories > a:hover,
+  .preview-expand:hover {
+    transform: none;
+  }
+}

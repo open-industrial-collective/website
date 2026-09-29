@@ -1,0 +1,47 @@
+name: Submit a project
+description: Request a repository-owned OIC listing.
+title: "Listing: "
+body:
+  - type: markdown
+    attributes:
+      value: "Keep your profile in `.oic/project.yaml`. The listed edition must be free; paid host requirements must be disclosed. Do not include credentials or plant data."
+  - type: input
+    id: project
+    attributes:
+      label: Project name and listing ID
+    validations:
+      required: true
+  - type: input
+    id: repository
+    attributes:
+      label: Public profile repository URL
+      description: This can be a listing-only repository. Your software source can remain private.
+    validations:
+      required: true
+  - type: input
+    id: path
+    attributes:
+      label: Manifest path and branch
+      value: .oic/project.yaml on main
+    validations:
+      required: true
+  - type: textarea
+    id: relationship
+    attributes:
+      label: Your relationship to this project
+      description: Tell us which GitHub account controls the profile and how ownership can be confirmed. Curated suggestions are attributed separately.
+    validations:
+      required: true
+  - type: checkboxes
+    id: permission
+    attributes:
+      label: Listing permissions
+      options:
+        - label: I have permission to submit this listing and its media, and authorize OIC to display, resize and cache them for the listing. This does not change the software's license.
+          required: true
+        - label: The listed edition is free, and the profile discloses required accounts, platforms, costs and usage limits.
+          required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Anything a reviewer should know?

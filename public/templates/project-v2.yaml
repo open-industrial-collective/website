@@ -1,0 +1,91 @@
+# Save as .oic/project.yaml. Supported v2 profile; all paths are relative to this file.
+# Fictional project, publisher, files and URLs; replace with real authorized content.
+schema: oic/project/v2
+id: example-process-viewer
+name: Example Process Viewer
+summary: Explore a process diagram and inspect simulated equipment readings.
+category: Visualization
+tags: [Process visualization, Simulation]
+platforms: [Web browser]
+publisher:
+  name: Example Tools Collective
+  url: https://example.org
+
+description:
+  text: >-
+    A free browser viewer for learning how a process fits together.
+    Explore the sample diagram, select equipment, and inspect synthetic readings.
+  # Alternatively: file: ./overview.md (text and file are mutually exclusive)
+
+source:
+  availability: closed-source
+  # Public listing-repo location is registered by OIC, not a source-code claim.
+license:
+  name: Example free browser preview terms
+  url: https://example.org/terms
+  # spdx_expression: MIT  # only when those are the actual software terms
+access:
+  edition: Browser preview
+  cost: free
+  account_required: false
+  notes: Free for evaluation and learning, without an account or time limit. Synthetic data only.
+requirements: [] # Explicitly no additional dependencies for this listed browser preview.
+# Example requirement for another tool:
+# - name: Required host platform
+#   kind: software
+#   cost: paid
+#   version: ">=8.1"
+#   applies_to: [install]
+#   notes: The listed extension is free; its host platform requires a separate license.
+#   url: https://example.org/host
+
+actions:
+  - id: demo
+    type: demo
+    url: https://example.org/demo
+    primary: true
+links:
+  docs: https://example.org/docs
+  wiki: https://example.org/wiki
+  issues: https://example.org/issues
+  discussions: https://example.org/community
+  changelog: https://example.org/releases
+  support: https://example.org/support
+
+branding:
+  logo:
+    on_light: ./media/logo-on-light.png
+    on_dark: ./media/logo-on-dark.png
+    alt: Example Process Viewer
+media:
+  - id: process
+    type: image
+    src: ./media/overview.webp
+    alt: Process diagram showing a tank, pump and heat exchanger with simulated readings.
+    caption: Sample scene with synthetic data; no plant connection.
+    credit: Example Tools Collective
+  - id: setup
+    type: image
+    src: ./media/setup.webp
+    alt: Setup screen with a local sample scene selected.
+    caption: Choose a sample scene to begin.
+  - id: walkthrough
+    type: video
+    url: https://example.org/videos/walkthrough
+    poster: ./media/walkthrough-poster.webp
+    title: A short tour of the viewer
+    transcript: https://example.org/videos/walkthrough-transcript
+
+faq:
+  - question: Does this connect to my plant?
+    answer: No. This listed preview uses synthetic data only.
+  - question: Do I need an account?
+    answer: No. Open the browser preview to try the included scene.
+lifecycle:
+  stage: preview
+  maintenance: active
+release:
+  version: "0.1.0"
+  url: https://example.org/releases/0.1.0
+  date: "2026-09-28"
+visibility: listed

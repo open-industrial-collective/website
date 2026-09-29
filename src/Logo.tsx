@@ -1,0 +1,17 @@
+export function OicMark({ className = "" }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 64 64"
+      fill="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
+      <path
+        fillRule="evenodd"
+        d="M18 2h28l16 16v28L46 62H18L2 46V18Zm3 8L10 21v22l11 11h22l11-11V21L43 10Z"
+      />
+      <path d="M17 22h7v20h-7ZM47 20h-9l-9 9v6l9 9h9v-7h-7l-4-4v-2l4-4h7Z" />
+    </svg>
+  );
+}

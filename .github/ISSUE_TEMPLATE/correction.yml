@@ -1,0 +1,17 @@
+name: Correct or withdraw a listing
+description: Report outdated information, broken links or a listing that should be removed.
+title: "Listing correction: "
+body:
+  - type: input
+    id: listing
+    attributes:
+      label: Listing URL or ID
+    validations:
+      required: true
+  - type: textarea
+    id: correction
+    attributes:
+      label: What should change?
+      description: Include supporting public links. Withdrawal requests must be confirmed with the registered controller.
+    validations:
+      required: true

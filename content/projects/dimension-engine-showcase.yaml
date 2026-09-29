@@ -1,0 +1,107 @@
+schema: oic/project/v2
+id: dimension-engine-showcase
+name: Dimension Engine Showcase
+summary: Explore industrial 3D scenes and play a WebGPU factory platformer for free.
+category: Visualization
+tags:
+  - Ignition
+  - WebGPU
+  - 3D
+  - Process visualization
+  - Interactive training
+platforms:
+  - Web browser
+publisher:
+  name: Grindstone Systems
+  url: https://dimension-engine-showcase.vercel.app/
+description:
+  file: ./overview.md
+branding:
+  logo:
+    on_light: ./media/logo.png
+    alt: Dimension Engine logo
+media:
+  - id: spatial
+    type: image
+    src: ./media/spatial.jpg
+    title: Spatial view
+    alt: "Dimension Engine's spatial view: a synthetic process skid with equipment
+      markers and simulated pump readings."
+    caption: Synthetic demo data · No plant connection
+    credit: Grindstone Systems
+    rights: Provided for the OIC project listing.
+  - id: process
+    type: image
+    src: ./media/process.jpg
+    title: Process view
+    alt: "Dimension Engine's process view: a heat recovery schematic with
+      circulation pumps, a vessel and a heat exchanger."
+    caption: Synthetic demo data · No plant connection
+    credit: Grindstone Systems
+    rights: Provided for the OIC project listing.
+source:
+  availability: closed-source
+license:
+  name: Free browser preview terms
+  url: https://dimension-engine-showcase.vercel.app/DEMO_TERMS.txt
+access:
+  edition: Browser preview
+  cost: free
+  notes: The hosted browser preview is free to use for evaluation and learning,
+    with no account or time limit. It uses synthetic or reference data and has
+    no Gateway save or plant connection. Running the separate local Ignition
+    version requires Perspective and WebDev trial time or licenses. No native
+    module is available yet.
+  account_required: false
+requirements:
+  - name: Modern desktop browser
+    kind: software
+    cost: free
+    notes: The hosted preview uses synthetic or reference data. WebGPU features
+      require a compatible browser and GPU.
+  - name: Keyboard or gamepad
+    kind: hardware
+    cost: unknown
+    notes: Required for the factory platformer. Touch controls are not included.
+    applies_to:
+      - play
+  - name: Ignition Perspective and WebDev
+    kind: software
+    cost: optional-paid
+    notes: Only needed for the separate local Ignition edition. Trial time or
+      separate licenses are required; neither is needed for the hosted browser
+      preview.
+actions:
+  - id: preview
+    type: demo
+    url: https://dimension-engine-showcase.vercel.app/
+    primary: true
+    label: Open browser preview
+    description: Open the free hosted preview. It uses reference data and does not
+      connect to a plant.
+  - id: play
+    type: demo
+    url: https://dimension-engine-showcase.vercel.app/#play
+    primary: false
+    label: Play Super Maintenance Bros.
+links:
+  homepage: https://dimension-engine-showcase.vercel.app/
+  docs: https://dimension-engine-showcase.vercel.app/#about
+faq:
+  - question: Does the hosted preview connect to a plant?
+    answer: No. The browser preview uses synthetic or reference data. No plant or
+      Ignition Gateway is connected.
+  - question: Can I download a native Ignition module?
+    answer: Not yet. This is an interactive development preview; a native Dimension
+      Engine module is not available yet.
+  - question: What is Super Maintenance Bros.?
+    answer: A 2D platformer in a procedural 3D factory. Cross conveyors, power the
+      lift, dodge presses and restore the line. Try “Watch a shift” for a guided
+      run, or use WASD, Space and E to play. Includes cinematic camera movement,
+      GPU effects, quiet sound and a hideable FPS counter. “Behind the game”
+      explains its rendering and state. The separate local Ignition edition
+      connects to synthetic Gateway tags and a native Perspective dashboard.
+lifecycle:
+  stage: preview
+  maintenance: active
+visibility: listed

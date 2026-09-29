@@ -1,0 +1,23 @@
+# Save as .oic/project.yaml in your project, or <id>.yaml in the OIC catalog.
+# This describes a listing, not a certification or automated grade.
+schema: oic/project/v1
+id: your-project
+name: Your project
+summary: Describe what someone can do with your tool in one sentence.
+description: Explain the problem it solves, who it helps, and what they need to run it.
+category: Engineering
+tags: [Tool, Industrial]
+platforms: [Windows]
+# open-source | source-available | closed-source
+source: closed-source
+license: Your free-use license
+license_url: https://example.org/terms
+cost: free
+# no-paid-required | paid-platform-required | see-terms
+software_requirements: see-terms
+cost_notes: Describe what is free, permitted uses, limits, and any account, paid platform license, hardware, hosting or support requirements.
+homepage: https://example.org
+get_started: https://example.org/download
+maintainer: Your public name or organization
+# repository: https://github.com/your-name/your-project
+# documentation: https://example.org/docs
