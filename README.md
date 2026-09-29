@@ -1,12 +1,12 @@
 # Open Industrial Collective
 
-[Live website](https://openindustrialcollective.org) · [Submit a listing](https://github.com/open-industrial-collective/website/issues/new?template=listing.yml) · [Report a correction](https://github.com/open-industrial-collective/website/issues/new?template=correction.yml)
+[Live website](https://openindustrialcollective.org) · [Offer a contribution](https://github.com/open-industrial-collective/website/issues/new?template=participation.yml) · [Submit a listing](https://github.com/open-industrial-collective/website/issues/new?template=listing.yml) · [Report a correction](https://github.com/open-industrial-collective/website/issues/new?template=correction.yml)
 
 Free industrial tool discovery. React + Vite, static at runtime. This public repository contains the website, profile standard, approved listing snapshots and review workflow. Application source belongs to each project and may remain private. The four curated examples are attributed to their actual creators and are not maintainer submissions.
 
 ## People and participation
 
-The `/community` page explains how to participate and shows a small reviewed stewardship roster from `src/people.ts`. It currently lists Grindstone Systems as founding initiator. GitHub organization membership is private by default and is never imported into the public page. Add an individual only after they accept a scoped role and separately approve the displayed fields; keep the consent record outside the published bundle. The prepared `Offer a contribution` Issue template is a public first-step invitation, not an application for organization access. Link to it only after this repository has content, the template works and someone accepts triage responsibility. See the private coordination handbook's `docs/governance/MEMBERSHIP_AND_STEWARDSHIP.md` for the full working model.
+The `/community` page explains how to participate and shows a small reviewed stewardship roster from `src/people.ts`. It currently lists Grindstone Systems as founding initiator. GitHub organization membership is private by default and is never imported into the public page. Add an individual only after they accept a scoped role and separately approve the displayed fields; keep the consent record outside the published bundle. The live `Offer a contribution` Issue template is a public first-step invitation, not an application for organization access. OIC is still founder-led and does not promise a response time. See the private coordination handbook's `docs/governance/MEMBERSHIP_AND_STEWARDSHIP.md` for the full working model.
 
 ## Run
 
