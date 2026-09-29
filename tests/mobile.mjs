@@ -102,7 +102,7 @@ for (const engine of engines) {
     page.getByRole("link", { name: "MQTT Explorer", exact: true }),
   ).toBeVisible();
   await page.getByRole("button", { name: "Reset filters" }).tap();
-  await expect(page.getByRole("status")).toHaveText("1 project · 4 examples");
+  await expect(page.getByRole("status")).toHaveText("2 projects · 4 examples");
   await page
     .getByRole("searchbox", { name: "Search catalog" })
     .fill("no-such-tool");
