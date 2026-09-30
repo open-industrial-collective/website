@@ -33,7 +33,7 @@ Required: identity, publisher, description, category/tags/platforms, source avai
 
 The editor runs the same offline Charter preflight as the publication build. Known placeholder, local and IP-only link destinations block publication. Missing publisher checksums for fixed downloads, mutable container tags, account-gated access and unclear documentation are review prompts. A clean preflight never approves or publishes a listing, and it cannot verify the contents of a linked artifact.
 
-Optional: light/dark logos, ordered screenshots and external videos, captions/credits/rights, FAQs, documentation/wiki/support/issues/discussions/changelog links, and a release. No arbitrary page styling. Empty sections are hidden. `actions[].label` and `description` support useful project-specific calls to action without special page code.
+Optional: light/dark logos, ordered screenshots, GIF motion previews and external videos, captions/credits/rights, FAQs, documentation/wiki/support/issues/discussions/changelog links, and a release. No arbitrary page styling. Empty sections are hidden. `actions[].label` and `description` support useful project-specific calls to action without special page code.
 
 ### Files and resources
 
@@ -47,9 +47,9 @@ Descriptions use `{text: ...}` or `{file: ./overview.md}`. Markdown supports par
 
 - YAML: 64 KB, unique keys, no aliases or custom tags; supported keys only.
 - Overview file: 20 KB. Up to 10 FAQs and 8 media entries.
-- Static PNG/JPEG/WebP only: 2 MB per file, 12 megapixels, 20 MB total referenced input.
+- PNG/JPEG/WebP screenshots and GIF motion previews: 2 MB input per file, 20 MB total referenced input. Static images are limited to 12 megapixels; GIFs to 2 megapixels per frame, 24 megapixels total decoded, 60 frames, 20 seconds and 6 MB after conversion. Logos and video posters remain static images.
 - Paths stay beneath the manifest directory at one pinned commit. No remote includes, path traversal, symlinks or submodules.
-- Imported images are decoded, stripped of metadata, converted to WebP and stored under content hashes. Runtime pages never hotlink contributor images.
+- Imported images are decoded, stripped of metadata, converted to WebP and stored under content hashes. GIFs become animated WebP plus a still preview. The still appears in Explore and gallery thumbnails; visitors choose when to play the animation. Runtime pages never hotlink contributor images.
 - HTTPS links without credentials. License and source availability are separate; a free edition is not necessarily open source.
 
 ## Submit and update

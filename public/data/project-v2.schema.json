@@ -158,7 +158,7 @@
               },
               "src": {
                 "type": "string",
-                "pattern": "^\\./(?:[A-Za-z0-9_-]+/)*[A-Za-z0-9_-]+\\.(?:png|jpg|jpeg|webp)$",
+                "pattern": "^\\./(?:[A-Za-z0-9_-]+/)*[A-Za-z0-9_-]+\\.(?:png|jpg|jpeg|webp|gif)$",
                 "maxLength": 240
               },
               "alt": {

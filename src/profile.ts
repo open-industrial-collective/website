@@ -6,6 +6,8 @@ export type Media =
       id: string;
       type: "image";
       src: string;
+      /** Generated still preview for an imported animated GIF; never authored. */
+      poster?: string;
       alt: string;
       title?: string;
       caption?: string;
@@ -171,8 +173,8 @@ export function parseProfile(text: string): {
       if (!path.startsWith("./") || path.split("/").includes(".."))
         errors.push("Files must stay inside the manifest directory.");
     for (const m of p.media || [])
-      if (m.type === "image" && !/\.(png|jpe?g|webp)$/.test(m.src))
-        errors.push("Images must be PNG, JPEG or WebP.");
+      if (m.type === "image" && !/\.(png|jpe?g|webp|gif)$/.test(m.src))
+        errors.push("Images must be PNG, JPEG, WebP or GIF.");
     if ("file" in p.description && !p.description.file.endsWith(".md"))
       errors.push("Description files must be Markdown.");
     return errors.length ? { errors } : { project: p, errors: [] };
@@ -210,7 +212,7 @@ export function normalizeProfile(
   display.media = (display.media || []).flatMap<Media>((m) =>
     m.type === "image"
       ? files[m.src]
-        ? [{ ...m, src: files[m.src] }]
+        ? [{ ...m, src: files[m.src], ...(files[`${m.src}#poster`] ? { poster: files[`${m.src}#poster`] } : {}) }]
         : []
       : [{ ...m, poster: m.poster ? files[m.poster] : undefined }],
   );

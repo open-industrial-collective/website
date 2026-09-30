@@ -553,7 +553,7 @@ function ProjectCard({
           className="card-preview-image"
           src={
             p.profile!.media![0].type === "image"
-              ? p.profile!.media![0].src
+              ? p.profile!.media![0].poster || p.profile!.media![0].src
               : ""
           }
           alt={

@@ -10,6 +10,7 @@ export function ShowcasePreview({
   priority?: boolean;
 }) {
   const [selected, setSelected] = useState(0);
+  const [playing, setPlaying] = useState(false);
   const dialog = useRef<HTMLDialogElement>(null);
   const touchStart = useRef<number | null>(null);
   const id = useId();
@@ -17,8 +18,10 @@ export function ShowcasePreview({
   const view = media[selected] || media[0];
   if (!view) return null;
   const title = view.title || (view.type === "image" ? view.alt : "Video");
-  const go = (direction: number) =>
+  const go = (direction: number) => {
+    setPlaying(false);
     setSelected((current) => (current + direction + count) % count);
+  };
   const navigation = (compact = false) =>
     count > 1 && (
       <div
@@ -73,7 +76,7 @@ export function ShowcasePreview({
             item.type === "image" ? (
               <img
                 key={item.id}
-                src={item.src}
+                src={item.poster && (index !== selected || !playing) ? item.poster : item.src}
                 alt={item.alt}
                 hidden={index !== selected}
                 loading={priority && index === 0 ? "eager" : "lazy"}
@@ -101,6 +104,11 @@ export function ShowcasePreview({
             </span>
           )}
           {navigation()}
+          {view.type === "image" && view.poster && (
+            <button type="button" className="gallery-motion" aria-pressed={playing} onClick={() => setPlaying(!playing)}>
+              <Play size={15} fill="currentColor" /> {playing ? "Pause GIF" : "Play GIF"}
+            </button>
+          )}
           {view.type === "image" && (
             <button
               type="button"
@@ -145,10 +153,10 @@ export function ShowcasePreview({
                 }
                 aria-pressed={index === selected}
                 aria-controls={id}
-                onClick={() => setSelected(index)}
+                onClick={() => { setPlaying(false); setSelected(index); }}
               >
                 {item.type === "image" ? (
-                  <img src={item.src} alt="" loading="lazy" />
+                  <img src={item.poster || item.src} alt="" loading="lazy" />
                 ) : item.poster ? (
                   <img src={item.poster} alt="" loading="lazy" />
                 ) : (
@@ -203,7 +211,7 @@ export function ShowcasePreview({
           </button>
         </div>
         {view.type === "image" ? (
-          <img src={view.src} alt={`Expanded ${view.alt}`} />
+          <img src={view.poster && !playing ? view.poster : view.src} alt={`Expanded ${view.alt}`} />
         ) : (
           <a
             className="gallery-dialog-video"

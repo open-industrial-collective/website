@@ -494,3 +494,22 @@
     transition: none;
   }
 }
+.gallery .showcase-screen .gallery-motion {
+  position: absolute;
+  z-index: 2;
+  top: 14px;
+  right: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 8px 12px;
+  border: 1px solid #ffffff75;
+  border-radius: 100px;
+  background: #18292cde;
+  color: white;
+  font-size: 12px;
+  font-weight: 650;
+  cursor: pointer;
+}
+.gallery .showcase-screen .gallery-motion:hover { background: #a74b32; }

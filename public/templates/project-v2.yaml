@@ -102,6 +102,13 @@ media:
     src: ./media/setup.webp
     alt: Setup screen with a local sample scene selected.
     caption: Choose a sample scene to begin.
+  # A short GIF is also type: image. OIC creates an animated WebP and a still preview.
+  # - id: quick-tour
+  #   type: image
+  #   src: ./media/quick-tour.gif
+  #   alt: Cursor opening a sample process diagram and selecting a pump.
+  #   title: One-minute workflow
+  #   caption: Synthetic sample data; animation plays only when selected.
   - id: walkthrough
     type: video
     url: https://example.org/videos/walkthrough
