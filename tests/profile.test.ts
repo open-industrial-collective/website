@@ -271,6 +271,33 @@ test("oversized files and unsupported image formats are rejected before publishi
     ),
   );
 });
+test("reviewed GIF becomes a still preview and a bounded animated asset", async () => {
+  const p = minimal();
+  p.media = [{ id: "motion", type: "image", src: "./motion.gif", alt: "A short synthetic workflow" }];
+  const gif = Buffer.from("R0lGODlhAgACAPAAAP8AAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh+QQAAAAAACwAAAAAAgACAAACAoRRACH5BAAAAAAALAAAAAACAAIAgAAA/wAAAAIChFEAOw==", "base64");
+  const snapshot = await createSnapshot("a".repeat(40), ".oic/project.yaml", async (path) =>
+    path.endsWith(".yaml") ? Buffer.from(stringify(p)) : gif,
+  );
+  assert.equal(snapshot.files["./motion.gif"].kind, "animation");
+  const media = renderSnapshot(snapshot).profile?.media?.[0];
+  assert.equal(media?.type, "image");
+  if (media?.type === "image") {
+    assert.match(media.src, /\.webp$/);
+    assert.match(media.poster || "", /\.webp$/);
+    assert.notEqual(media.src, media.poster);
+    const { createElement } = await import("react");
+    const { renderToStaticMarkup } = await import("react-dom/server");
+    const { ShowcasePreview } = await import("../src/ShowcasePreview.tsx");
+    const html = renderToStaticMarkup(createElement(ShowcasePreview, { media: [media] }));
+    assert.match(html, /Play GIF/);
+    assert.ok(html.includes(media.poster!));
+  }
+  const tampered = structuredClone(snapshot);
+  tampered.files["./motion.gif"].poster = Buffer.from("bad").toString("base64");
+  tampered.digest = (await import("../scripts/profile-snapshot.ts")).digest(JSON.stringify({ manifest: tampered.manifest, files: tampered.files }));
+  assert.throws(() => renderSnapshot(tampered), /Poster digest mismatch/);
+  assert.ok(parseProfile(stringify({ ...p, branding: { logo: { on_light: "./logo.gif", alt: "Logo" } } })).errors.length);
+});
 
 test("generic React renderer displays a second project and suppresses HTML and unsafe Markdown links", async () => {
   const { createElement } = await import("react");

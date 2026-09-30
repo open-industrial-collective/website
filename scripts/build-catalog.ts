@@ -57,11 +57,17 @@ for (const filename of (await readdir(resolve(root, "content/projects")))
       };
     await mkdir(resolve(root, "public/images/projects"), { recursive: true });
     for (const file of Object.values(snapshot.files))
-      if (file.kind === "image")
+      if (file.kind === "image" || file.kind === "animation") {
         await writeFile(
           resolve(root, `public/images/projects/${file.digest}.webp`),
           Buffer.from(file.content, "base64"),
         );
+        if (file.kind === "animation" && file.poster && file.posterDigest)
+          await writeFile(
+            resolve(root, `public/images/projects/${file.posterDigest}.webp`),
+            Buffer.from(file.poster, "base64"),
+          );
+      }
   } catch (error) {
     if (
       (error as NodeJS.ErrnoException).code !== "ENOENT" ||

@@ -16,7 +16,7 @@ export type Snapshot = {
   digest: string;
   files: Record<
     string,
-    { digest: string; content: string; kind: "image" | "text" }
+    { digest: string; content: string; kind: "image" | "animation" | "text"; poster?: string; posterDigest?: string }
   >;
 };
 export async function createSnapshot(
@@ -54,16 +54,27 @@ export async function createSnapshot(
           kind: "text",
         };
       else {
+        const animated = name.toLowerCase().endsWith(".gif");
         const image = sharp(data, {
           limitInputPixels: 12000000,
-          animated: false,
+          animated,
         });
         const metadata = await image.metadata();
-        if (
-          !["png", "jpeg", "webp"].includes(metadata.format || "") ||
-          (metadata.pages || 1) > 1
-        )
-          throw Error("Only static PNG, JPEG and WebP images are supported.");
+        if (animated) {
+          const duration = (metadata.delay || []).reduce((sum, delay) => sum + delay, 0);
+          if (metadata.format !== "gif" || (metadata.pages || 1) > 60 ||
+              (metadata.width || 0) * (metadata.pageHeight || metadata.height || 0) > 2000000 ||
+              (metadata.width || 0) * (metadata.pageHeight || metadata.height || 0) * (metadata.pages || 1) > 24000000 ||
+              duration > 20000)
+            throw Error("GIFs must be 60 frames or fewer, at most 2 MP per frame, 24 MP total decoded and 20 seconds long.");
+          const clean = await image.webp({ quality: 75, effort: 4, loop: 0 }).toBuffer();
+          if (clean.length > 6 * 1024 * 1024) throw Error("Converted GIF exceeds 6 MB.");
+          const poster = await sharp(data, { page: 0, limitInputPixels: 2000000 }).webp({ quality: 82 }).toBuffer();
+          files[name] = { digest: digest(clean), content: clean.toString("base64"), kind: "animation", poster: poster.toString("base64"), posterDigest: digest(poster) };
+          continue;
+        }
+        if (!["png", "jpeg", "webp"].includes(metadata.format || "") || (metadata.pages || 1) > 1)
+          throw Error("Only static PNG, JPEG and WebP images or GIF animations are supported.");
         const clean = await image.rotate().webp({ quality: 88 }).toBuffer();
         files[name] = {
           digest: digest(clean),
@@ -119,6 +130,11 @@ export function renderSnapshot(snapshot: Snapshot) {
       ) !== f.digest
     )
       throw Error(`Asset digest mismatch: ${path}`);
+    if (f.kind === "animation") {
+      if (!f.poster || !f.posterDigest || digest(Buffer.from(f.poster, "base64")) !== f.posterDigest)
+        throw Error(`Poster digest mismatch: ${path}`);
+      resolved[`${path}#poster`] = `/images/projects/${f.posterDigest}.webp`;
+    }
     resolved[path] =
       f.kind === "text" ? f.content : `/images/projects/${f.digest}.webp`;
   }

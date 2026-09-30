@@ -267,7 +267,7 @@ await page.getByRole("textbox", { name: "Format (optional)" }).fill(".modl");
 await page.locator(".media-editor > summary").click();
 await page.getByRole("button", { name: "Add screenshot" }).click();
 await page
-  .getByRole("textbox", { name: "Image file path" })
+  .getByRole("textbox", { name: "Image or GIF file path" })
   .last()
   .fill("./media/screenshot.jpg");
 await page
