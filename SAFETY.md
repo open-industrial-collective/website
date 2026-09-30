@@ -4,7 +4,7 @@ OIC is a discovery catalog. Listing review checks the description, free access, 
 
 For any industrial environment, have the site's authorized engineering, OT security and safety owners review the exact version and its publisher documentation. First test in an isolated, nonproduction environment using synthetic or approved data. Check network behavior, privileges, dependencies, update and rollback steps, logging, data handling, and effects on availability and control. Follow the site's change-control, backup and incident procedures before any production connection. Keep independent safety functions and human oversight in place.
 
-Do not use an OIC listing or evaluation result as the sole basis for a safety function, control action, protective interlock or production decision. Some listed projects may be previews with no production support. Read the project page and the publisher's own terms for permitted use, support and security-update commitments. A free edition does not include a promise of maintenance from OIC or Grindstone Systems.
+Do not use an OIC listing or evaluation result as the sole basis for a safety function, control action, protective interlock or production decision. Some listed projects may be previews with no production support. Read the project page and the publisher's own terms for permitted use, support and security-update commitments. A free listing alone does not create a maintenance promise by OIC or Grindstone Systems.
 
 ## Grounded in public guidance
 
@@ -22,4 +22,4 @@ Each tool's publisher sets its software terms and support policy. OIC's listing 
 
 For a broken link, inaccurate claim or outdated terms, use the [public correction form](https://github.com/open-industrial-collective/website/issues/new?template=correction.yml). Do not put exploit details, credentials, personal information or plant data in a public issue.
 
-For a suspected malicious destination, a vulnerability in the OIC website, or sensitive evidence about a listing, use the [private OIC security report](https://github.com/open-industrial-collective/website/security/advisories/new). For a vulnerability in a linked product, report it to that product's publisher through its security channel. You may separately alert OIC privately if the listing should be corrected or temporarily removed. OIC cannot patch software it does not maintain.
+For a suspected malicious destination, a vulnerability in the OIC website, or sensitive evidence about a listing, use the [private OIC security report](https://github.com/open-industrial-collective/website/security/advisories/new). For a vulnerability in a linked product, report it to that product's publisher through its security channel. You may separately alert OIC privately if the listing should be corrected or temporarily removed. OIC does not promise patches for software published by others.
