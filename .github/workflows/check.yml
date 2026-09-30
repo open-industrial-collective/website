@@ -24,3 +24,16 @@ jobs:
           curl --retry 10 --retry-connrefused --retry-delay 1 --fail --silent http://127.0.0.1:4173/ > /dev/null
           node tests/mobile.mjs
           node tests/explore.mjs
+  profile-check-action:
+    # The publisher-side Action, run the way a listing repository would run it.
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: open-industrial-collective/dimension-engine-listing
+          path: publisher
+      - uses: ./profile-check
+        with:
+          directory: ${{ github.workspace }}/publisher

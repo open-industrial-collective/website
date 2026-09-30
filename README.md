@@ -37,6 +37,28 @@ The editor runs the same offline Charter preflight as the publication build. Kno
 
 Optional: light/dark logos, ordered screenshots, GIF motion previews and external videos, captions/credits/rights, FAQs, documentation/wiki/support/issues/discussions/changelog links, and a release. No arbitrary page styling. Empty sections are hidden. `actions[].label` and `description` support useful project-specific calls to action without special page code.
 
+### Check before you submit
+
+The profile check runs the importer and Charter preflight that review uses against your own checkout: schema, declared files, image and GIF limits, and destinations. It reads files only and fetches nothing. Blocking findings exit non-zero; review prompts are printed but pass unless you ask for `--strict`. Like the preflight, a clean check never approves or publishes a listing.
+
+In your repository's CI:
+
+```yaml
+- uses: actions/checkout@v4
+- uses: open-industrial-collective/website/profile-check@main
+  # with: { path: .oic/project.yaml, strict: "true" }
+```
+
+Locally, from a checkout of this repository (Node 22.13 or newer):
+
+```sh
+npm ci
+npm run profile:check -- ../your-repo            # the working tree; flags files that aren't committed yet
+npm run profile:check -- ../your-repo --ref HEAD # exactly what OIC would import from that commit
+```
+
+With `--ref`, the digest it prints is the one a reviewer's `fetch` produces for the same commit.
+
 ### Files and resources
 
 Use optional `resources[]` for the actual things a visitor can obtain: a source repository, release asset (`.zip`, `.modl`, etc.), container image, or document. Each resource has a title, HTTPS destination and access status; optional fields cover description, format, version, setup requirements, a file's SHA-256 checksum, and a container image reference. A resource uses the project license unless `resources[].license` supplies distinct terms. Add a separate resource for every materially different package or rights set. A public repository is not automatically an open-source claim; the `source.availability` field and actual terms still govern that label.
