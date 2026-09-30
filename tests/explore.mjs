@@ -1,6 +1,6 @@
 import { chromium, expect } from "@playwright/test";
 import assert from "node:assert/strict";
-import { catalog, countLabel } from "./catalog-counts.mjs";
+import { catalog, countLabel, showResultsLabel } from "./catalog-counts.mjs";
 const base = process.env.OIC_BASE_URL || "http://127.0.0.1:4173";
 const browser = await chromium.launch({
   channel: process.env.CI ? undefined : "chrome",
@@ -67,7 +67,12 @@ await page
   .getByRole("dialog")
   .getByRole("checkbox", { name: "Open source", exact: false })
   .check();
-await page.getByRole("button", { name: "Show 1 result", exact: true }).click();
+await page
+  .getByRole("button", {
+    name: showResultsLabel((p) => p.source === "open-source"),
+    exact: true,
+  })
+  .click();
 await expect(
   page.getByRole("button", { name: "Filters 1", exact: true }),
 ).toBeFocused();
