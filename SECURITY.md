@@ -4,6 +4,6 @@ Use [GitHub's private vulnerability report](https://github.com/open-industrial-c
 
 Public [correction issues](https://github.com/open-industrial-collective/website/issues/new?template=correction.yml) are for nonsensitive factual errors and broken links. Do not publish exploit steps there.
 
-The OIC website repository is a catalog and frontend, not the source repository for every listed product. Report a product vulnerability to its publisher. If the catalog points to an unsafe release or destination, also notify OIC privately so the link or listing can be reviewed. OIC may suspend a link or withdraw a listing while investigating. No response or remediation time is promised until a staffed process is established.
+The OIC website repository is a catalog and frontend, not the source repository for every listed product. Report a product vulnerability to its publisher. Until a separate product route is published, this private OIC channel also receives reports about the Grindstone-owned Dimension Engine Showcase browser preview. If the catalog points to an unsafe release or destination, notify OIC privately so the link or listing can be reviewed. OIC may suspend a link or withdraw a listing while investigating. No response or remediation time is promised until a staffed process is established.
 
 See the [public use and safety boundary](https://openindustrialcollective.org/safety).
