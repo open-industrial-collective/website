@@ -998,7 +998,7 @@
     "id": "visual-toolkit",
     "name": "Visual Toolkit",
     "summary": "Generate state-aware industrial symbols and stylised 3D equipment from parameters, connect them into skids, then export SVG, smart SVG or glTF.",
-    "description": "Visual Toolkit creates industrial equipment graphics from parameters instead of from a fixed library. Choose from eleven families (pump, valve, motor, tank, conveyor, heat exchanger, blower, compressor, static mixer, instrument and pipe fitting) and shape it: discharge direction, driver, actuator, heads, length, level, detail. Every symbol follows the same visual language and has seven designed operating states.\n\n## What you can make\n\n- **2D symbols** in three styles (modern, high-performance, outline) and light or dark themes. Every abnormal state has a shape-coded badge, so status never depends on colour alone.\n- **Smart SVGs.** One file holds every state. A host page switches it by setting `data-vt-state`, and a tank's level follows `--vt-level`. No runtime library is needed.\n- **Stylised 3D models** from the same parameters, exported as standard glTF (`.glb`) with the same part names and states. The 3D view has cutaways, an exploded view, moving product, rippling liquid, and Studio, Plant floor and Night environments.\n- **Skids and mimics.** Place equipment, connect ports, and pipes route themselves. The same scene shows as a 2D mimic or a 3D layout with flowing pipes, and a built-in HMI review checks shape coding, contrast, motion, tags and layout.\n\n## Exports\n\n- Plain SVG and PNG\n- Smart SVG\n- An Ignition kit (one SVG per state, starter metadata and a guide), a Perspective icon repository, a Drawing-ready SVG and theme CSS\n- Siemens WinCC Unified and Rockwell FactoryTalk Optix kits (not yet tested on those platforms)\n- Scene exports: mimic SVG, `.vt-scene.json` and a 3D scene kit\n- `.vt.json` object files\n- `.glb` 3D models\n\n## Sharing\n\nA design is a recipe of about 150 characters. The address bar is always a share link, and exported SVGs reopen in the builder. Scenes share the same way. Packs bundle designs, and a pull-request gallery collects community designs.\n\n## Where it fits\n\nVisual Toolkit creates assets. It does not replace Ignition's Symbol Factory or Perspective Symbols, and it owns no tags, bindings or alarming. On an Ignition 8.3.9 gateway, images, tag-driven state sets, the icon repository and the Drawing component were verified. The guide lists what failed and what is untested.\n\n## Good to know\n\nEverything runs in your browser as a static site, with no account and no server. The code is open source under Apache-2.0.\n",
+    "description": "Visual Toolkit creates industrial equipment graphics from parameters instead of from a fixed library. Choose from eleven families (pump, valve, motor, tank, conveyor, heat exchanger, blower, compressor, static mixer, instrument and pipe fitting) and shape it: discharge direction, driver, actuator, heads, length, level, detail. Every symbol follows the same visual language and has seven designed operating states.\n\n## What you can make\n\n- **2D symbols** in three styles (modern, high-performance, outline) and light or dark themes. Every abnormal state has a shape-coded badge, so status never depends on colour alone.\n- **Smart SVGs.** One file holds every state. A host page switches it by setting `data-vt-state`, and a tank's level follows `--vt-level`. No runtime library is needed.\n- **Stylised 3D models** from the same parameters, exported as standard glTF (`.glb`) with the same part names and states. The 3D view has cutaways, an exploded view, moving product, rippling liquid, and Studio, Plant floor and Night environments.\n- **Skids.** Place equipment, connect ports, and pipes route themselves. The same skid shows in 2D or in 3D with flowing pipes, and a built-in HMI review checks shape coding, contrast, motion, tags and layout.\n\n## Exports\n\n- Plain SVG and PNG\n- Smart SVG\n- An Ignition kit (one SVG per state, starter metadata and a guide), a Perspective icon repository, a Drawing-ready SVG and theme CSS\n- Siemens WinCC Unified and Rockwell FactoryTalk Optix kits (not yet tested on those platforms)\n- Skid exports: SVG, PNG, `.vt-scene.json`, a 3D scene kit and an **Ignition project**: a Perspective view whose equipment and pipes change state with demo memory tags\n- `.vt.json` object files\n- `.glb` 3D models\n\n## Sharing\n\nA design is a recipe of about 150 characters. The address bar is always a share link, and exported SVGs reopen in the builder. Scenes share the same way. Packs bundle designs, and a pull-request gallery collects community designs.\n\n## Where it fits\n\nVisual Toolkit creates assets. It does not replace Ignition's Symbol Factory or Perspective Symbols, and it owns no alarming. Wiring to real equipment stays in Ignition. The sample project's memory tags are only for the demo. On an Ignition 8.3.9 gateway, images, tag-driven state sets, the icon repository (colour and mono), the Drawing component, the theme stylesheet and the sample project (installed on the file system) were verified. The guide lists what failed and what is untested.\n\n## Good to know\n\nEverything runs in your browser as a static site, with no account and no server. The code is open source under Apache-2.0.\n",
     "category": "Visualization",
     "tags": [
       "Symbols",
@@ -1061,10 +1061,10 @@
         {
           "id": "skid-composer-3d",
           "type": "image",
-          "src": "/images/projects/fc024e42ad8c40e2f142887f4e25e0d3c7ac4c51a4d8f00e9af55342f04ed9d1.webp",
-          "title": "Skid composer in 3D",
-          "alt": "The Visual Toolkit skid composer showing a tank, two control valves and a pump set on a dark grid, joined by swept pipes with glowing flow tracers and tag labels, next to an HMI review checklist.",
-          "caption": "Mimics → Piping & connections · One scene, shown as a 2D mimic or this 3D layout, rendered live in the app",
+          "src": "/images/projects/8485326c5efb95cadd95499708342476189bd3bebed47ada0a71d20588666e12.webp",
+          "title": "A skid in 3D",
+          "alt": "The Visual Toolkit Skids page in 3D, showing a tank, two control valves and a pump set on a dark grid, joined by swept pipes with glowing flow tracers and tag labels, next to a short HMI review and the export buttons.",
+          "caption": "Skids · One skid, shown in 2D or in this 3D view, rendered live in the app",
           "credit": "Grindstone Systems",
           "rights": "Provided for display, resizing and caching in the OIC project listing."
         },
@@ -1164,7 +1164,7 @@
           "name": "Ignition Perspective",
           "kind": "software",
           "cost": "optional-paid",
-          "notes": "Optional destination for exported assets. SVG images, tag-driven state sets, the icon repository and the Drawing component were verified on an Ignition 8.3.9 gateway. 8.1 and the Designer's drag-and-drop import are untested."
+          "notes": "Optional destination for exported assets. SVG images, tag-driven state sets, the icon repository, the Drawing component, the theme stylesheet and the scene sample project were verified on an Ignition 8.3.9 gateway. 8.1, the gateway's project-zip import and the Designer's imports are untested."
         }
       ],
       "actions": [
@@ -1186,9 +1186,9 @@
         {
           "id": "composer",
           "type": "demo",
-          "url": "https://grindstone-systems.github.io/visual-toolkit/#/mimics",
+          "url": "https://grindstone-systems.github.io/visual-toolkit/#/skids",
           "primary": false,
-          "label": "Try the skid composer"
+          "label": "Build a skid"
         },
         {
           "id": "docs",
@@ -1237,7 +1237,7 @@
         },
         {
           "question": "Has the Ignition workflow been tested?",
-          "answer": "Partly. On a fresh Ignition 8.3.9 gateway, SVG images, state sets swapped by a tag expression, the icon repository and a Drawing with a tag-bound fill all worked. The guide lists what failed and what is still untested, including 8.1 and the Designer's drag-and-drop import."
+          "answer": "Partly. On a fresh Ignition 8.3.9 gateway, SVG images, state sets swapped by a tag expression, the icon repository, a Drawing with a tag-bound fill and the theme stylesheet all worked. So did the sample project from the skid composer, copied onto the gateway's file system. The guide lists what failed and what is still untested, including 8.1, the gateway's project-zip import and the Designer's imports."
         }
       ],
       "lifecycle": {
@@ -1327,9 +1327,9 @@
           "id": "skid-composer-3d",
           "type": "image",
           "src": "./media/skid-composer-3d.jpg",
-          "title": "Skid composer in 3D",
-          "alt": "The Visual Toolkit skid composer showing a tank, two control valves and a pump set on a dark grid, joined by swept pipes with glowing flow tracers and tag labels, next to an HMI review checklist.",
-          "caption": "Mimics → Piping & connections · One scene, shown as a 2D mimic or this 3D layout, rendered live in the app",
+          "title": "A skid in 3D",
+          "alt": "The Visual Toolkit Skids page in 3D, showing a tank, two control valves and a pump set on a dark grid, joined by swept pipes with glowing flow tracers and tag labels, next to a short HMI review and the export buttons.",
+          "caption": "Skids · One skid, shown in 2D or in this 3D view, rendered live in the app",
           "credit": "Grindstone Systems",
           "rights": "Provided for display, resizing and caching in the OIC project listing."
         },
@@ -1429,7 +1429,7 @@
           "name": "Ignition Perspective",
           "kind": "software",
           "cost": "optional-paid",
-          "notes": "Optional destination for exported assets. SVG images, tag-driven state sets, the icon repository and the Drawing component were verified on an Ignition 8.3.9 gateway. 8.1 and the Designer's drag-and-drop import are untested."
+          "notes": "Optional destination for exported assets. SVG images, tag-driven state sets, the icon repository, the Drawing component, the theme stylesheet and the scene sample project were verified on an Ignition 8.3.9 gateway. 8.1, the gateway's project-zip import and the Designer's imports are untested."
         }
       ],
       "actions": [
@@ -1451,9 +1451,9 @@
         {
           "id": "composer",
           "type": "demo",
-          "url": "https://grindstone-systems.github.io/visual-toolkit/#/mimics",
+          "url": "https://grindstone-systems.github.io/visual-toolkit/#/skids",
           "primary": false,
-          "label": "Try the skid composer"
+          "label": "Build a skid"
         },
         {
           "id": "docs",
@@ -1502,7 +1502,7 @@
         },
         {
           "question": "Has the Ignition workflow been tested?",
-          "answer": "Partly. On a fresh Ignition 8.3.9 gateway, SVG images, state sets swapped by a tag expression, the icon repository and a Drawing with a tag-bound fill all worked. The guide lists what failed and what is still untested, including 8.1 and the Designer's drag-and-drop import."
+          "answer": "Partly. On a fresh Ignition 8.3.9 gateway, SVG images, state sets swapped by a tag expression, the icon repository, a Drawing with a tag-bound fill and the theme stylesheet all worked. So did the sample project from the skid composer, copied onto the gateway's file system. The guide lists what failed and what is still untested, including 8.1, the gateway's project-zip import and the Designer's imports."
         }
       ],
       "lifecycle": {
@@ -1561,8 +1561,8 @@
       "added": "2026-09-29",
       "source": {
         "repository": "Grindstone-Systems/visual-toolkit",
-        "commit": "afd22d18993171668e4dd21c9750c364bf50f58e",
-        "digest": "fbb86341046492172b96987710c1d26cf6196bd06f742f766af235c9199c6760"
+        "commit": "0d3457f533d0b9b648f4e65d17648a84ee501848",
+        "digest": "58133d2892906a29309e42f6258c56b2389e112d085a5f7fc8ea978d61d190dc"
       }
     }
   }
