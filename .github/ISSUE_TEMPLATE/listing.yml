@@ -46,6 +46,13 @@ body:
       description: Include account requirements, free-use limits, paid host platforms, hardware, and separate support costs.
     validations:
       required: true
+  - type: textarea
+    id: industrial_scope
+    attributes:
+      label: Industrial connection and support scope
+      description: State whether the tool can read, write, control or remotely access OT; any required privileges or network access; where users find installation/rollback guidance, security reporting and the support period. Say "not applicable" or "unknown" where accurate. Do not include plant details.
+    validations:
+      required: true
   - type: checkboxes
     id: permission
     attributes:

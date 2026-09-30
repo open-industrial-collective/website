@@ -53,6 +53,40 @@
 .charter-aside .button {
   margin-bottom: 1rem;
 }
+.safety-callout {
+  padding: clamp(1.1rem, 2vw, 1.6rem);
+  border: 1px solid color-mix(in srgb, var(--accent) 32%, var(--line));
+  border-left: 4px solid var(--accent);
+  border-radius: 14px;
+  background: var(--surface);
+  box-shadow: 0 8px 24px #2729250a;
+}
+.safety-callout h2 {
+  margin-top: 0;
+}
+.safety-sources {
+  display: grid;
+  gap: 0.7rem;
+  margin-top: 1.35rem;
+  padding-top: 1.35rem;
+  border-top: 1px solid var(--line);
+}
+.safety-sources a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 650;
+}
+.safety-sources a:hover {
+  color: var(--accent);
+}
+.safety-sources small {
+  color: var(--muted);
+  line-height: 1.5;
+}
 @media (max-width: 800px) {
   .charter-layout {
     grid-template-columns: 1fr;

@@ -27,6 +27,8 @@ Read the [public Listing Charter](CHARTER.md) before preparing a profile. It def
 
 Start with [the v2 template](public/templates/project-v2.yaml), or use [the editor](https://openindustrialcollective.org/share). Commit `.oic/project.yaml` and its declared files in a public repository. OIC can host a listing-only repository if your source is private. The Dimension Engine profile is [here](https://github.com/open-industrial-collective/dimension-engine-listing).
 
+The [use and security page](https://openindustrialcollective.org/safety) states the plant-deployment boundary, links to CISA and NIST primary guidance, and explains reporting. The [security policy](SECURITY.md) uses GitHub private vulnerability reporting, which is enabled for this repository. CISA's logo is not used; citing government guidance does not imply agency endorsement.
+
 The schema is [project-v2.schema.json](src/project-v2.schema.json), published at `https://openindustrialcollective.org/data/project-v2.schema.json`. V1 remains supported for existing listings. The editor imports and exports either version without dropping supported fields. Its guided form edits core details, ordered image/video media and resources; YAML exposes all rich fields. It does not load repository files in the browser and labels that limitation explicitly.
 
 Required: identity, publisher, description, category/tags/platforms, source availability, real license/terms URL, free-edition access notes, explicit requirements (including an empty list), actions with exactly one primary, lifecycle and visibility.

@@ -2,6 +2,9 @@ name: Correct or withdraw a listing
 description: Report outdated information, broken links or a listing that should be removed.
 title: "Listing correction: "
 body:
+  - type: markdown
+    attributes:
+      value: "For a suspicious download, exploit, credential exposure or private plant information, use the [private security report](https://github.com/open-industrial-collective/website/security/advisories/new). Do not post sensitive details in this public issue."
   - type: input
     id: listing
     attributes:
