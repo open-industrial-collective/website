@@ -1025,6 +1025,16 @@
   font-size: 17px;
   line-height: 1.6;
 }
+.how-safety-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 7px;
+  color: var(--accent);
+  font-size: 14px;
+  font-weight: 700;
+  text-underline-offset: 4px;
+}
 .how-journeys {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
