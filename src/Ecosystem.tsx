@@ -2,11 +2,11 @@ import { Link } from "react-router-dom";
 import {
   ArrowRight,
   ArrowUpRight,
+  ChevronDown,
   Code2,
   FileCode2,
   Globe2,
   Layers3,
-  ShieldCheck,
 } from "lucide-react";
 
 function Out({ href, children }: { href: string; children: React.ReactNode }) {
@@ -24,128 +24,262 @@ function Out({ href, children }: { href: string; children: React.ReactNode }) {
   );
 }
 
+const howQuestions = [
+  {
+    title: "Finding and trying tools",
+    items: [
+      {
+        question: "Is every tool here free?",
+        answer: (
+          <>
+            The listed edition has an ongoing free way to use it. A required
+            host platform, hardware, account, or service may have a separate
+            cost. Each project page explains the free scope and known
+            requirements.
+          </>
+        ),
+      },
+      {
+        question: "Does “open” mean every project shares its source?",
+        answer: (
+          <>
+            No. OIC is open to discovery and participation across business
+            models. Listings label software as open source, source available, or
+            closed source and link to its actual terms. Those labels describe
+            different rights.
+          </>
+        ),
+      },
+      {
+        question: "How do I know whether a tool fits my environment?",
+        answer: (
+          <>
+            Start with its capabilities, free scope, platform needs, release
+            stage, publisher and documentation. Follow the original project link
+            and evaluate the tool under your own security and change-control
+            process. A catalog page is a starting point for that decision.
+          </>
+        ),
+      },
+      {
+        question: "Who is behind a listing?",
+        answer: (
+          <>
+            Each page identifies its publisher and source. Publisher-submitted
+            listings are distinguished from entries OIC curated from public
+            information. A listing does not make its author an OIC steward.
+          </>
+        ),
+      },
+    ],
+  },
+  {
+    title: "Sharing a project",
+    items: [
+      {
+        question: "What can be listed?",
+        answer: (
+          <>
+            A useful industrial tool or edition with genuine ongoing free use, a
+            responsible publisher, clear terms, practical details and a safe
+            route to try or obtain it. The{" "}
+            <Link to="/charter">Listing Charter</Link> explains the full
+            admission standard.
+          </>
+        ),
+      },
+      {
+        question: "Must I publish my source code?",
+        answer: (
+          <>
+            No. The listing profile needs a public repository so it can be
+            reviewed. The application itself may be open source, source
+            available or closed source. Keep your software, releases and support
+            where you choose.
+          </>
+        ),
+      },
+      {
+        question: "Does the form publish or upload my project?",
+        answer: (
+          <>
+            No. The form prepares a YAML listing in your browser and lets you
+            download it. To request publication, place the profile in a public
+            repository and open a listing issue. A maintainer reviews it before
+            it appears on OIC.
+          </>
+        ),
+      },
+      {
+        question: "What happens when I update a listing?",
+        answer: (
+          <>
+            Registered profiles are checked for changes. OIC reviews each
+            proposed update against a specific source commit before publication;
+            an unsuccessful refresh leaves the last approved listing visible.
+          </>
+        ),
+      },
+    ],
+  },
+  {
+    title: "Review and evidence",
+    items: [
+      {
+        question: "What does OIC review today?",
+        answer: (
+          <>
+            Automated checks catch malformed profiles and unsafe link formats. A
+            maintainer checks the free path, attribution, terms, requirements,
+            links and practical usefulness. This is catalog admission review,
+            including for founder projects.
+          </>
+        ),
+      },
+      {
+        question: "Has OIC verified these tools for production use?",
+        answer: (
+          <>
+            No. The catalog does not certify software or independently verify
+            downloads. OIC is developing separate, scoped evaluation methods
+            that identify exact versions, test conditions, observations and
+            limitations. Public verification claims need their own evidence and
+            review.
+          </>
+        ),
+      },
+      {
+        question: "Can I help without a project to list?",
+        answer: (
+          <>
+            Yes. Try a tool, report a missing requirement or offer a concrete
+            improvement. Industrial practitioners can help identify the
+            questions and failure modes that future evaluations should address.{" "}
+            <Link to="/community">See ways to take part</Link>.
+          </>
+        ),
+      },
+    ],
+  },
+];
+
 export function HowItWorks() {
   return (
-    <div className="container page story-page how-page">
-      <header className="story-hero">
+    <div className="container page how-guide-page">
+      <header className="how-guide-hero">
         <span className="eyebrow">HOW IT WORKS</span>
         <h1>
-          From project to
-          <br />
-          <span>findable tool.</span>
+          Find a tool. <span>Understand it.</span> Share what you build.
         </h1>
         <p>
-          The practical route for a maker to put a free industrial tool in front
-          of the people who need it.
+          OIC starts with useful free industrial software and clear information.
+          Here is how to explore the catalog, contribute a listing, and
+          understand what its review means.
         </p>
-        <Link className="button primary" to="/share">
-          Prepare a listing <ArrowRight size={17} />
-        </Link>
       </header>
-      <div className="how-track" aria-label="Listing steps">
-        <article>
-          <span>01</span>
-          <div>
-            <h2>Describe the tool</h2>
-            <p>
-              Use the guided form or write a portable{" "}
-              <code>.oic/project.yaml</code> file. Name the free edition, maker,
-              terms, requirements, and a working path to try it.
-            </p>
-          </div>
-          <FileCode2 size={27} />
-        </article>
-        <article>
-          <span>02</span>
-          <div>
-            <h2>Request a listing</h2>
-            <p>
-              Keep software and releases where you choose. Share a public
-              profile repository so OIC can review the exact version you want
-              listed.
-            </p>
-          </div>
-          <Code2 size={27} />
-        </article>
-        <article>
-          <span>03</span>
-          <div>
-            <h2>Get discovered</h2>
-            <p>
-              After review, the listing becomes a searchable page with links
-              back to your project. Later profile changes also wait for review
-              before publication.
-            </p>
-          </div>
-          <Globe2 size={27} />
-        </article>
-      </div>
-      <section className="how-check" id="quality" tabIndex={-1}>
-        <div>
-          <span className="eyebrow">WHAT REVIEW MEANS</span>
-          <h2>What keeps the catalog useful?</h2>
+
+      <section
+        className="how-answers"
+        id="quality"
+        tabIndex={-1}
+        aria-labelledby="answers-title"
+      >
+        <div className="how-answers-intro">
+          <span className="eyebrow">GOOD TO KNOW</span>
+          <h2 id="answers-title">What keeps the catalog useful?</h2>
           <p>
-            Automated checks catch missing fields and unsafe link formats. A
-            maintainer checks the free access, attribution, terms, requirements,
-            and destinations against the submitted source.
+            Direct answers to the questions that matter before trying a tool or
+            sharing one.
           </p>
-          <Link className="text-link" to="/charter">
+          <Link to="/charter">
             Read the Listing Charter <ArrowRight size={16} />
           </Link>
         </div>
-        <aside>
-          <ShieldCheck size={25} />
-          <h3>Clear limits</h3>
-          <p>
-            Catalog review does not test downloads, independently verify every
-            claim, or certify a tool for production. Evaluate it for your own
-            environment.
-          </p>
-        </aside>
+        <div className="how-answer-groups">
+          {howQuestions.map((group) => (
+            <section className="how-answer-group" key={group.title}>
+              <h3>{group.title}</h3>
+              {group.items.map((item) => (
+                <details key={item.question} className="how-answer">
+                  <summary>
+                    <span>{item.question}</span>
+                    <ChevronDown size={19} />
+                  </summary>
+                  <div className="how-answer-body">
+                    <p>{item.answer}</p>
+                  </div>
+                </details>
+              ))}
+            </section>
+          ))}
+        </div>
       </section>
-      <section className="how-faq">
-        <h2>Good to know</h2>
-        <details>
-          <summary>Does my source code need to be public?</summary>
-          <p>
-            No. The listing file needs a public home for review. Software can be
-            open source, source available, or closed source, with its actual
-            terms stated.
-          </p>
-        </details>
-        <details>
-          <summary>Does the form submit my project?</summary>
-          <p>
-            No. It prepares and downloads a YAML file in your browser. You then
-            request a listing through the public repository.
-          </p>
-        </details>
-        <details>
-          <summary>Can a free tool require a paid platform?</summary>
-          <p>
-            Yes. The listed edition must be free, and a required commercial host
-            or service cost must be disclosed clearly.
-          </p>
-        </details>
+
+      <section className="how-journey-section" aria-labelledby="journey-title">
+        <div className="how-journey-intro">
+          <span className="eyebrow">YOUR NEXT STEP</span>
+          <h2 id="journey-title">Put the answers to work.</h2>
+        </div>
+        <div className="how-journeys" aria-label="Two ways to use OIC">
+          <section className="how-journey">
+            <span className="how-journey-label">FOR PEOPLE EXPLORING</span>
+            <h2>From search to a sensible trial.</h2>
+            <ol>
+              <li>
+                <b>01</b>
+                <span>Find a tool for the work you need to do.</span>
+              </li>
+              <li>
+                <b>02</b>
+                <span>Check its free scope, terms and requirements.</span>
+              </li>
+              <li>
+                <b>03</b>
+                <span>Visit the maker and evaluate it for your setting.</span>
+              </li>
+            </ol>
+            <Link to="/explore">
+              Explore tools <ArrowRight size={17} />
+            </Link>
+          </section>
+          <section className="how-journey">
+            <span className="how-journey-label">FOR PEOPLE BUILDING</span>
+            <h2>From your project to a clear listing.</h2>
+            <ol>
+              <li>
+                <b>01</b>
+                <span>Describe the free edition in a portable profile.</span>
+              </li>
+              <li>
+                <b>02</b>
+                <span>Keep the project and releases under your control.</span>
+              </li>
+              <li>
+                <b>03</b>
+                <span>Request a listing for human review.</span>
+              </li>
+            </ol>
+            <Link to="/share">
+              Prepare a listing <ArrowRight size={17} />
+            </Link>
+          </section>
+        </div>
       </section>
-      <div className="story-bottom">
+
+      <section className="how-guide-end">
         <div>
-          <span className="eyebrow">READY TO SHARE?</span>
-          <h2>Start with a draft.</h2>
+          <span className="eyebrow">THE BIGGER IDEA</span>
+          <h2>Build. Share. Prove.</h2>
           <p>
-            You can prepare a profile without creating an OIC account. Download
-            it and keep control of your project.
+            Discovery is the first step. OIC's broader work is to help
+            industrial expertise become useful technology and, over time, make
+            claims about that technology inspectable.
           </p>
         </div>
-        <div className="story-next">
-          <Link to="/share">
-            Open the listing form <ArrowRight size={17} />
-          </Link>
-          <Link to="/guide">
-            Read the full listing guide <ArrowRight size={17} />
-          </Link>
-        </div>
-      </div>
+        <Link to="/about">
+          Why OIC exists <ArrowRight size={17} />
+        </Link>
+      </section>
     </div>
   );
 }

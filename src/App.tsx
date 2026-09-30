@@ -440,11 +440,13 @@ function Home() {
             <span>Why OIC exists</span>
             <OicMark />
           </div>
-          <h2>Good tools should be easier to find.</h2>
+          <h2>Good industrial ideas deserve a path to trust.</h2>
           <div className="workshop-purpose-copy">
             <p>
-              Builders keep their projects. OIC gives people one clear place to
-              discover them and understand access, terms, and requirements.
+              More people can build useful technology. OIC starts by helping
+              them share it clearly—and is developing ways for industrial
+              experts to show what works, under which conditions, and what
+              remains unknown.
             </p>
             <Link className="workshop-link" to="/about">
               More about OIC <ArrowUpRight size={19} />
@@ -806,73 +808,148 @@ function Detail() {
 }
 function About() {
   return (
-    <div className="container page about-page story-page">
-      <header className="story-hero">
-        <span className="eyebrow">WHY OIC</span>
-        <h1>
-          Useful tools get lost.
-          <br />
-          <span>We bring them into view.</span>
-        </h1>
-        <p>
-          Industrial software is built in workshops, plants, studios, and small
-          teams everywhere. OIC helps the next person find that work and
-          understand whether it fits.
-        </p>
-        <Link className="button primary" to="/explore">
-          Explore the catalog <ArrowRight size={17} />
-        </Link>
-      </header>
-      <section className="story-statement" aria-label="Our purpose">
-        <span>THE IDEA</span>
-        <p>
-          One clear listing can turn a useful project into a useful starting
-          point for someone else.
-        </p>
-        <OicMark />
+    <div className="container page mission-page">
+      <section className="mission-hero" aria-labelledby="mission-title">
+        <div className="mission-hero-copy">
+          <span className="eyebrow">WHY OIC EXISTS</span>
+          <h1 id="mission-title">
+            Industrial ideas need a <span>path to trust.</span>
+          </h1>
+          <p>
+            More people can turn industrial expertise into working technology.
+            To use it responsibly, manufacturers need to understand what a tool
+            does, how it was evaluated, and what remains uncertain.
+          </p>
+          <a className="mission-jump" href="#the-approach">
+            See the approach <ArrowDown size={17} />
+          </a>
+        </div>
+        <div
+          className="mission-path"
+          aria-label="The path OIC is building: expertise, technology, evidence, adoption"
+        >
+          <span className="mission-path-label">THE PATH WE ARE BUILDING</span>
+          <ol>
+            <li>
+              <span>01</span>
+              <strong>Industrial expertise</strong>
+              <small>Real problems and practical judgment</small>
+            </li>
+            <li>
+              <span>02</span>
+              <strong>Useful technology</strong>
+              <small>Tools from teams of every size</small>
+            </li>
+            <li>
+              <span>03</span>
+              <strong>Inspectable evidence</strong>
+              <small>Defined scope, results and limits</small>
+            </li>
+            <li>
+              <span>04</span>
+              <strong>Informed adoption</strong>
+              <small>Decisions made by the people responsible</small>
+            </li>
+          </ol>
+        </div>
       </section>
-      <section className="story-grid" aria-label="What we believe">
-        <article>
-          <span>01</span>
-          <h2>Access should be clear.</h2>
-          <p>
-            Every listed tool has a free edition. We show its scope, required
-            platforms, and any separate costs.
-          </p>
-        </article>
-        <article>
-          <span>02</span>
-          <h2>Words should mean something.</h2>
-          <p>
-            Open source, source available, and closed source are distinct. Each
-            listing links to the actual terms.
-          </p>
-        </article>
-        <article>
-          <span>03</span>
-          <h2>Credit stays with the maker.</h2>
-          <p>
-            Projects keep their own home, identity, releases, and support. OIC
-            points people to them.
-          </p>
-        </article>
+
+      <section className="mission-belief" aria-label="Core belief">
+        <span className="eyebrow">OUR CORE BELIEF</span>
+        <p>
+          Industrial technology should earn trust through{" "}
+          <em>evidence and expertise</em>. Builders of every size deserve a
+          credible way to show what their work can do.
+        </p>
       </section>
-      <section className="story-bottom">
-        <div>
-          <span className="eyebrow">WHERE WE ARE TODAY</span>
-          <h2>A small catalog with room to grow.</h2>
+
+      <section
+        className="mission-approach"
+        id="the-approach"
+        aria-labelledby="approach-title"
+      >
+        <div className="mission-section-heading">
+          <span className="eyebrow">THE OIC MODEL</span>
+          <h2 id="approach-title">Build. Share. Prove.</h2>
           <p>
-            OIC is initiated and maintained by Grindstone Systems. Listings are
-            reviewed for clear access and accurate presentation; that review is
-            not a safety or production certification.
+            These three actions connect useful industrial work to the people who
+            can put it to use.
           </p>
         </div>
-        <div className="story-next">
+        <div className="mission-pillars">
+          <article>
+            <span className="mission-pillar-number">01 / BUILD</span>
+            <h3>Expertise becomes technology.</h3>
+            <p>
+              Engineers, operators, integrators and small teams turn practical
+              knowledge into tools, workflows and solutions.
+            </p>
+          </article>
+          <article>
+            <span className="mission-pillar-number">02 / SHARE</span>
+            <h3>Useful work becomes findable.</h3>
+            <p>
+              OIC's first public step is a catalog of free tools with clear
+              creators, access, terms and requirements.
+            </p>
+          </article>
+          <article>
+            <span className="mission-pillar-number">03 / PROVE</span>
+            <h3>Claims meet evidence.</h3>
+            <p>
+              We're developing scoped evaluation methods shaped by industrial
+              experts, so results and remaining gaps can be inspected.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section className="mission-evidence" aria-labelledby="evidence-title">
+        <div>
+          <span className="eyebrow">WHY THE EVIDENCE MATTERS</span>
+          <h2 id="evidence-title">
+            A polished demo is a beginning. Industrial use asks more.
+          </h2>
+        </div>
+        <div className="mission-evidence-points">
+          <p>
+            <strong>Define the question.</strong> Practitioners help name the
+            behavior and failure modes that matter in real environments.
+          </p>
+          <p>
+            <strong>Show the conditions.</strong> An evaluation should identify
+            the exact release, test setting, observations and reviewer.
+          </p>
+          <p>
+            <strong>Keep the unknowns visible.</strong> A result has limits. The
+            team adopting a tool makes the decision for its own environment.
+          </p>
+        </div>
+      </section>
+
+      <section className="mission-now" aria-labelledby="mission-now-title">
+        <div>
+          <span className="eyebrow">WHERE WE ARE NOW</span>
+          <h2 id="mission-now-title">
+            Start useful. Build the trust layer carefully.
+          </h2>
+          <p>
+            The public catalog helps people discover and share free industrial
+            tools across open-source and closed-source models. Listings receive
+            a human admission review. Separate local evaluation work is under
+            development; no listed tool has an OIC production certification or
+            independent public verification today.
+          </p>
+        </div>
+        <div className="mission-next-links">
+          <Link to="/explore">
+            Explore the tools <ArrowRight size={17} />
+          </Link>
           <Link to="/how-it-works">
-            How listings work <ArrowRight size={17} />
+            How OIC works <ArrowRight size={17} />
           </Link>
           <Link to="/community">
-            Meet the people and take part <ArrowRight size={17} />
+            Help shape the work <ArrowRight size={17} />
           </Link>
         </div>
       </section>
