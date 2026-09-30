@@ -13,10 +13,9 @@ await page.goto(base + "/explore");
 await expect(page.getByRole("status")).toHaveText(countLabel());
 await expect(page.getByText(/example listing/i)).toHaveCount(0);
 await page.getByRole("button", { name: "Hide filters" }).click();
-await expect(page.getByRole("button", { name: "Show filters" })).toHaveAttribute(
-  "aria-expanded",
-  "false",
-);
+await expect(
+  page.getByRole("button", { name: "Show filters" }),
+).toHaveAttribute("aria-expanded", "false");
 await expect(page.locator("#desktop-filter-content")).toBeHidden();
 await page.getByRole("button", { name: "Show filters" }).click();
 await expect(page.locator("#desktop-filter-content")).toBeVisible();
@@ -28,6 +27,17 @@ await expect(
   page.getByRole("checkbox", { name: "Open source", exact: false }),
 ).toBeFocused();
 await page.getByRole("button", { name: "List view", exact: true }).click();
+await expect(
+  page.getByRole("columnheader", { name: "Kind / format" }),
+).toBeVisible();
+await expect(
+  page.getByRole("columnheader", { name: "Reviewed" }),
+).toBeVisible();
+await expect(
+  page
+    .getByRole("row", { name: /Visual Toolkit/ })
+    .getByRole("link", { name: /Grindstone Systems/ }),
+).toHaveAttribute("href", "https://www.grindstonesystems.com/");
 const shared = page.url();
 await page.reload();
 await expect(
@@ -58,6 +68,12 @@ await expect(
   page.getByRole("link", { name: "Visual Toolkit", exact: true }),
 ).toBeVisible();
 await page.goto(base + "/explore");
+await expect(
+  page
+    .getByRole("link", { name: "Dimension Engine Showcase", exact: true })
+    .first()
+    .locator("xpath=ancestor::article"),
+).toContainText("Interactive demo");
 for (const p of catalog.slice(0, 3))
   await page
     .getByRole("button", { name: `Compare ${p.name}`, exact: true })

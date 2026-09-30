@@ -63,6 +63,29 @@ test("OR within a group, AND across groups, legacy URLs and unknown values", () 
     0,
   );
 });
+test("kind facets distinguish browser previews from web tools while old links still resolve", () => {
+  const preview = realCatalog.find(
+    (p) => p.id === "dimension-engine-showcase",
+  )!;
+  const tool = realCatalog.find((p) => p.id === "visual-toolkit")!;
+  assert.deepEqual(values(preview, "type"), ["interactive-demo"]);
+  assert.deepEqual(values(tool, "type"), ["web-tool"]);
+  assert.deepEqual(
+    filterProjects([preview, tool], query("type=interactive-demo")).map(
+      (p) => p.id,
+    ),
+    [preview.id],
+  );
+  assert.equal(
+    filterProjects([preview, tool], query("type=application")).length,
+    2,
+  );
+  const explicit = structuredClone(tool);
+  explicit.profile!.discovery!.product_type = "tool";
+  assert.deepEqual(values(explicit, "type"), ["web-tool"]);
+  explicit.profile!.discovery!.product_type = "demo";
+  assert.deepEqual(values(explicit, "type"), ["interactive-demo"]);
+});
 test("aliases, facets and multiword search work without removing constraints", () => {
   assert.equal(
     normalizeSearch("overall equipment effectiveness"),

@@ -13,11 +13,19 @@ export const capabilities = {
   security: "Security & governance",
 } as const;
 export const productTypes = {
-  application: "Application or tool",
+  application: "Application",
+  tool: "Tool",
+  demo: "Interactive demo",
   extension: "Platform extension",
   resource: "Project or resource pack",
   library: "Library or SDK",
   assets: "Visual asset pack",
+};
+const browseKinds = {
+  "interactive-demo": "Interactive demo",
+  "web-application": "Web application",
+  "web-tool": "Web tool",
+  "ignition-module": "Ignition module",
 };
 export const deliveries = {
   web: "Hosted web tool",
@@ -72,6 +80,32 @@ export function discovery(p: Listing): Discovery {
   const base: Discovery = { primary: legacy[p.category], capabilities: p.tags };
   return base;
 }
+export function browseKind(
+  p: Listing,
+): keyof typeof browseKinds | keyof typeof productTypes | undefined {
+  const d = discovery(p);
+  if (d.options?.length && d.options.every((o) => o.delivery === "module"))
+    return "ignition-module";
+  if (d.product_type === "demo") return "interactive-demo";
+  if (d.product_type === "tool" && d.options?.some((o) => o.delivery === "web"))
+    return "web-tool";
+  if (
+    d.product_type === "application" &&
+    /preview|showcase/i.test(p.profile?.access.edition || "")
+  )
+    return "interactive-demo";
+  if (
+    d.product_type === "application" &&
+    /builder|toolkit|\btool\b/i.test(p.profile?.access.edition || "")
+  )
+    return "web-tool";
+  if (
+    d.product_type === "application" &&
+    d.options?.some((o) => o.delivery === "web")
+  )
+    return "web-application";
+  return d.product_type;
+}
 export const groups = [
   "capability",
   "type",
@@ -91,7 +125,7 @@ export const groups = [
 export type Group = (typeof groups)[number];
 export const groupLabels: Record<Group, string> = {
   capability: "Capability",
-  type: "Product type",
+  type: "Kind",
   works: "Works with",
   delivery: "Delivery",
   environment: "Runs on",
@@ -107,7 +141,7 @@ export const groupLabels: Record<Group, string> = {
 };
 export const labels: Partial<Record<Group, Record<string, string>>> = {
   capability: capabilities,
-  type: productTypes,
+  type: { ...productTypes, ...browseKinds },
   delivery: deliveries,
   deployment: deployments,
   source: sourceLabels,
@@ -141,7 +175,7 @@ export function values(p: Listing, group: Group): string[] {
     case "capability":
       return [d.primary, ...(d.secondary || [])];
     case "type":
-      return d.product_type ? [d.product_type] : [];
+      return browseKind(p) ? [browseKind(p)!] : [];
     case "works":
       return (d.works_with || []).map((w) => w.name);
     case "delivery":
@@ -233,7 +267,11 @@ export function matches(p: Listing, params: URLSearchParams, omit?: Group) {
   for (const group of groups) {
     if (group === omit) continue;
     const selected = selections(params, group);
-    if (selected.length && !selected.some((v) => values(p, group).includes(v)))
+    const available =
+      group === "type" && discovery(p).product_type
+        ? [...values(p, group), discovery(p).product_type!]
+        : values(p, group);
+    if (selected.length && !selected.some((v) => available.includes(v)))
       return false;
   }
   const packageGroups = (

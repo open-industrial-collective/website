@@ -59,7 +59,13 @@ import { CommunityPage } from "./CommunityPage";
 import { pageSeo } from "./seo";
 import { CharterPage } from "./CharterPage";
 import { SafetyPage } from "./SafetyPage";
-import Explore, { FitDetails, DiscoveryGlossary } from "./Explore";
+import Explore, {
+  FitDetails,
+  DiscoveryGlossary,
+  PublisherLink,
+  listingKind,
+  shortDate,
+} from "./Explore";
 const projects = data as Listing[];
 const publishedProjects = projects.filter(
   (project) => project.listing.origin === "community",
@@ -630,12 +636,48 @@ function Detail() {
         <div>
           <div className="eyebrow">{p.category}</div>
           <h1>{p.name}</h1>
-          <p>By {p.maintainer}</p>
+          <p>
+            By <PublisherLink p={p} />
+          </p>
         </div>
         <span className="free-label">
           {p.listing.origin === "curated"
             ? "EXAMPLE LISTING · FREE TO USE"
             : "FREE TO USE"}
+        </span>
+      </div>
+      <div className="detail-meta" aria-label="Listing and release details">
+        <span>
+          <strong>Kind</strong>
+          {listingKind(p)}
+        </span>
+        <span>
+          <strong>Added</strong>
+          <time dateTime={p.listing.added || ""}>
+            {shortDate(p.listing.added)}
+          </time>
+        </span>
+        <span>
+          <strong>Listing reviewed</strong>
+          <time dateTime={p.listing.reviewed}>
+            {shortDate(p.listing.reviewed)}
+          </time>
+        </span>
+        <span>
+          <strong>Release</strong>
+          {p.profile?.release ? (
+            <a
+              href={p.profile.release.url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              v{p.profile.release.version}
+              {p.profile.release.date &&
+                ` · ${shortDate(p.profile.release.date)}`}
+            </a>
+          ) : (
+            "Not provided"
+          )}
         </span>
       </div>
       <div className="detail-layout">
