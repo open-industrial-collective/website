@@ -57,7 +57,9 @@ const howQuestions = [
             Start with its capabilities, free scope, platform needs, release
             stage, publisher and documentation. Follow the original project link
             and evaluate the tool under your own security and change-control
-            process. A catalog page is a starting point for that decision.
+            process. A catalog page is a starting point for that decision. Read
+            the <Link to="/safety">industrial use and security guide</Link> before
+            connecting anything to a plant.
           </>
         ),
       },
@@ -176,6 +178,9 @@ export function HowItWorks() {
           Here is how to explore the catalog, contribute a listing, and
           understand what its review means.
         </p>
+        <Link className="how-safety-link" to="/safety">
+          Use & security guidance <ArrowRight size={16} />
+        </Link>
       </header>
 
       <section
