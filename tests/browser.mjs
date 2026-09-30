@@ -1,4 +1,4 @@
-import { countLabel } from "./catalog-counts.mjs";
+import { countLabel, showResultsLabel } from "./catalog-counts.mjs";
 import { chromium, expect } from "@playwright/test";
 import assert from "node:assert/strict";
 import { parse } from "yaml";
@@ -112,13 +112,18 @@ await page
 await expect(page.getByRole("status")).toHaveText("0 projects");
 await page.getByRole("button", { name: "Clear all filters" }).click();
 await expect(page.getByRole("status")).toHaveText(countLabel());
-await page.getByRole("checkbox", { name: "Closed source" }).check();
+await page.getByRole("button", { name: "Filters", exact: true }).click();
+await page.getByRole("dialog", { name: "Filters" })
+  .getByRole("checkbox", { name: "Closed source" }).check();
 await expect(page.getByRole("status")).toHaveText("1 project");
-await page.getByRole("checkbox", { name: "Closed source" }).uncheck();
-await page.getByRole("checkbox", { name: "Open source", exact: false }).check();
+await page.getByRole("dialog", { name: "Filters" })
+  .getByRole("checkbox", { name: "Closed source" }).uncheck();
+await page.getByRole("dialog", { name: "Filters" })
+  .getByRole("checkbox", { name: "Open source", exact: false }).check();
 await expect(page.getByRole("status")).toHaveText(
   countLabel((project) => project.source === "open-source"),
 );
+await page.getByRole("button", { name: showResultsLabel((project) => project.source === "open-source"), exact: true }).click();
 await page.getByRole("link", { name: "Visual Toolkit", exact: true }).click();
 await page
   .getByRole("heading", { name: "Visual Toolkit", exact: true })
@@ -155,8 +160,11 @@ await expect(
 ).toBeVisible();
 await page.getByRole("link", { name: "Find these tools" }).click();
 await expect(page.getByRole("status")).toHaveText(countLabel());
-await page.getByRole("checkbox", { name: "Ignition Perspective" }).check();
-await expect(page.getByRole("status")).toHaveText("1 project");
+await page.getByRole("button", { name: /^Filters/ }).click();
+await page.getByRole("dialog", { name: "Filters" })
+  .getByRole("checkbox", { name: "Ignition Platform" }).check();
+await page.getByRole("button", { name: "Show 2 results" }).click();
+await expect(page.getByRole("status")).toHaveText("2 projects");
 await expect(
   page.getByRole("link", { name: "Visual Toolkit", exact: true }),
 ).toBeVisible();

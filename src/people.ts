@@ -6,6 +6,7 @@ export type PublicSteward = {
   role: string;
   scope: string;
   initials: string;
+  websiteUrl?: string;
   profileUrl?: string;
 };
 
@@ -16,5 +17,6 @@ export const publicStewards: PublicSteward[] = [
     role: "Founding initiator",
     scope: "Interim website and program stewardship",
     initials: "GS",
+    websiteUrl: "https://www.grindstonesystems.com/",
   },
 ];

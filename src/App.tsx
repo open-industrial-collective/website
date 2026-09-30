@@ -351,7 +351,10 @@ function Home() {
         <div className="workshop-hero-layout">
           <div className="workshop-hero-copy">
             <span className="workshop-edition">Open Industrial Collective</span>
-            <h1>Free industrial software. More room to innovate.</h1>
+            <h1>
+              <span>Free industrial software.</span>
+              <span>More room to innovate.</span>
+            </h1>
             <p className="workshop-intro">
               OIC helps builders bring free tools to industry, so more teams can
               try new ideas and solve real problems.

@@ -12,20 +12,19 @@ page.on("pageerror", (e) => errors.push(e.message));
 await page.goto(base + "/explore");
 await expect(page.getByRole("status")).toHaveText(countLabel());
 await expect(page.getByText(/example listing/i)).toHaveCount(0);
-await page.getByRole("button", { name: "Hide filters" }).click();
-await expect(
-  page.getByRole("button", { name: "Show filters" }),
-).toHaveAttribute("aria-expanded", "false");
-await expect(page.locator("#desktop-filter-content")).toBeHidden();
-await page.getByRole("button", { name: "Show filters" }).click();
-await expect(page.locator("#desktop-filter-content")).toBeVisible();
-await page.getByRole("checkbox", { name: "Open source", exact: false }).check();
+await expect(page.getByRole("dialog", { name: "Filters" })).toHaveCount(0);
+await page.getByRole("button", { name: "Filters", exact: true }).click();
+await expect(page.getByRole("dialog", { name: "Filters" })).toBeVisible();
+await page.getByRole("dialog", { name: "Filters" })
+  .getByRole("checkbox", { name: "Open source", exact: false }).check();
 await expect(page.getByRole("status")).toHaveText(
   countLabel((p) => p.source === "open-source"),
 );
 await expect(
-  page.getByRole("checkbox", { name: "Open source", exact: false }),
+  page.getByRole("dialog", { name: "Filters" })
+    .getByRole("checkbox", { name: "Open source", exact: false }),
 ).toBeFocused();
+await page.getByRole("button", { name: showResultsLabel((p) => p.source === "open-source"), exact: true }).click();
 await page.getByRole("button", { name: "List view", exact: true }).click();
 await expect(
   page.getByRole("columnheader", { name: "Kind / format" }),
@@ -51,8 +50,10 @@ await page
 assert.equal(page.url(), shared);
 await page.goBack();
 await page.goBack();
+await page.getByRole("button", { name: "Filters 1", exact: true }).click();
 await expect(
-  page.getByRole("checkbox", { name: "Open source", exact: false }),
+  page.getByRole("dialog", { name: "Filters" })
+    .getByRole("checkbox", { name: "Open source", exact: false }),
 ).toBeChecked();
 await page.goto(
   base + "/explore?source=closed-source&works=Ignition+Perspective",

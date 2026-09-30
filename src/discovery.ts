@@ -167,7 +167,11 @@ export const labels: Partial<Record<Group, Record<string, string>>> = {
   },
 };
 export const label = (group: Group, value: string) =>
-  labels[group]?.[value] || value;
+  group === "works" ? canonicalWorksWith(value) : labels[group]?.[value] || value;
+export const canonicalWorksWith = (name: string) =>
+  name === "Ignition" || name === "Ignition Perspective"
+    ? "Ignition Platform"
+    : name;
 export function values(p: Listing, group: Group): string[] {
   const d = discovery(p),
     profile = p.profile;
@@ -177,7 +181,7 @@ export function values(p: Listing, group: Group): string[] {
     case "type":
       return browseKind(p) ? [browseKind(p)!] : [];
     case "works":
-      return (d.works_with || []).map((w) => w.name);
+      return [...new Set((d.works_with || []).map((w) => canonicalWorksWith(w.name)))];
     case "delivery":
       return (d.options || []).map((o) => o.delivery);
     case "environment":
@@ -255,7 +259,9 @@ export function searchScore(p: Listing, query: string) {
     : 0;
 }
 export function selections(params: URLSearchParams, group: Group) {
-  const current = params.getAll(group);
+  const current = params.getAll(group).map((value) =>
+    group === "works" ? canonicalWorksWith(value) : value,
+  );
   if (group === "capability" && params.has("category"))
     current.push(legacy[params.get("category")!] || params.get("category")!);
   if (group === "environment" && params.has("platform"))
@@ -367,7 +373,7 @@ export function fitFacts(p: Listing): [string, string][] {
       d.works_with
         ?.map(
           (w) =>
-            `${relationshipLabels[w.relationship]} ${w.name}${w.version ? ` (${w.version})` : ""}`,
+            `${relationshipLabels[w.relationship]} ${canonicalWorksWith(w.name)}${w.version ? ` (${w.version})` : ""}`,
         )
         .join("; ") || "Not provided",
     ],

@@ -135,6 +135,19 @@
   line-height: 1.3;
   margin-bottom: 6px;
 }
+.people-founder-card h3 a {
+  margin: 0;
+  color: inherit;
+  font-size: inherit;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 4px;
+}
+.people-founder-card h3 a:hover,
+.people-founder-card h3 a:focus-visible {
+  color: var(--on-dark-accent);
+  text-decoration-color: currentColor;
+}
 .people-founder-card p {
   font-size: 12px;
   margin: 0;

@@ -641,6 +641,194 @@
     transform: none;
   }
 }
+
+/* Catalog cleanup: search and filters share one clear control row. */
+.workshop-opening h1 {
+  max-width: none;
+  font-size: clamp(32px, 3.6vw, 54px);
+  letter-spacing: -0.062em;
+  line-height: 1.06;
+}
+.workshop-opening h1 span {
+  display: block;
+}
+@media (min-width: 701px) {
+  .workshop-opening h1 span {
+    white-space: nowrap;
+  }
+}
+.explore-intro {
+  margin-bottom: 13px;
+}
+.explore-intro h1 {
+  margin: 0;
+}
+.explore-search-row {
+  align-items: stretch;
+}
+.explore-filter-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  gap: 9px;
+  min-width: 124px;
+  min-height: 52px;
+  padding: 9px 16px;
+  border: 1px solid #b8a99b;
+  border-radius: 13px;
+  background: #fffdf8;
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 650;
+  box-shadow: 0 2px 8px #2729250a;
+}
+.explore-filter-toggle:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.explore-filter-toggle span {
+  display: grid;
+  place-items: center;
+  min-width: 20px;
+  height: 20px;
+  padding-inline: 4px;
+  border-radius: 100px;
+  background: var(--accent);
+  color: white;
+  font-size: 11px;
+}
+.explore-workspace {
+  display: block;
+}
+.filter-drawer {
+  position: fixed;
+  inset: 0 0 0 auto;
+  margin: 0;
+  width: min(390px, 100vw);
+  max-width: 100vw;
+  height: 100dvh;
+  max-height: 100dvh;
+  border-radius: 20px 0 0 20px;
+  overflow: hidden;
+}
+.filter-drawer[open] {
+  display: flex;
+  flex-direction: column;
+}
+.filter-drawer > header,
+.filter-drawer > footer {
+  flex: 0 0 auto;
+}
+.filter-drawer .drawer-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 25px;
+}
+.filter-drawer .drawer-body label {
+  min-height: 38px;
+  font-size: 13px;
+}
+.filter-drawer > footer {
+  padding: 15px 25px max(15px, env(safe-area-inset-bottom));
+  background: #f6f4ed;
+  border-top: 1px solid var(--line);
+}
+.filter-drawer > footer button {
+  width: 100%;
+  justify-content: center;
+}
+.tool-content .tool-summary {
+  margin-bottom: 16px;
+}
+.tool-status {
+  align-items: center;
+  gap: 7px;
+  padding: 0 0 14px;
+}
+.tool-status strong,
+.tool-status em {
+  border-radius: 7px;
+  padding: 6px 9px;
+  font-size: 11px;
+  line-height: 1.25;
+}
+.tool-status strong {
+  background: #e2efe7;
+  color: #215b46;
+}
+.tool-status span {
+  font-size: 11px;
+}
+.tool-status em {
+  background: #f8e7dc;
+  color: #8a3d27;
+}
+.tool-spec {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 16px;
+  margin-top: 0;
+  padding: 13px 0 3px;
+}
+.tool-spec > div {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 0 0 13px;
+}
+.tool-spec > div + div {
+  border: 0;
+}
+.tool-spec > div:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+}
+.tool-spec span {
+  font-size: 10px;
+  font-weight: 650;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+.tool-spec strong {
+  font-size: 12px;
+  line-height: 1.4;
+}
+.tool-content .free-scope {
+  margin: 12px 0 14px;
+  font-size: 11px;
+}
+.free-scope summary {
+  font-weight: 650;
+  color: #655449;
+}
+.free-scope[open] {
+  padding-bottom: 10px;
+}
+.tool-results.list .tool-status {
+  grid-column: 1;
+  grid-row: 3;
+  padding: 0;
+}
+.tool-results.list .tool-spec {
+  display: none;
+}
+@media (max-width: 700px) {
+  .workshop-opening h1 {
+    font-size: clamp(40px, 10vw, 56px);
+  }
+  .explore-filter-toggle {
+    min-width: 0;
+    min-height: 48px;
+    padding-inline: 12px;
+  }
+  .filter-drawer {
+    inset: auto 0 0;
+    width: 100%;
+    height: 94dvh;
+    max-height: 94dvh;
+    border-radius: 22px 22px 0 0;
+  }
+}
 /* Participation has an honest roster and three immediate ways in. */
 .people-page {
   padding-bottom: 90px;
