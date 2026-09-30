@@ -510,14 +510,13 @@ export function ProfileEditor() {
                   {isV2 && (
                     <details className="resource-editor media-editor">
                       <summary>
-                        Images & video <span>{draft.media?.length || 0}</span>
+                        Images, GIFs & video <span>{draft.media?.length || 0}</span>
                       </summary>
                       <p>
                         Add up to eight items in the order visitors should see
                         them. Put screenshots beside{" "}
                         <code>.oic/project.yaml</code> and use relative paths
-                        such as <code>./media/screen.jpg</code>. Videos open at
-                        your HTTPS link; they do not autoplay.
+                        such as <code>./media/screen.jpg</code>. Use a local <code>.gif</code> for a short product motion preview. GIFs are paused until a visitor plays them. Videos open at your HTTPS link.
                       </p>
                       {(draft.media || []).map((item, index) => (
                         <div className="resource-editor-item" key={item.id}>
@@ -570,7 +569,7 @@ export function ProfileEditor() {
                           {item.type === "image" ? (
                             <>
                               <label className="field">
-                                <span>Image file path</span>
+                                <span>Image or GIF file path</span>
                                 <input
                                   value={item.src}
                                   autoCapitalize="none"

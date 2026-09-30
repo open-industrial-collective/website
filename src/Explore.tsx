@@ -3,10 +3,13 @@ import { Link, useLocation, useSearchParams } from "react-router-dom";
 import {
   ArrowRight,
   ArrowUpRight,
+  CircleCheck,
   Check,
   Columns3,
   Grid2X2,
   List,
+  MonitorPlay,
+  Play,
   Search,
   SlidersHorizontal,
   X,
@@ -98,6 +101,11 @@ function ToolCard({
     action = primaryAction(p),
     image = p.profile?.media?.find((m) => m.type === "image");
   const stage = values(p, "stage")[0];
+  const logo = p.profile?.branding?.logo.on_light;
+  const motion = image?.type === "image" && Boolean(image.poster);
+  const context = d.works_with?.length
+    ? d.works_with.map((w) => `${relationshipLabels[w.relationship]} ${w.name}`).join(" · ")
+    : values(p, "environment").join(" · ");
   return (
     <article className="tool-card">
       <Link
@@ -108,7 +116,7 @@ function ToolCard({
         aria-hidden="true"
       >
         {image?.type === "image" ? (
-          <img src={image.src} alt="" loading="lazy" />
+          <img src={image.poster || image.src} alt="" loading="lazy" />
         ) : (
           <>
             <span>
@@ -123,38 +131,32 @@ function ToolCard({
             <small>{capabilities[d.primary]}</small>
           </>
         )}
+        {motion && <span className="tool-motion"><Play size={12} fill="currentColor" /> GIF preview</span>}
       </Link>
       <div className="tool-content">
-        <div className="tool-kicker">
-          <span>{d.product_type ? productTypes[d.product_type] : "Tool"}</span>
-          {stage && <span className="stage-pill">{label("stage", stage)}</span>}
+        <div className="tool-heading">
+          {logo ? <img className="tool-logo" src={logo} alt="" loading="lazy" /> : <span className="tool-logo tool-logo-fallback" aria-hidden="true">{p.name.slice(0, 1)}</span>}
+          <div>
+            <span className="tool-type">{d.product_type ? productTypes[d.product_type] : "Tool"}</span>
+            <h2>
+              <Link to={`/projects/${p.id}`} state={{ explore: returnTo }}>
+                {p.name}<ArrowUpRight size={17} />
+              </Link>
+            </h2>
+            <p className="tool-publisher">{p.maintainer}</p>
+          </div>
         </div>
-        <h2>
-          <Link to={`/projects/${p.id}`} state={{ explore: returnTo }}>
-            {p.name}
-            <ArrowUpRight size={17} />
-          </Link>
-        </h2>
-        <p className="tool-publisher">By {p.maintainer}</p>
         <p className="tool-summary">{p.summary}</p>
-        <div className="tool-fit">
-          <span>{capabilities[d.primary]}</span>
-          <span>
-            {d.works_with?.length
-              ? d.works_with
-                  .map((w) => `${relationshipLabels[w.relationship]} ${w.name}`)
-                  .join(" · ")
-              : values(p, "environment").join(" · ") ||
-                "Environment not provided"}
-          </span>
+        <div className="tool-facts">
+          <span className="tool-fact-capability"><MonitorPlay size={13} />{capabilities[d.primary]}</span>
+          {context && <span className="tool-fact-context">{context}</span>}
         </div>
-        <div className="tool-access">
-          <strong>
-            Free · {p.profile?.access.edition || "Listed edition"}
-          </strong>
-          <span>{sourceLabels[p.source]}</span>
+        <div className="tool-badges">
+          <span className="tool-badge-free"><CircleCheck size={13} /> Free {p.profile?.access.edition || "edition"}</span>
+          <span className="tool-badge-source">{sourceLabels[p.source]}</span>
+          {stage && <span className="tool-badge-stage">{label("stage", stage)}</span>}
           {p.software_requirements === "paid-platform-required" && (
-            <strong className="required-cost">Paid platform required</strong>
+            <span className="tool-badge-cost">Paid host required</span>
           )}
         </div>
         <details className="free-scope">
@@ -563,8 +565,8 @@ export default function Explore() {
                 onChange={(e) => change("sort", e.target.value)}
               >
                 <option value="relevance">Relevance</option>
-                <option value="added">Recently added</option>
-                <option value="released">Recently released</option>
+                <option value="added">Newest added</option>
+                <option value="released">Latest release</option>
                 <option value="name">Name A–Z</option>
               </select>
               <div className="view-toggle">
