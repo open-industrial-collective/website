@@ -152,7 +152,9 @@ export function ProfileSections({ profile: p }: { profile: Profile }) {
           <h2>Files & resources</h2>
           <p className="resource-intro">
             Choose the package or document that fits your setup. These links go
-            to locations chosen by the project publisher.
+            to locations chosen by the project publisher. OIC does not inspect
+            the files or certify them for plant use. Read the project terms and
+            verify the exact release before installing.
           </p>
           <div className="resource-grid">
             {p.resources.map((r) => (

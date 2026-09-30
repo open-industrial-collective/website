@@ -58,6 +58,7 @@ import { CollectiveSculpture } from "./CollectiveSculpture";
 import { CommunityPage } from "./CommunityPage";
 import { pageSeo } from "./seo";
 import { CharterPage } from "./CharterPage";
+import { SafetyPage } from "./SafetyPage";
 import Explore, { FitDetails, DiscoveryGlossary } from "./Explore";
 const projects = data as Listing[];
 const publishedProjects = projects.filter(
@@ -299,6 +300,7 @@ export default function App() {
           <Route path="/about" element={<About />} />
           <Route path="/guide" element={<Guide />} />
           <Route path="/charter" element={<CharterPage />} />
+          <Route path="/safety" element={<SafetyPage />} />
           <Route path="/how-it-works" element={<HowItWorks />} />
           <Route path="/platforms" element={<Platforms />} />
           <Route path="*" element={<NotFound />} />
@@ -316,6 +318,7 @@ export default function App() {
             <Link to="/platforms">Platforms</Link>
             <Link to="/guide">Listing guide</Link>
             <Link to="/charter">Listing Charter</Link>
+            <Link to="/safety">Use & security</Link>
             <Link to="/community">People & join</Link>
             <Link to="/guide#review">How we review</Link>
             <a href="/data/catalog.json">Catalog data</a>
@@ -688,6 +691,18 @@ function Detail() {
               {/terms$/i.test(p.license) ? "" : " terms"}
             </External>
           </section>
+          <section className="detail-section safety-callout">
+            <h2>Before use in a plant</h2>
+            <p>
+              This listing is for discovery. OIC has not tested this release for
+              cybersecurity, functional safety or production fit. Review the
+              exact version with your authorized OT and safety teams; test it
+              away from production before any plant connection.
+            </p>
+            <Link className="text-link" to="/safety">
+              Use & security guidance <ArrowRight size={15} />
+            </Link>
+          </section>
           <FitDetails project={p} />
           {p.profile && <ProfileSections profile={p.profile} />}
           <details className="listing-details">
@@ -786,6 +801,9 @@ function Detail() {
           <span className="small-text">
             Downloads and support are provided by the project.
           </span>
+          <Link className="text-link" to="/safety">
+            Before industrial use <ArrowRight size={15} />
+          </Link>
         </aside>
       </div>
       {related.length > 0 && (

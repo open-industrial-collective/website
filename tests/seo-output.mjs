@@ -18,6 +18,7 @@ const paths = [
   "/platforms",
   "/guide",
   "/charter",
+  "/safety",
   ...visible.map((project) => `/projects/${project.id}`),
 ];
 const sitemap = await readFile(join(dist, "sitemap.xml"), "utf8");

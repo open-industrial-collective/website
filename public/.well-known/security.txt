@@ -1,0 +1,4 @@
+Contact: https://github.com/open-industrial-collective/website/security/advisories/new
+Expires: 2027-03-31T00:00:00Z
+Canonical: https://openindustrialcollective.org/.well-known/security.txt
+Policy: https://openindustrialcollective.org/safety

@@ -38,6 +38,10 @@ const pages: Record<string, [string, string]> = {
     "OIC Listing Charter",
     "The public standard for free industrial tool listings, admission review, automated checks, and the limits of catalog verification.",
   ],
+  "/safety": [
+    "Industrial use and security guidance",
+    "Understand OIC listing limits, plant deployment checks, publisher responsibilities and private security reporting, with CISA and NIST references.",
+  ],
 };
 
 export function indexablePaths() {
