@@ -112,7 +112,8 @@ for (const engine of engines) {
   await expect(page.getByRole("status")).toHaveText(countLabel());
   await page
     .getByRole("searchbox", { name: "Search catalog" })
-    .fill("no-such-tool");
+    // Search matches every term as a substring, so use nonsense no listing can contain.
+    .fill("zqxj-nomatch");
   await expect(
     page.getByRole("heading", { name: "No tools match just yet." }),
   ).toBeVisible();

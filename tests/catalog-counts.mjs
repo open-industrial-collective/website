@@ -9,5 +9,10 @@ export function countLabel(filter = () => true) {
   const count = catalog.filter(filter).length;
   return `${count} ${count === 1 ? "tool" : "tools"}`;
 }
+/** The mobile filter drawer's "Show N results" button for a filter. */
+export function showResultsLabel(filter = () => true) {
+  const count = catalog.filter(filter).length;
+  return `Show ${count} ${count === 1 ? "result" : "results"}`;
+}
 export const noPaidSoftware = (p) =>
   p.software_requirements === "no-paid-required";
