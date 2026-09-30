@@ -178,7 +178,7 @@ for (const engine of engines) {
   });
   await page.getByRole("link", { name: "Preview & save ↓", exact: true }).tap();
   const download = page.waitForEvent("download");
-  await page.getByRole("button", { name: "Download project.yaml" }).tap();
+  await page.getByRole("button", { name: "Download ready project.yaml" }).tap();
   assert.equal((await download).suggestedFilename(), "project.yaml");
   await page
     .getByRole("link", { name: "↑ Back to editing", exact: true })

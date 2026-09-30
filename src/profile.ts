@@ -97,6 +97,87 @@ export type Profile = {
   visibility: "listed" | "withdrawn";
 };
 export type AuthoredProfile = Project | Profile;
+// Drafts use the same YAML shape but may omit required factual answers. Keep
+// parsing bounded and structural so a saved form draft can return to the form.
+export function parseDraft(text: string): {
+  draft?: AuthoredProfile;
+  errors: string[];
+} {
+  if (new TextEncoder().encode(text).length > 65536)
+    return { errors: ["Keep project-draft.yaml under 64 KB."] };
+  try {
+    const doc = parseDocument(text, { uniqueKeys: true, customTags: [] });
+    if (doc.errors.length || doc.warnings.length)
+      return { errors: [...doc.errors, ...doc.warnings].map((e) => e.message) };
+    const value = doc.toJS({ maxAliasCount: 0 });
+    const object = (v: unknown): v is Record<string, any> =>
+      !!v && typeof v === "object" && !Array.isArray(v);
+    if (
+      !object(value) ||
+      !["oic/project/v1", "oic/project/v2"].includes(value.schema)
+    )
+      return { errors: ["Open an OIC v1 or v2 project YAML file."] };
+    const strings = (items: unknown) =>
+      Array.isArray(items) && items.every((item) => typeof item === "string");
+    if (
+      value.schema === "oic/project/v2" &&
+      (!object(value.publisher) ||
+        !object(value.description) ||
+        !object(value.source) ||
+        !object(value.license) ||
+        !object(value.access) ||
+        !object(value.lifecycle) ||
+        !Array.isArray(value.actions) ||
+        value.actions.length < 1 ||
+        !value.actions.every(
+          (action: unknown) =>
+            object(action) &&
+            typeof action.id === "string" &&
+            typeof action.type === "string" &&
+            typeof action.url === "string" &&
+            typeof action.primary === "boolean",
+        ) ||
+        !strings(value.tags) ||
+        !strings(value.platforms) ||
+        !Array.isArray(value.requirements) ||
+        typeof value.publisher.name !== "string" ||
+        typeof value.source.availability !== "string" ||
+        typeof value.license.name !== "string" ||
+        typeof value.license.url !== "string" ||
+        typeof value.access.edition !== "string" ||
+        typeof value.access.notes !== "string" ||
+        typeof value.lifecycle.stage !== "string" ||
+        typeof value.lifecycle.maintenance !== "string" ||
+        (value.discovery !== undefined &&
+          (!object(value.discovery) ||
+            (value.discovery.capabilities !== undefined &&
+              !strings(value.discovery.capabilities)))) ||
+        (value.media !== undefined &&
+          (!Array.isArray(value.media) || !value.media.every(object))) ||
+        (value.resources !== undefined &&
+          (!Array.isArray(value.resources) || !value.resources.every(object))))
+    )
+      return {
+        errors: [
+          "This draft needs the basic v2 sections to open in the form. Continue in YAML mode or start from the template.",
+        ],
+      };
+    if (
+      value.schema === "oic/project/v1" &&
+      (!strings(value.tags) || !strings(value.platforms))
+    )
+      return {
+        errors: [
+          "This v1 draft needs tags and platforms arrays to open in the form.",
+        ],
+      };
+    return { draft: value as AuthoredProfile, errors: [] };
+  } catch (error) {
+    return {
+      errors: [error instanceof Error ? error.message : "Invalid YAML."],
+    };
+  }
+}
 export const actionLabel = (a: Action) =>
   a.label ||
   {
@@ -212,7 +293,15 @@ export function normalizeProfile(
   display.media = (display.media || []).flatMap<Media>((m) =>
     m.type === "image"
       ? files[m.src]
-        ? [{ ...m, src: files[m.src], ...(files[`${m.src}#poster`] ? { poster: files[`${m.src}#poster`] } : {}) }]
+        ? [
+            {
+              ...m,
+              src: files[m.src],
+              ...(files[`${m.src}#poster`]
+                ? { poster: files[`${m.src}#poster`] }
+                : {}),
+            },
+          ]
         : []
       : [{ ...m, poster: m.poster ? files[m.poster] : undefined }],
   );

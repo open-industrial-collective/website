@@ -3,6 +3,7 @@ import { stringify } from "yaml";
 import { Link } from "react-router-dom";
 import {
   parseProfile,
+  parseDraft,
   normalizeProfile,
   referencedFiles,
   type AuthoredProfile,
@@ -20,22 +21,32 @@ const empty: Profile = {
   id: "",
   name: "",
   summary: "",
-  category: "Engineering",
-  tags: ["Industrial"],
-  platforms: ["Web browser"],
+  category: "" as Profile["category"],
+  tags: [],
+  platforms: [],
   publisher: { name: "" },
   description: { text: "" },
-  source: { availability: "closed-source" },
+  source: { availability: "" as Profile["source"]["availability"] },
   license: { name: "", url: "" },
   access: {
-    edition: "Free edition",
-    cost: "free",
+    edition: "",
+    cost: "" as "free",
     notes: "",
     account_required: "unknown",
   },
   requirements: [],
-  actions: [{ id: "start", type: "demo", url: "", primary: true }],
-  lifecycle: { stage: "preview", maintenance: "active" },
+  actions: [
+    {
+      id: "start",
+      type: "" as Profile["actions"][number]["type"],
+      url: "",
+      primary: true,
+    },
+  ],
+  lifecycle: {
+    stage: "" as Profile["lifecycle"]["stage"],
+    maintenance: "" as Profile["lifecycle"]["maintenance"],
+  },
   visibility: "listed",
 };
 export function ProfileEditor() {
@@ -44,11 +55,145 @@ export function ProfileEditor() {
   const [step, setStep] = useState(0);
   const [draft, setDraft] = useState<AuthoredProfile>(empty);
   const [message, setMessage] = useState("");
+  const [checkedSteps, setCheckedSteps] = useState<number[]>([]);
   const yaml = mode === "yaml" ? text : stringify(draft);
   const result = useMemo(() => parseProfile(yaml), [yaml]);
   const findings = result.project ? admissionPreflight(result.project) : [];
   const blocked = findings.some((finding) => finding.level === "block");
   const display = result.project ? normalizeProfile(result.project) : null;
+  const isV2 = draft.schema === "oic/project/v2";
+  const trim = (value: unknown) =>
+    typeof value === "string" ? value.trim() : "";
+  const validUrl = (value: unknown) => {
+    try {
+      const url = new URL(String(value));
+      return (
+        url.protocol === "https:" &&
+        !!url.hostname &&
+        !url.username &&
+        !url.password
+      );
+    } catch {
+      return false;
+    }
+  };
+  const problems: Record<string, string> = {};
+  if (!trim(draft.name)) problems.name = "Enter a project name.";
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(trim(draft.id)))
+    problems.id = "Use lowercase letters, numbers and hyphens.";
+  if (trim(draft.summary).length < 10)
+    problems.summary = "Write at least 10 characters about what it does.";
+  if (!trim(isV2 ? draft.publisher.name : draft.maintainer))
+    problems[isV2 ? "publisher.name" : "maintainer"] =
+      "Name the project publisher.";
+  if (!draft.category) problems.category = "Choose a category.";
+  if (!draft.tags.some((tag) => trim(tag)))
+    problems.tags = "Add at least one useful tag.";
+  if (!draft.platforms.some((platform) => trim(platform)))
+    problems.platforms = "Name where people can use it.";
+  if (!trim(isV2 ? draft.source.availability : draft.source))
+    problems[isV2 ? "source.availability" : "source"] =
+      "Choose the source availability.";
+  if (isV2) {
+    if (
+      draft.source.availability &&
+      draft.source.availability !== "closed-source" &&
+      !validUrl(draft.source.repository)
+    )
+      problems["source.repository"] =
+        "Link to the public source repository with HTTPS.";
+    if (!trim(draft.access.edition))
+      problems["access.edition"] = "Name the free edition.";
+    if (draft.access.cost !== "free")
+      problems["access.cost"] = "Confirm this edition is free for ongoing use.";
+    if (
+      !trim(
+        "text" in draft.description
+          ? draft.description.text
+          : draft.description.file,
+      )
+    )
+      problems["description.text"] = "Describe what the project does.";
+    if (!trim(draft.license.name))
+      problems["license.name"] = "Name the license or free-use terms.";
+    if (!validUrl(draft.license.url))
+      problems["license.url"] = "Link to the actual terms with HTTPS.";
+    if (!trim(draft.access.notes))
+      problems["access.notes"] =
+        "Explain free scope and separate platform, account or hardware costs.";
+    const primary = draft.actions.find((action) => action.primary);
+    if (!primary?.type)
+      problems["actions.type"] = "Choose what the main link does.";
+    if (!validUrl(primary?.url))
+      problems["actions.url"] = "Add an HTTPS link for the main action.";
+    if (!draft.lifecycle.stage)
+      problems["lifecycle.stage"] = "Choose the release stage.";
+    if (!draft.lifecycle.maintenance)
+      problems["lifecycle.maintenance"] = "Choose the maintenance state.";
+  } else {
+    if (!trim(draft.description))
+      problems.description = "Describe what the project does.";
+    if (!trim(draft.license)) problems.license = "Name the terms.";
+    if (!validUrl(draft.license_url))
+      problems.license_url = "Add an HTTPS terms link.";
+    if (!trim(draft.cost_notes))
+      problems.cost_notes = "Explain the free scope and requirements.";
+    if (!validUrl(draft.get_started))
+      problems.get_started = "Add an HTTPS access link.";
+  }
+  const stepPaths = [
+    [
+      "name",
+      "id",
+      "summary",
+      isV2 ? "publisher.name" : "maintainer",
+      "category",
+      "tags",
+      "platforms",
+      isV2 ? "source.availability" : "source",
+      "source.repository",
+    ],
+    [
+      "access.edition",
+      "access.cost",
+      "description.text",
+      "license.name",
+      "license.url",
+      "access.notes",
+      "actions.type",
+      "actions.url",
+      "lifecycle.stage",
+      "lifecycle.maintenance",
+      "description",
+      "license",
+      "license_url",
+      "cost_notes",
+      "get_started",
+    ],
+  ];
+  const stepErrors = (index: number) =>
+    stepPaths[index].filter((path) => problems[path]);
+  const errorFor = (path: string) =>
+    checkedSteps.includes(step)
+      ? problems[path] ||
+        (path.startsWith("actions.")
+          ? problems[`actions.${path.split(".").at(-1)}`]
+          : undefined)
+      : undefined;
+  const continueStep = () => {
+    if (stepErrors(step).length) {
+      setCheckedSteps((current) => [...new Set([...current, step])]);
+      setMessage("Finish the highlighted fields to continue.");
+      requestAnimationFrame(() =>
+        document
+          .querySelector<HTMLElement>("#listing-form [aria-invalid='true']")
+          ?.focus(),
+      );
+      return;
+    }
+    setMessage("");
+    setStep(step + 1);
+  };
   const set = (path: string, value: unknown) => {
     const copy = structuredClone(draft) as unknown as Record<string, unknown>;
     const keys = path.split(".");
@@ -68,6 +213,7 @@ export function ProfileEditor() {
         {multiline ? (
           <textarea
             rows={4}
+            aria-invalid={!!errorFor(path)}
             value={value || ""}
             onChange={(e) => set(path, e.target.value)}
           />
@@ -98,8 +244,12 @@ export function ProfileEditor() {
               )
             }
             value={value || ""}
+            aria-invalid={!!errorFor(path)}
             onChange={(e) => set(path, e.target.value)}
           />
+        )}
+        {errorFor(path) && (
+          <small className="field-error">{errorFor(path)}</small>
         )}
       </label>
     );
@@ -116,6 +266,7 @@ export function ProfileEditor() {
         <span>{label}</span>
         <select
           aria-label={label}
+          aria-invalid={!!errorFor(path)}
           value={value === undefined ? "" : String(value)}
           onChange={(e) =>
             set(
@@ -126,12 +277,16 @@ export function ProfileEditor() {
             )
           }
         >
+          {!Object.hasOwn(values, "") && <option value="">Choose…</option>}
           {Object.entries(values).map(([key, name]) => (
             <option key={key} value={key}>
               {name}
             </option>
           ))}
         </select>
+        {errorFor(path) && (
+          <small className="field-error">{errorFor(path)}</small>
+        )}
       </label>
     );
   };
@@ -139,18 +294,19 @@ export function ProfileEditor() {
     if (next === mode) return;
     if (next === "yaml") setText(stringify(draft));
     else {
-      const parsed = parseProfile(text);
-      if (!parsed.project) {
-        setMessage("Fix the YAML before switching to the form.");
+      const parsed = parseDraft(text);
+      if (!parsed.draft) {
+        setMessage(
+          parsed.errors[0] || "Fix the YAML before switching to the form.",
+        );
         return;
       }
-      setDraft(parsed.project);
+      setDraft(parsed.draft);
       setStep(0);
     }
     setMode(next);
     setMessage("");
   };
-  const isV2 = draft.schema === "oic/project/v2";
   const updateResources = (resources: Resource[]) =>
     set("resources", resources);
   const updateMedia = (media: Media[]) => set("media", media);
@@ -201,14 +357,16 @@ export function ProfileEditor() {
     result.project?.schema === "oic/project/v2"
       ? referencedFiles(result.project)
       : [];
-  const save = () => {
+  const save = (ready: boolean) => {
     const url = URL.createObjectURL(new Blob([yaml], { type: "text/yaml" }));
     const a = document.createElement("a");
     a.href = url;
-    a.download = "project.yaml";
+    a.download = ready ? "project.yaml" : "project-draft.yaml";
     a.click();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
-    setMessage("Downloaded project.yaml. Your listing has not been submitted.");
+    setMessage(
+      `Downloaded ${a.download}. Your listing has not been submitted.`,
+    );
   };
   return (
     <div className="container page">
@@ -219,6 +377,17 @@ export function ProfileEditor() {
           Create a clear listing for a useful industrial tool people can use for
           free. Keep the profile in a public repository; OIC reviews it before
           it appears in the catalog.
+        </p>
+        <p className="share-suggestion-link">
+          Know a tool but don’t maintain it?{" "}
+          <a
+            href={site.toolSuggestion}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Suggest a tool on GitHub ↗
+          </a>{" "}
+          (sign-in required; public issue).
         </p>
       </div>
       <section className="share-criteria" aria-label="Before you start">
@@ -330,9 +499,24 @@ export function ProfileEditor() {
                     setMessage("Keep project.yaml under 64 KB.");
                     return;
                   }
-                  setText(await file.text());
-                  setMode("yaml");
-                  setMessage("");
+                  const contents = await file.text();
+                  setText(contents);
+                  const parsed = parseDraft(contents);
+                  if (parsed.draft) {
+                    setDraft(parsed.draft);
+                    setMode("form");
+                    setStep(0);
+                    setCheckedSteps([]);
+                    setMessage(
+                      "Draft opened in the form. Review its details before requesting a listing.",
+                    );
+                  } else {
+                    setMode("yaml");
+                    setMessage(
+                      parsed.errors[0] ||
+                        "Check the YAML before using the form.",
+                    );
+                  }
                   e.target.value = "";
                 }}
               />
@@ -353,6 +537,12 @@ export function ProfileEditor() {
             <div className="fields">
               {step === 0 && (
                 <>
+                  {checkedSteps.includes(0) && stepErrors(0).length > 0 && (
+                    <p className="step-alert" role="alert">
+                      Finish {stepErrors(0).length} highlighted project details
+                      to continue.
+                    </p>
+                  )}
                   {field("Project name", "name")}
                   {field("Listing URL name", "id")}
                   <p className="field-hint">
@@ -376,8 +566,9 @@ export function ProfileEditor() {
                       sourceLabels,
                     )}
                   </div>
-                  {(isV2 ? draft.source.availability : draft.source) !==
-                    "closed-source" &&
+                  {!!(isV2 ? draft.source.availability : draft.source) &&
+                    (isV2 ? draft.source.availability : draft.source) !==
+                      "closed-source" &&
                     field(
                       "Source repository",
                       isV2 ? "source.repository" : "repository",
@@ -456,6 +647,7 @@ export function ProfileEditor() {
                         commas
                       </span>
                       <input
+                        aria-invalid={!!errorFor(key)}
                         value={draft[key].join(",")}
                         onChange={(e) =>
                           set(
@@ -464,12 +656,21 @@ export function ProfileEditor() {
                           )
                         }
                       />
+                      {errorFor(key) && (
+                        <small className="field-error">{errorFor(key)}</small>
+                      )}
                     </label>
                   ))}
                 </>
               )}
               {step === 1 && (
                 <>
+                  {checkedSteps.includes(1) && stepErrors(1).length > 0 && (
+                    <p className="step-alert" role="alert">
+                      Finish {stepErrors(1).length} highlighted access details
+                      to continue.
+                    </p>
+                  )}
                   {isV2 && (
                     <div className="field-pair">
                       {field("Free edition name", "access.edition")}
@@ -479,6 +680,25 @@ export function ProfileEditor() {
                         true: "Account required",
                       })}
                     </div>
+                  )}
+                  {isV2 && (
+                    <label className="free-edition-confirm">
+                      <input
+                        type="checkbox"
+                        aria-invalid={!!errorFor("access.cost")}
+                        checked={draft.access.cost === "free"}
+                        onChange={(e) =>
+                          set("access.cost", e.target.checked ? "free" : "")
+                        }
+                      />{" "}
+                      I confirm this edition is free for ongoing use, not only a
+                      trial.
+                      {errorFor("access.cost") && (
+                        <small className="field-error">
+                          {errorFor("access.cost")}
+                        </small>
+                      )}
+                    </label>
                   )}
 
                   {isV2 && "file" in draft.description
@@ -504,19 +724,60 @@ export function ProfileEditor() {
                   {field(
                     "Primary destination",
                     isV2
-                      ? `actions.${draft.actions.findIndex((a) => a.primary)}.url`
+                      ? `actions.${Math.max(
+                          0,
+                          draft.actions.findIndex((a) => a.primary),
+                        )}.url`
                       : "get_started",
+                  )}
+                  {isV2 && (
+                    <>
+                      {choose(
+                        "Main link type",
+                        `actions.${Math.max(
+                          0,
+                          draft.actions.findIndex((a) => a.primary),
+                        )}.type`,
+                        {
+                          demo: "Try a demo",
+                          download: "Download",
+                          install: "Install",
+                          docs: "Read documentation",
+                        },
+                      )}
+                      <div className="field-pair">
+                        {choose("Release stage", "lifecycle.stage", {
+                          preview: "Preview",
+                          beta: "Beta",
+                          stable: "Stable",
+                        })}
+                        {choose("Maintenance", "lifecycle.maintenance", {
+                          active: "Active",
+                          "maintenance-only": "Maintenance only",
+                          archived: "Archived",
+                        })}
+                      </div>
+                      <p className="field-hint">
+                        For paid host platforms, hardware or accounts needed to
+                        use the free edition, explain them above. Add structured
+                        requirements in YAML.
+                      </p>
+                    </>
                   )}
                   {isV2 && (
                     <details className="resource-editor media-editor">
                       <summary>
-                        Images, GIFs & video <span>{draft.media?.length || 0}</span>
+                        Images, GIFs & video{" "}
+                        <span>{draft.media?.length || 0}</span>
                       </summary>
                       <p>
                         Add up to eight items in the order visitors should see
                         them. Put screenshots beside{" "}
                         <code>.oic/project.yaml</code> and use relative paths
-                        such as <code>./media/screen.jpg</code>. Use a local <code>.gif</code> for a short product motion preview. GIFs are paused until a visitor plays them. Videos open at your HTTPS link.
+                        such as <code>./media/screen.jpg</code>. Use a local{" "}
+                        <code>.gif</code> for a short product motion preview.
+                        GIFs are paused until a visitor plays them. Videos open
+                        at your HTTPS link.
                       </p>
                       {(draft.media || []).map((item, index) => (
                         <div className="resource-editor-item" key={item.id}>
@@ -682,7 +943,7 @@ export function ProfileEditor() {
                           onClick={() => addMedia("image")}
                           disabled={(draft.media?.length || 0) >= 8}
                         >
-                          Add screenshot
+                          Add image or GIF
                         </button>
                         <button
                           type="button"
@@ -982,6 +1243,42 @@ export function ProfileEditor() {
               )}
               {step === 2 && (
                 <div className="share-review-guide">
+                  {result.errors.length > 0 && (
+                    <p className="step-alert" role="status">
+                      The project still needs {result.errors.length} schema or
+                      structure fixes. Use the review summary to return to the
+                      relevant step.
+                    </p>
+                  )}
+                  {(stepErrors(0).length > 0 || stepErrors(1).length > 0) && (
+                    <div
+                      className="review-step-links"
+                      aria-label="Fields to finish"
+                    >
+                      {([0, 1] as const).map(
+                        (index) =>
+                          stepErrors(index).length > 0 && (
+                            <button
+                              type="button"
+                              key={index}
+                              className="text-link"
+                              onClick={() => {
+                                setStep(index);
+                                setCheckedSteps((current) => [
+                                  ...new Set([...current, index]),
+                                ]);
+                                document
+                                  .getElementById("listing-form")
+                                  ?.focus();
+                              }}
+                            >
+                              {index === 0 ? "Project" : "Access"}:{" "}
+                              {stepErrors(index).length} details to finish →
+                            </button>
+                          ),
+                      )}
+                    </div>
+                  )}
                   <h3>Before you request a listing</h3>
                   <ol>
                     <li>
@@ -1007,6 +1304,13 @@ export function ProfileEditor() {
                   <p>
                     No listing is sent from this page. Downloading YAML or
                     passing preflight does not publish it.
+                  </p>
+                  <p>
+                    Need help with the listing?{" "}
+                    <Link to="/community">
+                      See the suggestion and contribution paths
+                    </Link>
+                    .
                   </p>
                   <a
                     className="text-link"
@@ -1034,7 +1338,7 @@ export function ProfileEditor() {
                   <button
                     type="button"
                     className="button primary"
-                    onClick={() => setStep(step + 1)}
+                    onClick={continueStep}
                   >
                     Continue <span aria-hidden="true">→</span>
                   </button>
@@ -1096,12 +1400,23 @@ export function ProfileEditor() {
               {display
                 ? blocked
                   ? "Draft needs changes"
-                  : "Ready to export"
-                : "A few details to finish"}
+                  : "Ready for human review"
+                : mode === "form" && step === 0 && !checkedSteps.length
+                  ? "Start with the essentials"
+                  : "A few details to finish"}
             </h3>
-            {result.errors.length > 0 && (
+            {mode === "form" && step === 0 && !checkedSteps.length && (
+              <p className="small-text">
+                Your answers stay on this device until you download a draft. The
+                preview appears when the required details are complete.
+              </p>
+            )}
+            {(mode === "yaml" || step === 2) && result.errors.length > 0 && (
               <details>
-                <summary>{result.errors.length} items need attention</summary>
+                <summary>
+                  {result.errors.length} schema or structure items need
+                  attention
+                </summary>
                 <ul>
                   {result.errors.map((e, i) => (
                     <li key={i}>{e}</li>
@@ -1144,16 +1459,19 @@ export function ProfileEditor() {
             </p>
             {blocked && (
               <p className="small-text">
-                You can save this draft now. Replace the blocked links before
-                requesting publication.
+                You can save an unfinished draft now. Replace the blocked links
+                before requesting publication.
               </p>
             )}
+            <button className="button" onClick={() => save(false)}>
+              Download unfinished draft
+            </button>
             <button
               className="button primary"
-              disabled={!display}
-              onClick={save}
+              disabled={!display || blocked}
+              onClick={() => save(true)}
             >
-              Download project.yaml
+              Download ready project.yaml
             </button>
             <p role="status">{message}</p>
           </div>
@@ -1161,11 +1479,14 @@ export function ProfileEditor() {
             <h3>Submit for review</h3>
             <ol>
               <li>
-                Commit project.yaml and its files under <code>.oic/</code>.
+                Commit the ready file as <code>.oic/project.yaml</code>, with
+                declared media and text paths relative to it.
               </li>
               <li>
-                Request a listing using your public repository URL. Private
-                software can use a public listing-only repository.
+                Open a listing request with your public repository URL and
+                manifest branch/path. GitHub sign-in is required; the Issue is
+                public. Private software can use a public listing-only
+                repository.
               </li>
               <li>
                 OIC reviews the profile and imports an approved snapshot. Later
@@ -1182,6 +1503,9 @@ export function ProfileEditor() {
             </a>
             <Link className="text-link" to="/charter">
               Read the Listing Charter →
+            </Link>
+            <Link className="text-link" to="/community">
+              Need help? See Community →
             </Link>
           </div>
         </aside>

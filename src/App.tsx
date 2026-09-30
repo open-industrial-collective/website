@@ -284,7 +284,7 @@ export default function App() {
             <NavLink to="/explore">Explore tools</NavLink>
             <NavLink to="/about">Why OIC</NavLink>
             <NavLink to="/how-it-works">How it works</NavLink>
-            <NavLink to="/community">People & join</NavLink>
+            <NavLink to="/community">Community</NavLink>
             <NavLink className="nav-share" to="/share">
               Share a project
             </NavLink>
@@ -325,7 +325,7 @@ export default function App() {
             <Link to="/guide">Listing guide</Link>
             <Link to="/charter">Listing Charter</Link>
             <Link to="/safety">Use & security</Link>
-            <Link to="/community">People & join</Link>
+            <Link to="/community">Community</Link>
             <Link to="/guide#review">How we review</Link>
             <a href="/data/catalog.json">Catalog data</a>
             <Link to="/about">About</Link>

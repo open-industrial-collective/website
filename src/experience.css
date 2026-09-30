@@ -658,7 +658,7 @@
   gap: 35px;
 }
 .people-actions-section {
-  padding-top: 70px;
+  padding-top: 0;
 }
 .people-action-grid {
   display: grid;
@@ -713,6 +713,54 @@
   margin: 22px 0 0;
   font-size: 12px;
 }
+.field-error {
+  color: #9c3425 !important;
+  font-size: 12px;
+  font-weight: 600;
+}
+.field [aria-invalid="true"] {
+  border-color: #b84937;
+  box-shadow: 0 0 0 2px #b8493722;
+}
+.step-alert {
+  padding: 12px 14px;
+  border: 1px solid #b8493750;
+  background: #b8493710;
+  border-radius: 10px;
+  color: #813426;
+  font-size: 13px;
+}
+.free-edition-confirm {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 9px;
+  margin: 0 0 22px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.free-edition-confirm input {
+  width: 18px;
+  height: 18px;
+}
+.review-step-links {
+  display: grid;
+  gap: 8px;
+  margin: 12px 0;
+}
+.review-step-links button {
+  justify-self: start;
+}
+.share-suggestion-link {
+  font-size: 13px;
+  margin-top: 15px;
+}
+.share-suggestion-link a {
+  font-weight: 700;
+}
+.validation .button + .button {
+  margin-top: 10px;
+}
 @media (max-width: 700px) {
   .story-statement {
     display: block;
@@ -724,7 +772,7 @@
     display: none;
   }
   .people-actions-section {
-    padding-top: 45px;
+    padding-top: 0;
   }
   .people-action-grid {
     grid-template-columns: 1fr;

@@ -165,7 +165,9 @@ await expect(
   page.getByRole("heading", { name: "What keeps the catalog useful?" }),
 ).toBeInViewport();
 await page
-  .getByText("Has OIC verified these tools for production use?", { exact: true })
+  .getByText("Has OIC verified these tools for production use?", {
+    exact: true,
+  })
   .click();
 await expect(
   page.getByText("The catalog does not certify software", { exact: false }),
@@ -174,12 +176,98 @@ await page.goto(base + "/about");
 await expect(
   page.getByRole("heading", { name: "Industrial ideas need a path to trust." }),
 ).toBeVisible();
-await expect(page.getByRole("heading", { name: "Build. Share. Prove." })).toBeVisible();
-await page.goto(base + "/share");
-await page.getByRole("button", { name: "Download project.yaml" }).waitFor();
 await expect(
-  page.getByRole("button", { name: "Download project.yaml" }),
+  page.getByRole("heading", { name: "Build. Share. Prove." }),
+).toBeVisible();
+await page.goto(base + "/share");
+await page
+  .getByRole("button", { name: "Download ready project.yaml" })
+  .waitFor();
+await expect(
+  page.getByRole("heading", { name: "Start with the essentials" }),
+).toBeVisible();
+await expect(
+  page.getByText(/schema or structure items need attention/),
+).toHaveCount(0);
+await expect(
+  page.getByRole("button", { name: "Download ready project.yaml" }),
 ).toBeDisabled();
+await page.getByRole("button", { name: "Continue" }).click();
+await expect(page.getByText(/highlighted project details/)).toBeVisible();
+await expect(
+  page.getByRole("textbox", { name: "Project name" }),
+).toHaveAttribute("aria-invalid", "true");
+await page
+  .getByRole("textbox", { name: "Project name" })
+  .fill("My unfinished tool");
+const draftDownload = page.waitForEvent("download");
+await page.getByRole("button", { name: "Download unfinished draft" }).click();
+const unfinished = await draftDownload;
+assert.equal(unfinished.suggestedFilename(), "project-draft.yaml");
+await page.getByLabel("Open YAML file", { exact: true }).setInputFiles({
+  name: "project-draft.yaml",
+  mimeType: "text/yaml",
+  buffer: await readFile(await unfinished.path()),
+});
+await expect(page.getByRole("textbox", { name: "Project name" })).toHaveValue(
+  "My unfinished tool",
+);
+await page
+  .getByRole("textbox", { name: "Listing URL name" })
+  .fill("my-unfinished-tool");
+await page
+  .getByRole("textbox", { name: "One-sentence summary" })
+  .fill("A free example for preparing industrial workflow diagrams.");
+await page
+  .getByRole("textbox", { name: "Project publisher" })
+  .fill("Example publisher");
+await page.getByLabel("Category", { exact: true }).selectOption("Engineering");
+await page
+  .getByLabel("Source availability", { exact: true })
+  .selectOption("closed-source");
+await page
+  .getByRole("textbox", { name: /Tags · separate/ })
+  .fill("Engineering");
+await page
+  .getByRole("textbox", { name: /Platforms · separate/ })
+  .fill("Web browser");
+await page.getByRole("button", { name: "Continue" }).click();
+await expect(
+  page.getByRole("heading", { name: "Access & details" }),
+).toBeVisible();
+await page
+  .getByRole("textbox", { name: "Free edition name" })
+  .fill("Free browser edition");
+await page
+  .getByRole("checkbox", { name: /I confirm this edition is free/ })
+  .check();
+await page
+  .getByRole("textbox", { name: "About the project" })
+  .fill("A browser tool for industrial workflow diagrams.");
+await page
+  .getByRole("textbox", { name: "License or free-use terms" })
+  .fill("Free preview terms");
+await page
+  .getByRole("textbox", { name: "License / terms URL" })
+  .fill(
+    "https://github.com/open-industrial-collective/website/blob/main/CHARTER.md",
+  );
+await page
+  .getByRole("textbox", { name: "What’s free & what it requires" })
+  .fill("The browser edition is free. No paid platform is required.");
+await page
+  .getByRole("textbox", { name: "Primary destination" })
+  .fill("https://github.com/open-industrial-collective/website");
+await page.getByLabel("Main link type").selectOption("demo");
+await page.getByLabel("Release stage").selectOption("preview");
+await page.getByLabel("Maintenance").selectOption("active");
+await page.getByRole("button", { name: "Continue" }).click();
+await expect(
+  page.getByRole("heading", { name: "Review & save" }),
+).toBeVisible();
+await expect(
+  page.getByRole("button", { name: "Download ready project.yaml" }),
+).toBeEnabled();
 await page
   .getByLabel("Open YAML file", { exact: true })
   .setInputFiles(
@@ -188,8 +276,11 @@ await page
 await page.getByRole("heading", { name: "Draft needs changes" }).waitFor();
 await expect(page.getByText(/Replace the blocked links/)).toBeVisible();
 await expect(
-  page.getByRole("button", { name: "Download project.yaml" }),
-).toBeEnabled();
+  page.getByRole("button", { name: "Download ready project.yaml" }),
+).toBeDisabled();
+const blockedDraft = page.waitForEvent("download");
+await page.getByRole("button", { name: "Download unfinished draft" }).click();
+assert.equal((await blockedDraft).suggestedFilename(), "project-draft.yaml");
 await page.getByLabel("Open YAML file", { exact: true }).setInputFiles({
   name: "project.yaml",
   mimeType: "text/yaml",
@@ -205,12 +296,12 @@ await page.getByLabel("Open YAML file", { exact: true }).setInputFiles({
     ),
   ),
 });
-await page.getByRole("heading", { name: "Ready to export" }).waitFor();
+await page.getByRole("heading", { name: "Ready for human review" }).waitFor();
 await expect(
-  page.getByRole("button", { name: "Download project.yaml" }),
+  page.getByRole("button", { name: "Download ready project.yaml" }),
 ).toBeEnabled();
 const downloadPromise = page.waitForEvent("download");
-await page.getByRole("button", { name: "Download project.yaml" }).click();
+await page.getByRole("button", { name: "Download ready project.yaml" }).click();
 const download = await downloadPromise;
 assert.equal(download.suggestedFilename(), "project.yaml");
 await page.getByRole("button", { name: "Simple form", exact: true }).click();
@@ -282,7 +373,7 @@ await page
   );
 await page.getByRole("textbox", { name: "Format (optional)" }).fill(".modl");
 await page.locator(".media-editor > summary").click();
-await page.getByRole("button", { name: "Add screenshot" }).click();
+await page.getByRole("button", { name: "Add image or GIF" }).click();
 await page
   .getByRole("textbox", { name: "Image or GIF file path" })
   .last()
@@ -342,7 +433,7 @@ await page
   .getByLabel("Project YAML", { exact: true })
   .fill("name: bad\nid: invalid\n");
 await expect(
-  page.getByRole("button", { name: "Download project.yaml" }),
+  page.getByRole("button", { name: "Download ready project.yaml" }),
 ).toBeDisabled();
 await page.screenshot({
   path: new URL("../qa/share-desktop.png", import.meta.url).pathname,
@@ -381,10 +472,10 @@ for (const path of [
     await page.getByRole("button", { name: "Open navigation" }).click();
     await page
       .getByRole("navigation", { name: "Main navigation" })
-      .getByRole("link", { name: "People & join", exact: true })
+      .getByRole("link", { name: "Community", exact: true })
       .click();
     await page
-      .getByRole("heading", { name: "There’s room to contribute." })
+      .getByRole("heading", { name: "Choose a way to help." })
       .waitFor();
     await expect(
       page.getByRole("heading", { name: "Grindstone Systems" }),
