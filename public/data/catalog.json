@@ -396,7 +396,7 @@
     "id": "documentation-toolkit",
     "name": "Documentation Toolkit",
     "summary": "Experimental: turn an Ignition backup or project export into a searchable engineering reference and editable manual pack, in your browser.",
-    "description": "> **Experimental · testing phase.** It works and it's private, but it's still being proven on real projects. Check generated documents against the source before relying on them, and please report what it gets wrong.\n\nDocumentation Toolkit turns the files an Ignition project already produces into documentation a team can hand over. Open a gateway backup, a project export or a tag export and it builds a searchable engineering reference in your browser, with every fact traced to the file it came from. Nothing is uploaded.\n\n## What you get\n\n- **An engineering reference**: system overview, a system map of pages, views and data, projects, navigation, Perspective views, tags and UDTs, alarms, connections, named queries, scripts, cross-references and gaps, plus appendices with complete inventories.\n- **Manual frameworks** for operators and maintenance. Screens, alarms and equipment come from configuration. Operating procedures, alarm responses and safety information are marked **Unresolved** until the site supplies them; the toolkit doesn't invent them.\n- **Coverage you can trust.** Every resource type is counted as found and read. Anything the toolkit can't interpret yet, such as Vision windows, is listed and explained rather than silently dropped.\n- **Your branding**: customer name, logo, revision, a few themes, Letter or A4, section choice, screenshots attached to screens, and redaction of addresses, usernames or code.\n\n## Exports\n\n- Offline HTML: one file with search that opens without a server\n- Word (.docx) with real heading styles and tables\n- PDF through the browser's print dialog\n- CSV inventories of tags, alarms, views and queries\n- An agent workspace: evidence as JSON and one Markdown file per section\n\n## Bring your own AI assistant\n\nThe basic pack needs no AI. To go further, save the workspace and open it with Claude Code, Codex or another assistant. An optional local extension (`oic-docs`) adds MCP tools to search evidence, trace relationships, write draft sections and rebuild the pack. It reads only the workspace, never touches a gateway, and can't mark anything as confirmed.\n\n## Privacy\n\nProcessing happens on your device. The app loads only its own files, keeps working offline once loaded, and never reads credentials from a backup. A CI check fails the build if any request leaves the app's origin.\n\n## Where it fits\n\nDocumentation Toolkit reads exported files. It doesn't connect to a gateway, run project code or replace the Designer. It's in preview: project exports, tag exports and 8.3 backups are supported, and 8.1 backups document projects only. It has been tested on a synthetic sample and a small number of real backups. The code is open source under Apache-2.0.\n",
+    "description": "> **Experimental · testing phase.** It works and it's private, but it's still being proven on real projects. Check generated documents against the source before relying on them, and please report what it gets wrong.\n\nDocumentation Toolkit turns the files an Ignition project already produces into documentation a team can hand over. Open a gateway backup, a project export or a tag export and it builds a searchable engineering reference in your browser, with every fact traced to the file it came from. Nothing is uploaded.\n\n## What you get\n\n- **An engineering reference**: system overview, a system map of pages, views and data, projects, navigation, Perspective views, tags and UDTs, alarms, connections, named queries, scripts, cross-references and gaps, plus appendices with complete inventories.\n- **Manual frameworks** for operators and maintenance. Screens, alarms and equipment come from configuration. Operating procedures, alarm responses and safety information are marked **Unresolved** until the site supplies them; the toolkit doesn't invent them.\n- **Coverage you can trust.** Every resource type is counted as found and read. Anything the toolkit can't interpret yet, such as Vision windows, is listed and explained rather than silently dropped.\n- **Your branding**: customer name, logo, revision, a few themes, Letter or A4, section choice, screenshots attached to screens, and redaction of addresses, usernames or code.\n\n## Exports\n\n- Offline HTML: one file with search that opens without a server\n- Word (.docx) with real heading styles and tables\n- PDF through the browser's print dialog\n- CSV inventories of tags, alarms, views and queries\n- An agent workspace: evidence as JSON and one Markdown file per section\n\n## Bring your own AI assistant\n\nThe basic pack needs no AI. To go further, save the workspace and open it with Claude Code, Codex or another assistant. An optional local extension (`oic-docs`) adds MCP tools to search evidence, trace relationships, write draft sections and rebuild the pack. It reads only the workspace, never touches a gateway, and can't mark anything as confirmed.\n\n## Privacy\n\nProcessing happens on your device. The app loads only its own files, keeps working offline once loaded, and never reads credentials from a backup. A CI check fails the build if any request leaves the app's origin.\n\n## Where it fits\n\nDocumentation Toolkit reads exported files. It doesn't connect to a gateway, run project code or replace the Designer. It's in preview: project exports, tag exports, and 8.1 and 8.3 gateway backups are supported, including tags, connections and devices from an 8.1 backup's internal database. It has been tested on a synthetic sample and a small number of real backups. The code is open source under Apache-2.0.\n",
     "category": "Engineering",
     "tags": [
       "Experimental",
@@ -461,9 +461,9 @@
         {
           "id": "workspace",
           "type": "image",
-          "src": "/images/projects/d20894ce551e27b76d852d7b34133fcc61b72426da699203a56ed6af97beebed.webp",
+          "src": "/images/projects/3392cd8a0f225a664961614966adc69601386e79d474bc9d6c329d597523ced8.webp",
           "title": "A reference built in the browser",
-          "alt": "The Documentation Toolkit workspace with inputs and counts on the left, a generated engineering reference showing a system map of pages, views and tag folders in the middle, and branding controls on the right.",
+          "alt": "The Documentation Toolkit workspace with the Engineering Reference pack and its section outline on the left, a generated system map of pages, views and tag folders in the middle, and the Customize panel with document details on the right.",
           "caption": "Workspace · The synthetic Riverbend sample project and tag export, processed on the device",
           "credit": "Grindstone Systems",
           "rights": "Provided for display, resizing and caching in the OIC project listing."
@@ -471,7 +471,7 @@
         {
           "id": "evidence",
           "type": "image",
-          "src": "/images/projects/e7df3ad9d2b0d00c397eda9362e252a06532a5a9eab8912fb07cbc02b99db833.webp",
+          "src": "/images/projects/a2b0280dfaa5080841ceee8bdf0289f8cccabd65783705f325af3115217a325e.webp",
           "title": "Every fact traced to its source",
           "alt": "The Evidence tab showing the tag P101/Speed with its source file, configuration fields including an OPC item path expanded from its UDT, the view that uses it and the document section that cites it.",
           "caption": "Evidence explorer · Configuration, source file, links and where each item appears in the document",
@@ -481,7 +481,7 @@
         {
           "id": "operator-framework",
           "type": "image",
-          "src": "/images/projects/faf7644f0ee88d8eca70daf100f647427174a1d0bf44781e0192985401b4091e.webp",
+          "src": "/images/projects/841c03b0fd5e96c61665a19d06d847117120b7203a167797e9b4621b00a9cf9f.webp",
           "title": "Frameworks that don't invent procedures",
           "alt": "The Operator Manual Framework pack showing an Alarm responses section marked Unresolved, listing critical and high alarms with an empty Approved response column.",
           "caption": "Operator Manual Framework · Alarms come from configuration; responses stay Unresolved until the site supplies them",
@@ -491,7 +491,7 @@
         {
           "id": "coverage",
           "type": "image",
-          "src": "/images/projects/bb476dc34b15b4762942523b6f377f0a0e69db18c0958bca0d1b95885994acd6.webp",
+          "src": "/images/projects/24abe40256b988271b4e4556d434213f0768800124149d3d08624154f8d1c392.webp",
           "title": "Explicit about coverage",
           "alt": "The Coverage tab in dark mode listing each resource type with found and read counts, a Vision window listed but not read, and one unresolved tag reference.",
           "caption": "Coverage · Anything found but not read is counted and explained, never silently dropped",
@@ -501,7 +501,7 @@
         {
           "id": "reference",
           "type": "image",
-          "src": "/images/projects/c664df5f0930e39c80a4ab09c3b6f0e5d65e86a666c64b692c9a53bc40108051.webp",
+          "src": "/images/projects/35434a4040c3f3633cee2c00298cc4447a7f3e16ffe1173c2ef87a3d3fce985a.webp",
           "title": "The exported reference",
           "alt": "The exported offline HTML reference with a contents sidebar and search box, a tag summary by folder, UDT definitions and an alarm table.",
           "caption": "Offline HTML export · One self-contained file with search; also exported as Word, PDF and CSV",
@@ -511,7 +511,7 @@
         {
           "id": "agents",
           "type": "image",
-          "src": "/images/projects/c577653ef69eb554015e0526f06af78434705fff46b306ba3f8170772cf29228.webp",
+          "src": "/images/projects/080c39d39d1aafb17214da7dbe91922e2a44b632e8ed0560cf8772e9fef9f633.webp",
           "title": "Bring your own AI assistant",
           "alt": "The AI agent extension page in dark mode with steps to save a workspace, set up the local MCP tools for Claude Code or Codex, and the boundaries the tools enforce.",
           "caption": "Agent extension · Optional; uses your own Claude Code, Codex or MCP client on your machine",
@@ -545,7 +545,7 @@
           "name": "Ignition exports",
           "kind": "software",
           "cost": "optional-paid",
-          "notes": "A project export (8.x), a tag export (JSON) or a gateway backup. 8.3 backups include gateway configuration; 8.1 backups document projects only. A sample project is built in."
+          "notes": "A project export (8.x), a tag export (JSON) or a gateway backup. 8.1 and 8.3 backups include gateway configuration (tags, UDTs, alarms, connections and devices). A sample project is built in."
         },
         {
           "name": "Node.js 22",
@@ -641,7 +641,7 @@
         },
         {
           "question": "Which Ignition versions are supported?",
-          "answer": "Project exports from 8.x, tag exports (JSON) and 8.3 gateway backups. 8.1 backups document projects; their tags and connections live in an internal database that isn't decoded yet. Vision windows and reports are listed by name. Tested on a synthetic sample and a small number of real 8.1 and 8.3 backups."
+          "answer": "Project exports from 8.x, tag exports (JSON), and 8.1 and 8.3 gateway backups including their tags, UDTs, alarms, connections and devices. An 8.1 backup keeps that configuration in an internal database, which the toolkit reads without running it; that reader has been tested on one real 8.1 backup so far. Vision windows and reports are listed by name. Tested on a synthetic sample and a small number of real 8.1 and 8.3 backups."
         },
         {
           "question": "Is this an Inductive Automation product?",
@@ -742,7 +742,7 @@
           "type": "image",
           "src": "./media/workspace.jpg",
           "title": "A reference built in the browser",
-          "alt": "The Documentation Toolkit workspace with inputs and counts on the left, a generated engineering reference showing a system map of pages, views and tag folders in the middle, and branding controls on the right.",
+          "alt": "The Documentation Toolkit workspace with the Engineering Reference pack and its section outline on the left, a generated system map of pages, views and tag folders in the middle, and the Customize panel with document details on the right.",
           "caption": "Workspace · The synthetic Riverbend sample project and tag export, processed on the device",
           "credit": "Grindstone Systems",
           "rights": "Provided for display, resizing and caching in the OIC project listing."
@@ -824,7 +824,7 @@
           "name": "Ignition exports",
           "kind": "software",
           "cost": "optional-paid",
-          "notes": "A project export (8.x), a tag export (JSON) or a gateway backup. 8.3 backups include gateway configuration; 8.1 backups document projects only. A sample project is built in."
+          "notes": "A project export (8.x), a tag export (JSON) or a gateway backup. 8.1 and 8.3 backups include gateway configuration (tags, UDTs, alarms, connections and devices). A sample project is built in."
         },
         {
           "name": "Node.js 22",
@@ -920,7 +920,7 @@
         },
         {
           "question": "Which Ignition versions are supported?",
-          "answer": "Project exports from 8.x, tag exports (JSON) and 8.3 gateway backups. 8.1 backups document projects; their tags and connections live in an internal database that isn't decoded yet. Vision windows and reports are listed by name. Tested on a synthetic sample and a small number of real 8.1 and 8.3 backups."
+          "answer": "Project exports from 8.x, tag exports (JSON), and 8.1 and 8.3 gateway backups including their tags, UDTs, alarms, connections and devices. An 8.1 backup keeps that configuration in an internal database, which the toolkit reads without running it; that reader has been tested on one real 8.1 backup so far. Vision windows and reports are listed by name. Tested on a synthetic sample and a small number of real 8.1 and 8.3 backups."
         },
         {
           "question": "Is this an Inductive Automation product?",
@@ -988,8 +988,8 @@
       "added": "2026-09-29",
       "source": {
         "repository": "Grindstone-Systems/documentation-toolkit",
-        "commit": "abb37776861eecaa8c9a104c1ad285f7f9045706",
-        "digest": "abd7bbf701c6bd8a2b510ff2af8d5d50aa8f9b17c209f500047ef2e873d176a3"
+        "commit": "4b356da1c13149dfc93c16f198fefd62e7f7d0ab",
+        "digest": "da0669b815de3e24fa8c0770927d18527539d72521877d9e35103cee4a449bb5"
       }
     }
   },
