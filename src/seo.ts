@@ -19,12 +19,12 @@ const pages: Record<string, [string, string]> = {
     "See who currently stewards OIC and how builders and practitioners can contribute as the Collective grows.",
   ],
   "/about": [
-    "About Open Industrial Collective",
-    "Learn why OIC brings free industrial tools together across vendors, industries and source models, with clear terms and requirements.",
+    "Why Open Industrial Collective exists",
+    "OIC connects industrial expertise to adoption through useful technology, open sharing and evidence people can inspect. Learn the Build, Share, Prove mission and what exists today.",
   ],
   "/how-it-works": [
     "How OIC works",
-    "Project maintainers own their portable YAML profiles. OIC reviews free access, requirements and publication details for its catalog.",
+    "Find and share free industrial tools with clear access, terms and requirements. Get direct answers about listing review, source rights, platform costs and the limits of verification.",
   ],
   "/platforms": [
     "Industrial platforms and software costs",

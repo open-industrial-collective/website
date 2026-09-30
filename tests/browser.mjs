@@ -164,6 +164,17 @@ await page.goto(base + "/how-it-works#quality");
 await expect(
   page.getByRole("heading", { name: "What keeps the catalog useful?" }),
 ).toBeInViewport();
+await page
+  .getByText("Has OIC verified these tools for production use?", { exact: true })
+  .click();
+await expect(
+  page.getByText("The catalog does not certify software", { exact: false }),
+).toBeVisible();
+await page.goto(base + "/about");
+await expect(
+  page.getByRole("heading", { name: "Industrial ideas need a path to trust." }),
+).toBeVisible();
+await expect(page.getByRole("heading", { name: "Build. Share. Prove." })).toBeVisible();
 await page.goto(base + "/share");
 await page.getByRole("button", { name: "Download project.yaml" }).waitFor();
 await expect(
