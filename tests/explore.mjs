@@ -45,7 +45,7 @@ await expect(
 ).toHaveAttribute("aria-pressed", "true");
 await page.getByRole("link", { name: "Visual Toolkit", exact: true }).click();
 await page
-  .getByRole("link", { name: "All tools", exact: true })
+  .getByRole("link", { name: "All projects", exact: true })
   .first()
   .click();
 assert.equal(page.url(), shared);
@@ -57,7 +57,7 @@ await expect(
 await page.goto(
   base + "/explore?source=closed-source&works=Ignition+Perspective",
 );
-await expect(page.getByRole("status")).toHaveText("0 tools");
+await expect(page.getByRole("status")).toHaveText("0 projects");
 await expect(
   page.getByRole("button", { name: /Remove Closed source.*result/ }),
 ).toBeVisible();
@@ -79,7 +79,7 @@ for (const p of catalog.slice(0, 3))
     .getByRole("button", { name: `Compare ${p.name}`, exact: true })
     .click();
 await page.getByRole("button", { name: "Compare", exact: true }).click();
-await expect(page.getByRole("dialog", { name: "Compare tools" })).toBeVisible();
+await expect(page.getByRole("dialog", { name: "Compare projects" })).toBeVisible();
 await page.keyboard.press("Escape");
 await expect(
   page.getByRole("button", { name: "Compare", exact: true }),

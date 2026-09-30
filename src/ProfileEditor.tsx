@@ -372,12 +372,12 @@ export function ProfileEditor() {
     <div className="container page">
       <div className="page-heading share-heading">
         <div className="eyebrow">SHARE A PROJECT</div>
-        <h1>Show people what you’ve built.</h1>
+        <h1>Give your project a path into industry.</h1>
         <p>
-          Create a clear listing for a useful industrial tool people can use for
-          free. Keep the profile in a public repository; OIC reviews it before
-          it appears in the catalog.
+          Describe your free software clearly. Keep it where you maintain it;
+          OIC reviews the listing before publishing.
         </p>
+        <img className="oic-page-art oic-share-art" src="/images/illustrations/profile.webp" alt="" width="1536" height="1024" loading="lazy" />
         <p className="share-suggestion-link">
           Know a tool but don’t maintain it?{" "}
           <a

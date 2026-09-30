@@ -14,11 +14,9 @@ export function CommunityPage() {
     <div className="container page people-page">
       <div className="page-heading people-heading">
         <div className="eyebrow">COMMUNITY</div>
-        <h1>Choose a way to help.</h1>
-        <p>
-          Found a useful tool, built one, or spotted something we could improve?
-          Start here.
-        </p>
+        <h1>Help shape what industry can use.</h1>
+        <p>Suggest a free tool, share one you built, or help make OIC more useful.</p>
+        <img className="oic-page-art oic-community-art" src="/images/illustrations/community.webp" alt="" width="1536" height="1024" loading="lazy" />
       </div>
       <section className="people-actions-section" aria-labelledby="ways-title">
         <h2 className="sr-only" id="ways-title">
@@ -33,10 +31,10 @@ export function CommunityPage() {
           >
             <span>01</span>
             <Lightbulb size={25} />
-            <h3>Suggest a tool</h3>
+            <h3>Recommend a tool</h3>
             <p>
-              Send a name, public link and why it helps. You do not need to
-              maintain it or write YAML.
+              Share a link and why it helps. You do not need to maintain it or
+              write YAML.
             </p>
             <b>
               Public GitHub Issue · sign-in required <ArrowUpRight size={16} />
@@ -45,10 +43,10 @@ export function CommunityPage() {
           <Link to="/share" className="people-action-card">
             <span>02</span>
             <GitPullRequest size={25} />
-            <h3>Share a tool you maintain</h3>
+            <h3>List your tool</h3>
             <p>
-              Prepare a portable YAML profile for your free edition and request
-              human review.
+              Prepare its profile for review. You keep your software and releases
+              under your control.
             </p>
             <b>
               Prepare your listing <ArrowRight size={16} />
@@ -62,9 +60,9 @@ export function CommunityPage() {
           >
             <span>03</span>
             <Wrench size={25} />
-            <h3>Help improve OIC</h3>
+            <h3>Contribute to OIC</h3>
             <p>
-              Offer a focused contribution to the catalog, guides or website.
+              Take on a focused improvement to the catalog, guides or website.
             </p>
             <b>
               Public GitHub Issue · sign-in required <ArrowUpRight size={16} />
@@ -87,11 +85,10 @@ export function CommunityPage() {
       >
         <div className="people-stewardship-copy">
           <span className="eyebrow">CURRENT STEWARDSHIP</span>
-          <h2 id="stewardship-title">Who’s looking after OIC?</h2>
+          <h2 id="stewardship-title">Stewardship grows through participation.</h2>
           <p>
-            Grindstone Systems initiated OIC and currently maintains this
-            website. Shared stewardship grows through real work and accepted
-            responsibilities. A public Issue does not grant organization access.
+            Grindstone Systems leads OIC today. Shared responsibility will grow
+            as contributors take on real work.
           </p>
           <a
             href="https://github.com/open-industrial-collective"

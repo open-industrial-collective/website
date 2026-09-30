@@ -682,11 +682,11 @@ export default function Explore() {
     >
       <div className="explore-intro">
         <div>
-          <h1>Explore tools</h1>
+          <h1>Explore projects</h1>
           <p>Find free industrial software. Check the fit. Try it.</p>
         </div>
         <span className="explore-intro-count">
-          {projects.length} tools in the catalog
+          {projects.length} {projects.length === 1 ? "project" : "projects"} in the catalog
         </span>
       </div>
       <div className="explore-search-row">
@@ -695,7 +695,7 @@ export default function Explore() {
           <input
             type="search"
             aria-label="Search catalog"
-            placeholder="Search tools, jobs, or interfaces…"
+            placeholder="Search projects, jobs, or interfaces…"
             value={queryDraft}
             onChange={(e) => {
               setQueryDraft(e.target.value);
@@ -800,14 +800,14 @@ export default function Explore() {
             {filterContent}
           </div>
         </aside>
-        <section className="explore-results" aria-label="Tool results">
+        <section className="explore-results" aria-label="Project results">
           <div className="explore-toolbar">
             <span role="status" aria-live="polite">
-              {filtered.length} {filtered.length === 1 ? "tool" : "tools"}
+              {filtered.length} {filtered.length === 1 ? "project" : "projects"}
             </span>
             <div>
               <label className="sr-only" htmlFor="explore-sort">
-                Sort tools
+                Sort projects
               </label>
               <select
                 id="explore-sort"
@@ -895,8 +895,8 @@ export default function Explore() {
           )}
           {!filtered.length && (
             <div className="explore-empty">
-              <Search size={30} />
-              <h2>No tools match just yet.</h2>
+              <img className="oic-empty-art" src="/images/illustrations/share.webp" alt="" width="1536" height="1024" loading="lazy" />
+              <h2>No projects match just yet.</h2>
               <p>Keep your search, or loosen one constraint.</p>
               {relaxations.map((r) => (
                 <button
@@ -980,7 +980,7 @@ export default function Explore() {
       )}
       {compareOpen && (
         <Modal
-          title="Compare tools"
+          title="Compare projects"
           close={() => {
             setCompareOpen(false);
             requestAnimationFrame(() => compareButtonRef.current?.focus());
@@ -1024,7 +1024,7 @@ export function DiscoveryGlossary() {
   return (
     <div className="container page glossary-page">
       <Link className="back" to="/explore">
-        ← Explore tools
+        ← Explore projects
       </Link>
       <div className="page-heading">
         <h1>Find the right fit.</h1>

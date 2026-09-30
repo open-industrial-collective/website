@@ -79,7 +79,7 @@ for (const engine of engines) {
   await menu.tap();
   await page
     .getByRole("navigation", { name: "Main navigation" })
-    .getByRole("link", { name: "Explore tools" })
+    .getByRole("link", { name: "Explore projects" })
     .tap();
   await expect(
     page.getByRole("navigation", { name: "Main navigation" }),
@@ -91,7 +91,7 @@ for (const engine of engines) {
     page.getByRole("checkbox", { name: "Open source", exact: false }),
   ).toBeHidden();
   await page.getByRole("searchbox", { name: "Search catalog" }).fill("symbols");
-  await expect(page.getByRole("status")).toHaveText(/1 tool/);
+  await expect(page.getByRole("status")).toHaveText(/1 project/);
   await page.getByRole("button", { name: "Filters", exact: true }).tap();
   await page
     .getByRole("dialog", { name: "Filters", exact: true })
@@ -115,7 +115,7 @@ for (const engine of engines) {
     // Search matches every term as a substring, so use nonsense no listing can contain.
     .fill("zqxj-nomatch");
   await expect(
-    page.getByRole("heading", { name: "No tools match just yet." }),
+    page.getByRole("heading", { name: "No projects match just yet." }),
   ).toBeVisible();
   await page.getByRole("button", { name: "Clear search", exact: true }).tap();
   await page

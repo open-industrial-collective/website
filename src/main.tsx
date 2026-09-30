@@ -12,6 +12,7 @@ import "./charter.css";
 import "./polish.css";
 import "./explore.css";
 import "./experience.css";
+import "./visual-system.css";
 const root = document.getElementById("root")!;
 const app = (
   <React.StrictMode>

@@ -38,7 +38,7 @@ if (base.includes("127.0.0.1"))
 await mkdir(new URL("../qa/", import.meta.url), { recursive: true });
 await page.goto(base);
 await page
-  .getByRole("heading", { name: /Find the tool. Get to work./ })
+  .getByRole("heading", { name: /Free industrial software. More room to innovate./ })
   .waitFor();
 await expect(
   page
@@ -101,19 +101,19 @@ await page.screenshot({
   animations: "disabled",
 });
 await page
-  .getByRole("textbox", { name: "Search tools", exact: true })
+  .getByRole("textbox", { name: "Search projects", exact: true })
   .fill("symbols");
 await page.getByRole("button", { name: "Search", exact: true }).click();
 await page.waitForURL("**/explore?q=symbols");
-await expect(page.getByRole("status")).toHaveText("1 tool");
+await expect(page.getByRole("status")).toHaveText("1 project");
 await page
   .getByRole("searchbox", { name: "Search catalog" })
   .fill("no-matching-tool");
-await expect(page.getByRole("status")).toHaveText("0 tools");
+await expect(page.getByRole("status")).toHaveText("0 projects");
 await page.getByRole("button", { name: "Clear all filters" }).click();
 await expect(page.getByRole("status")).toHaveText(countLabel());
 await page.getByRole("checkbox", { name: "Closed source" }).check();
-await expect(page.getByRole("status")).toHaveText("1 tool");
+await expect(page.getByRole("status")).toHaveText("1 project");
 await page.getByRole("checkbox", { name: "Closed source" }).uncheck();
 await page.getByRole("checkbox", { name: "Open source", exact: false }).check();
 await expect(page.getByRole("status")).toHaveText(
@@ -156,13 +156,13 @@ await expect(
 await page.getByRole("link", { name: "Find these tools" }).click();
 await expect(page.getByRole("status")).toHaveText(countLabel());
 await page.getByRole("checkbox", { name: "Ignition Perspective" }).check();
-await expect(page.getByRole("status")).toHaveText("1 tool");
+await expect(page.getByRole("status")).toHaveText("1 project");
 await expect(
   page.getByRole("link", { name: "Visual Toolkit", exact: true }),
 ).toBeVisible();
 await page.goto(base + "/how-it-works#quality");
 await expect(
-  page.getByRole("heading", { name: "What keeps the catalog useful?" }),
+  page.getByRole("heading", { name: "Before you try or share a tool." }),
 ).toBeInViewport();
 await page
   .getByText("Has OIC verified these tools for production use?", {
@@ -174,7 +174,7 @@ await expect(
 ).toBeVisible();
 await page.goto(base + "/about");
 await expect(
-  page.getByRole("heading", { name: "Industrial ideas need a path to trust." }),
+  page.getByRole("heading", { name: "Industrial innovation shouldn’t require a big budget." }),
 ).toBeVisible();
 await expect(
   page.getByRole("heading", { name: "Build. Share. Prove." }),
@@ -209,6 +209,7 @@ await page.getByLabel("Open YAML file", { exact: true }).setInputFiles({
   mimeType: "text/yaml",
   buffer: await readFile(await unfinished.path()),
 });
+await expect(page.getByText("Draft opened in the form.", { exact: false })).toBeVisible();
 await expect(page.getByRole("textbox", { name: "Project name" })).toHaveValue(
   "My unfinished tool",
 );
@@ -475,7 +476,7 @@ for (const path of [
       .getByRole("link", { name: "Community", exact: true })
       .click();
     await page
-      .getByRole("heading", { name: "Choose a way to help." })
+      .getByRole("heading", { name: "Help shape what industry can use." })
       .waitFor();
     await expect(
       page.getByRole("heading", { name: "Grindstone Systems" }),

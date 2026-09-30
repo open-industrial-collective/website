@@ -1,8 +1,10 @@
 # Open Industrial Collective
 
+[Message and visual direction](MESSAGING_AND_VISUAL_DIRECTION.md) records the founder-reviewed public language and the dimensional illustration system.
+
 [Live website](https://openindustrialcollective.org) · [Suggest a tool](https://github.com/open-industrial-collective/website/issues/new?template=tool-suggestion.yml) · [Offer a contribution](https://github.com/open-industrial-collective/website/issues/new?template=participation.yml) · [Submit a listing](https://github.com/open-industrial-collective/website/issues/new?template=listing.yml) · [Report a correction](https://github.com/open-industrial-collective/website/issues/new?template=correction.yml)
 
-Free industrial tool discovery. React + Vite, static at runtime. This public repository contains the website, profile standard, approved listing snapshots and review workflow. Application source belongs to each project and may remain private. The active catalog contains the publisher-submitted Dimension Engine Showcase and Visual Toolkit. The four initial example listings have been retired.
+A home for free industrial software and the builders bringing it to industry. React + Vite, static at runtime. This public repository contains the website, profile standard, approved listing snapshots and review workflow. Application source belongs to each project and may remain private. The active catalog contains the publisher-submitted Dimension Engine Showcase and Visual Toolkit. The four initial example listings have been retired.
 
 ## People and participation
 

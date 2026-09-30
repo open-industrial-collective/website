@@ -170,14 +170,12 @@ export function HowItWorks() {
     <div className="container page how-guide-page">
       <header className="how-guide-hero">
         <span className="eyebrow">HOW IT WORKS</span>
-        <h1>
-          Find a tool. <span>Understand it.</span> Share what you build.
-        </h1>
+        <h1>From promising tool to <span>practical use.</span></h1>
         <p>
-          OIC starts with useful free industrial software and clear information.
-          Here is how to explore the catalog, contribute a listing, and
-          understand what its review means.
+          Explore free software, understand its limits, and learn how builders
+          can share their work through OIC.
         </p>
+        <img className="oic-page-art oic-how-art" src="/images/illustrations/profile.webp" alt="" width="1536" height="1024" loading="lazy" />
         <Link className="how-safety-link" to="/safety">
           Use & security guidance <ArrowRight size={16} />
         </Link>
@@ -191,11 +189,8 @@ export function HowItWorks() {
       >
         <div className="how-answers-intro">
           <span className="eyebrow">GOOD TO KNOW</span>
-          <h2 id="answers-title">What keeps the catalog useful?</h2>
-          <p>
-            Direct answers to the questions that matter before trying a tool or
-            sharing one.
-          </p>
+          <h2 id="answers-title">Before you try or share a tool.</h2>
+          <p>Check how access, licensing, listings, and review work at OIC.</p>
           <Link to="/charter">
             Read the Listing Charter <ArrowRight size={16} />
           </Link>
@@ -223,12 +218,12 @@ export function HowItWorks() {
       <section className="how-journey-section" aria-labelledby="journey-title">
         <div className="how-journey-intro">
           <span className="eyebrow">YOUR NEXT STEP</span>
-          <h2 id="journey-title">Put the answers to work.</h2>
+          <h2 id="journey-title">Choose your next step.</h2>
         </div>
         <div className="how-journeys" aria-label="Two ways to use OIC">
           <section className="how-journey">
             <span className="how-journey-label">FOR PEOPLE EXPLORING</span>
-            <h2>From search to a sensible trial.</h2>
+            <h2>Find a free tool worth trying.</h2>
             <ol>
               <li>
                 <b>01</b>
@@ -244,12 +239,12 @@ export function HowItWorks() {
               </li>
             </ol>
             <Link to="/explore">
-              Explore tools <ArrowRight size={17} />
+              Explore projects <ArrowRight size={17} />
             </Link>
           </section>
           <section className="how-journey">
             <span className="how-journey-label">FOR PEOPLE BUILDING</span>
-            <h2>From your project to a clear listing.</h2>
+            <h2>Share a tool you’ve made.</h2>
             <ol>
               <li>
                 <b>01</b>
@@ -274,11 +269,10 @@ export function HowItWorks() {
       <section className="how-guide-end">
         <div>
           <span className="eyebrow">THE BIGGER IDEA</span>
-          <h2>Build. Share. Prove.</h2>
+          <h2>From access to impact.</h2>
           <p>
-            Discovery is the first step. OIC's broader work is to help
-            industrial expertise become useful technology and, over time, make
-            claims about that technology inspectable.
+            Free tools lower a barrier. Shared knowledge and evidence can help
+            industry put them to good use.
           </p>
         </div>
         <Link to="/about">
@@ -294,24 +288,19 @@ export function Platforms() {
     <div className="container page ecosystem-page">
       <div className="page-heading">
         <div className="eyebrow">PLATFORMS & ECOSYSTEMS</div>
-        <h1>
-          Useful tools.
-          <br />
-          <span>Clear requirements.</span>
-        </h1>
+        <h1>Free software can need a <span>paid platform.</span></h1>
         <p>
-          Every listed tool has a useful free edition. Required platforms,
-          hardware, and services may have separate costs.
+          We make those requirements clear before you decide whether to try it.
         </p>
+        <img className="oic-page-art oic-platform-art" src="/images/illustrations/platform.webp" alt="" width="1536" height="1024" loading="lazy" />
       </div>
       <div className="two-columns cost-cards">
         <section className="info-card">
           <Code2 />
-          <h2>Free software setup available</h2>
+          <h2>No paid software needed</h2>
           <p>
-            The listed edition has a way to run without buying a software
-            license. You still provide hardware or hosting, and any optional
-            services.
+            The listed edition needs no paid software license. Hardware or
+            hosting may still cost money.
           </p>
           <Link className="text-link" to="/explore?software=no-paid-required">
             Find these tools <ArrowRight size={16} />
@@ -319,11 +308,10 @@ export function Platforms() {
         </section>
         <section className="info-card">
           <Layers3 />
-          <h2>Paid platform required</h2>
+          <h2>Paid platform needed</h2>
           <p>
-            A free module or add-on can extend a platform you already use. Its
-            host license or required modules may cost money. Those requirements
-            belong beside the free label.
+            The listed software is free; its required platform has a separate
+            cost.
           </p>
           <Link className="text-link" to="/share">
             Describe your tool’s requirements <ArrowRight size={16} />
@@ -370,7 +358,7 @@ export function Platforms() {
         <div className="section-heading">
           <div>
             <div className="eyebrow">MORE THAN ONE WAY TO BE FOUND</div>
-            <h2>A project can belong in several places.</h2>
+            <h2>OIC connects projects across platforms.</h2>
           </div>
         </div>
         <div className="three-columns">
@@ -402,9 +390,8 @@ export function Platforms() {
             <Globe2 />
             <h3>Open Industrial Collective</h3>
             <p>
-              Discover free tools across platforms. See the job they help you
-              do, their terms and requirements, and the route back to their
-              creators. Keep your existing listings elsewhere.
+              Your software stays where you maintain it. OIC helps more people
+              understand what it offers and how to use it.
             </p>
             <Link className="text-link" to="/how-it-works">
               How OIC connects projects <ArrowRight size={16} />
@@ -430,11 +417,10 @@ export function Platforms() {
         </p>
       </section>
       <section className="ecosystem-section">
-        <h2>Start with the work. Find the platform that fits.</h2>
+        <h2>Useful work crosses platforms.</h2>
         <p>
-          Ignition is one starting point. The same listing format works for
-          standalone tools, open-source stacks, and free extensions to other
-          commercial platforms.
+          OIC welcomes free projects that stand alone or extend existing
+          systems, with requirements made clear.
         </p>
         <Link className="button primary" to="/explore">
           Explore the toolbox <ArrowRight size={16} />
