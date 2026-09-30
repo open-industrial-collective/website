@@ -33,7 +33,6 @@ import {
   ShieldCheck,
   Sparkles,
   Upload,
-  Users,
   Workflow,
   X,
   type LucideIcon,
@@ -41,7 +40,6 @@ import {
 import { stringify } from "yaml";
 import data from "./catalog.generated.json";
 import {
-  categories,
   parseProject,
   sourceLabels,
   softwareLabels,
@@ -65,25 +63,12 @@ const projects = data as Listing[];
 const publishedProjects = projects.filter(
   (project) => project.listing.origin === "community",
 );
-const availableCategories = categories.filter((category) =>
-  projects.some((project) => project.category === category),
-);
-const availableSources = Object.entries(sourceLabels).filter(([source]) =>
-  projects.some((project) => project.source === source),
-);
 const categoryIcons: Record<Category, LucideIcon> = {
   "Data & connectivity": Cable,
   Visualization: Layers3,
   Operations: Settings2,
   Engineering: Box,
   "AI & automation": Workflow,
-};
-const categoryDescriptions: Record<Category, string> = {
-  "Data & connectivity": "Move data. Connect systems.",
-  Visualization: "Make your process visible.",
-  Operations: "Support work on the floor.",
-  Engineering: "Build, design and troubleshoot.",
-  "AI & automation": "Turn ideas into working flows.",
 };
 function Icon({ project, size = 26 }: { project: Project; size?: number }) {
   if (project.profile?.branding?.logo.on_light)
@@ -357,18 +342,20 @@ function Home() {
       <section className="container workshop-opening">
         <div className="workshop-hero-layout">
           <div className="workshop-hero-copy">
-            <span className="workshop-edition">Open Industrial Collective</span>
+            <span className="workshop-edition">
+              Free industrial tools, in one place
+            </span>
             <h1>
-              A better starting point
-              <br className="desktop-break" /> for industrial work.
+              Find the tool.
+              <br className="desktop-break" /> Get to work.
             </h1>
             <p className="workshop-intro">
-              Discover free software from people who build for industry. Find
-              your next tool. Share your own.
+              Discover useful industrial software, see exactly what’s free, and
+              go straight to its maker.
             </p>
             <div className="workshop-actions">
               <Link className="button primary" to="/explore">
-                Explore the tools <ArrowRight size={18} />
+                Explore tools <ArrowRight size={18} />
               </Link>
               <Link className="workshop-why" to="/#why-oic">
                 Why OIC? <ArrowDown size={16} />
@@ -377,7 +364,7 @@ function Home() {
           </div>
           <div className="workshop-brand-art">
             <CollectiveSculpture />
-            <span>Good tools bring us together.</span>
+            <span>Built to move useful work forward.</span>
           </div>
         </div>
         <div className="workshop-search-row">
@@ -386,7 +373,7 @@ function Home() {
             <input
               aria-label="Search tools"
               name="q"
-              placeholder="Find a tool, protocol, or job to do"
+              placeholder="Search tools, tasks, or platforms"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
             />
@@ -395,8 +382,8 @@ function Home() {
             </button>
           </form>
           <p>
-            Free editions. Open & closed source.
-            <span>Required platforms may have separate costs.</span>
+            Every listed edition is free to use. Platform costs are shown
+            clearly.
           </p>
         </div>
       </section>
@@ -406,7 +393,7 @@ function Home() {
           aria-label="Featured project"
         >
           <div className="workshop-section-label">
-            <span>Something worth exploring</span>
+            <span>See what’s inside</span>
             <span className="feature-kind">
               {featured.profile?.access.edition || featured.category}
             </span>
@@ -414,7 +401,7 @@ function Home() {
           <article className="workshop-project">
             <div className="workshop-project-title">
               <span className="project-byline">
-                <span /> Featured project
+                <span /> Featured tool
               </span>
               <h2>
                 <Link to={`/projects/${featured.id}`}>{featured.name}</Link>
@@ -447,87 +434,38 @@ function Home() {
           </article>
         </section>
       )}
-      <section className="container workshop-index" id="tools">
-        <div className="workshop-section-label">
-          <span>Browse by purpose</span>
-          <Link to="/explore">
-            All tools <ArrowUpRight size={16} />
-          </Link>
-        </div>
-        <div className="workshop-categories">
-          {availableCategories.map((category) => {
-            const CategoryIcon = categoryIcons[category];
-            return (
-              <Link
-                key={category}
-                to={`/explore?category=${encodeURIComponent(category)}`}
-              >
-                <span className="category-symbol">
-                  <CategoryIcon size={22} />
-                </span>
-                <span>{category}</span>
-                <ArrowUpRight size={18} />
-              </Link>
-            );
-          })}
-        </div>
-        <div className="project-grid home-grid">
-          {publishedProjects
-            .filter((p) => p.id !== featured?.id)
-            .map((p) => (
-              <ProjectCard key={p.id} project={p} />
-            ))}
-        </div>
-      </section>
       <section className="workshop-purpose" id="why-oic" tabIndex={-1}>
         <div className="container workshop-purpose-inner">
           <div className="workshop-section-label">
-            <span>Why the Collective exists</span>
+            <span>Why OIC exists</span>
             <OicMark />
           </div>
-          <h2>
-            Great work deserves
-            <br />
-            to go further.
-          </h2>
+          <h2>Good tools should be easier to find.</h2>
           <div className="workshop-purpose-copy">
             <p>
-              Useful industrial software is built everywhere. OIC brings it into
-              view, so the next person can build on a good idea.
-            </p>
-            <p>
-              OIC gives that work a place to be found. The tool stays with its
-              maker. The listing tells you what it does, what’s free, and what
-              you’ll need.
+              Builders keep their projects. OIC gives people one clear place to
+              discover them and understand access, terms, and requirements.
             </p>
             <Link className="workshop-link" to="/about">
               More about OIC <ArrowUpRight size={19} />
             </Link>
           </div>
-          <div className="workshop-principles">
-            <span>Free to use</span>
-            <span>Credit to the maker</span>
-            <span>Clear terms & requirements</span>
-          </div>
         </div>
       </section>
       <section className="container workshop-contribute">
-        <span className="workshop-small-label">
-          Leave something useful for the next person.
-        </span>
-        <h2>What have you been building?</h2>
+        <span className="workshop-small-label">Built something useful?</span>
+        <h2>Put your tool on the map.</h2>
         <div>
           <p>
-            A utility, a module, a better way to work.
-            <br />
-            If there’s a free edition, there’s room for it here.
+            Share a free edition with clear terms and a direct way to try it.
           </p>
           <Link className="button primary" to="/share">
             Prepare a listing <ArrowUpRight size={18} />
           </Link>
         </div>
         <span className="workshop-contribute-note">
-          Prepare your profile, then request a listing in the public catalog.{" "}
+          Your software stays with you. OIC reviews the listing before
+          publication.{" "}
           <Link to="/how-it-works">
             How sharing works <ArrowRight size={14} />
           </Link>
@@ -868,114 +806,76 @@ function Detail() {
 }
 function About() {
   return (
-    <div className="container page about-page">
-      <div className="page-heading">
-        <div className="eyebrow">OPEN INDUSTRIAL COLLECTIVE</div>
+    <div className="container page about-page story-page">
+      <header className="story-hero">
+        <span className="eyebrow">WHY OIC</span>
         <h1>
-          Less friction.
+          Useful tools get lost.
           <br />
-          <span>More shared progress.</span>
+          <span>We bring them into view.</span>
         </h1>
         <p>
-          Useful industrial software should be easier to find, easier to try,
-          and easier to share.
+          Industrial software is built in workshops, plants, studios, and small
+          teams everywhere. OIC helps the next person find that work and
+          understand whether it fits.
         </p>
-      </div>
-      <div className="about-layout">
-        <div className="about-copy">
-          <h2>Built around a simple idea.</h2>
+        <Link className="button primary" to="/explore">
+          Explore the catalog <ArrowRight size={17} />
+        </Link>
+      </header>
+      <section className="story-statement" aria-label="Our purpose">
+        <span>THE IDEA</span>
+        <p>
+          One clear listing can turn a useful project into a useful starting
+          point for someone else.
+        </p>
+        <OicMark />
+      </section>
+      <section className="story-grid" aria-label="What we believe">
+        <article>
+          <span>01</span>
+          <h2>Access should be clear.</h2>
           <p>
-            Useful industrial software is being built in many places. OIC makes
-            it easier to find, compare, and try, across vendors, integrators,
-            manufacturers, and industries.
+            Every listed tool has a free edition. We show its scope, required
+            platforms, and any separate costs.
           </p>
+        </article>
+        <article>
+          <span>02</span>
+          <h2>Words should mean something.</h2>
           <p>
-            We bring software, modules, and practical solutions into one
-            searchable home, with a clear route back to the people who maintain
-            them. Projects keep their own identities and ownership.
+            Open source, source available, and closed source are distinct. Each
+            listing links to the actual terms.
           </p>
-          <h2>“Open” starts with access.</h2>
+        </article>
+        <article>
+          <span>03</span>
+          <h2>Credit stays with the maker.</h2>
           <p>
-            “Open” describes access to discovery, participation, and honest
-            information. It does not mean every project shares its code.
-            Open-source, source-available, and closed-source options are labeled
-            separately, with links to their actual terms.
+            Projects keep their own home, identity, releases, and support. OIC
+            points people to them.
           </p>
-          <p>
-            Free to use describes access to the listed tool or edition. It does
-            not grant permission to modify or redistribute it, or remove
-            platform licenses, hardware, hosting, integration, and support
-            costs. Check the free scope, requirements, and permitted uses before
-            getting started.
-          </p>
-          <h2>You keep control of your project.</h2>
-          <p>
-            Anyone can create a listing file and publish it with their own
-            project. No OIC account or approval is needed for that. This catalog
-            has published inclusion checks; its maintainers decide what appears
-            here, not who gets to build or share software.
-          </p>
-          <Link className="text-link" to="/how-it-works">
-            How open participation works <ArrowRight size={16} />
-          </Link>
-          <h2>A useful starting point.</h2>
-          <p>
-            Today, OIC offers a small reviewed catalog, including our first
-            owner-authored preview, and a way to prepare project listings.
-            Public listing requests and corrections are open on GitHub. Listing
-            review checks the description and access information; it does not
-            establish production suitability.
-          </p>
-          <p>
-            Scoped evaluation reports may add detail over time: what was tested,
-            on which release, and what remains unknown. Automated grading is
-            outside the current catalog experience.
-          </p>
-          <Link className="text-link" to="/guide#review">
-            How we review listings <ArrowRight size={16} />
-          </Link>
-        </div>
-        <aside className="values">
-          <section>
-            <Globe2 />
-            <h3>Free to use</h3>
-            <p>
-              A useful free edition, with its scope and requirements stated.
-            </p>
-          </section>
-          <section>
-            <Code2 />
-            <h3>Clear about source</h3>
-            <p>
-              Open source, source available, or closed source. Always labeled.
-            </p>
-          </section>
-          <section>
-            <Users />
-            <h3>Built by people</h3>
-            <p>Original creators get credit. Projects keep their own homes.</p>
-          </section>
-          <section>
-            <ShieldCheck />
-            <h3>Honest about limits</h3>
-            <p>Licenses, requirements and capabilities in plain sight.</p>
-          </section>
-        </aside>
-      </div>
-      <div className="notice">
-        <Sparkles size={23} />
+        </article>
+      </section>
+      <section className="story-bottom">
         <div>
-          <h3>An initiative from Grindstone Systems</h3>
+          <span className="eyebrow">WHERE WE ARE TODAY</span>
+          <h2>A small catalog with room to grow.</h2>
           <p>
-            Grindstone Systems is initiating OIC. Shared stewardship is still
-            developing. Builders and practitioners can help by making listings
-            more useful and flagging missing or misleading details.
+            OIC is initiated and maintained by Grindstone Systems. Listings are
+            reviewed for clear access and accurate presentation; that review is
+            not a safety or production certification.
           </p>
-          <Link to="/share" className="text-link">
-            Bring something to the Collective <ArrowRight size={16} />
+        </div>
+        <div className="story-next">
+          <Link to="/how-it-works">
+            How listings work <ArrowRight size={17} />
+          </Link>
+          <Link to="/community">
+            Meet the people and take part <ArrowRight size={17} />
           </Link>
         </div>
-      </div>
+      </section>
     </div>
   );
 }

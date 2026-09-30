@@ -6,8 +6,7 @@ import {
   FileCode2,
   Globe2,
   Layers3,
-  Search,
-  Users,
+  ShieldCheck,
 } from "lucide-react";
 
 function Out({ href, children }: { href: string; children: React.ReactNode }) {
@@ -27,185 +26,123 @@ function Out({ href, children }: { href: string; children: React.ReactNode }) {
 
 export function HowItWorks() {
   return (
-    <div className="container page ecosystem-page">
-      <div className="page-heading">
-        <div className="eyebrow">HOW OIC WORKS</div>
+    <div className="container page story-page how-page">
+      <header className="story-hero">
+        <span className="eyebrow">HOW IT WORKS</span>
         <h1>
-          Your project.
+          From project to
           <br />
-          <span>A wider connection.</span>
+          <span>findable tool.</span>
         </h1>
         <p>
-          Keep your software where it belongs. Share a small description that
-          helps people find it, understand it, and get started.
+          The practical route for a maker to put a free industrial tool in front
+          of the people who need it.
         </p>
+        <Link className="button primary" to="/share">
+          Prepare a listing <ArrowRight size={17} />
+        </Link>
+      </header>
+      <div className="how-track" aria-label="Listing steps">
+        <article>
+          <span>01</span>
+          <div>
+            <h2>Describe the tool</h2>
+            <p>
+              Use the guided form or write a portable{" "}
+              <code>.oic/project.yaml</code> file. Name the free edition, maker,
+              terms, requirements, and a working path to try it.
+            </p>
+          </div>
+          <FileCode2 size={27} />
+        </article>
+        <article>
+          <span>02</span>
+          <div>
+            <h2>Request a listing</h2>
+            <p>
+              Keep software and releases where you choose. Share a public
+              profile repository so OIC can review the exact version you want
+              listed.
+            </p>
+          </div>
+          <Code2 size={27} />
+        </article>
+        <article>
+          <span>03</span>
+          <div>
+            <h2>Get discovered</h2>
+            <p>
+              After review, the listing becomes a searchable page with links
+              back to your project. Later profile changes also wait for review
+              before publication.
+            </p>
+          </div>
+          <Globe2 size={27} />
+        </article>
       </div>
-      <div className="three-columns flow-cards">
-        <section className="info-card">
-          <Code2 />
-          <span className="eyebrow">01 / KEEP YOUR HOME</span>
-          <h2>You own the project.</h2>
-          <p>
-            Your code, releases, license, and support stay with you. A
-            closed-source tool can link to its own website and downloads.
-          </p>
-        </section>
-        <section className="info-card">
-          <FileCode2 />
-          <span className="eyebrow">02 / DESCRIBE IT ONCE</span>
-          <h2>A file people can read.</h2>
-          <p>
-            YAML is a plain-text format: a few named fields for what your tool
-            does, who maintains it, what’s free, and what it needs.
-          </p>
-        </section>
-        <section className="info-card">
-          <Globe2 />
-          <span className="eyebrow">03 / MAKE A CONNECTION</span>
-          <h2>Help people discover it.</h2>
-          <p>
-            OIC turns included listing files into searchable project pages, with
-            links back to the original project.
-          </p>
-        </section>
-      </div>
-      <section className="yaml-story">
+      <section className="how-check" id="quality" tabIndex={-1}>
         <div>
-          <div className="eyebrow">MEET PROJECT.YAML</div>
-          <h2>A description you can take with you.</h2>
+          <span className="eyebrow">WHAT REVIEW MEANS</span>
+          <h2>What keeps the catalog useful?</h2>
           <p>
-            Use the form if you prefer. It creates the same file you could write
-            in a text editor. Keep it alongside your project as{" "}
-            <code>.oic/project.yaml</code>, or share it separately.
+            Automated checks catch missing fields and unsafe link formats. A
+            maintainer checks the free access, attribution, terms, requirements,
+            and destinations against the submitted source.
           </p>
-          <p>
-            The file describes the software; it does not upload the software.
-            Include public information only, never secrets or plant data. Its
-            format is published, so another catalog could read it too. Registered repositories are
-            checked daily; reviewed updates populate your listing automatically.
-          </p>
-          <Link className="button primary" to="/share">
-            Make your listing <ArrowRight size={16} />
+          <Link className="text-link" to="/charter">
+            Read the Listing Charter <ArrowRight size={16} />
           </Link>
-          <a className="text-link" href="/templates/project.yaml" download>
-            Download the full template <ArrowRight size={16} />
-          </a>
         </div>
-        <figure className="yaml-example">
-          <figcaption>
-            <FileCode2 size={18} /> project.yaml{" "}
-            <span>Illustrative excerpt</span>
-          </figcaption>
-          <pre>
-            <code>{`name: Example module
-summary: Explain the job it helps someone do.
-platforms: [Ignition]
-source: closed-source
-cost: free
-software_requirements: paid-platform-required
-cost_notes: >-
-  The module is free. A compatible Ignition
-  license is required separately.
-maintainer: Your team
-get_started: https://example.org/start`}</code>
-          </pre>
+        <aside>
+          <ShieldCheck size={25} />
+          <h3>Clear limits</h3>
           <p>
-            A few fields from a listing, not a downloadable project. The full
-            template includes terms, attribution, and the other required fields.
+            Catalog review does not test downloads, independently verify every
+            claim, or certify a tool for production. Evaluate it for your own
+            environment.
           </p>
-        </figure>
+        </aside>
       </section>
-      <section className="ecosystem-section" id="participation" tabIndex={-1}>
-        <div className="section-heading">
-          <div>
-            <div className="eyebrow">OPEN PARTICIPATION</div>
-            <h2>No permission needed to build or share.</h2>
-          </div>
-        </div>
-        <div className="two-columns">
-          <div>
-            <h3>Your project is yours.</h3>
-            <p>
-              Anyone can create a YAML file and publish it with their project.
-              You don’t need an OIC account, a membership fee, or our approval
-              to do that. Your project can also appear in other directories.
-            </p>
-          </div>
-          <div>
-            <h3>This catalog has clear inclusion checks.</h3>
-            <p>
-              OIC maintainers currently decide what appears on this site. We
-              check useful free access, attribution, links, and honest
-              requirements. Those checks apply equally to founder projects and
-              everyone else.
-            </p>
-            <Link className="text-link" to="/guide#review">
-              Read the inclusion checks <ArrowRight size={16} />
-            </Link>
-          </div>
-        </div>
+      <section className="how-faq">
+        <h2>Good to know</h2>
+        <details>
+          <summary>Does my source code need to be public?</summary>
+          <p>
+            No. The listing file needs a public home for review. Software can be
+            open source, source available, or closed source, with its actual
+            terms stated.
+          </p>
+        </details>
+        <details>
+          <summary>Does the form submit my project?</summary>
+          <p>
+            No. It prepares and downloads a YAML file in your browser. You then
+            request a listing through the public repository.
+          </p>
+        </details>
+        <details>
+          <summary>Can a free tool require a paid platform?</summary>
+          <p>
+            Yes. The listed edition must be free, and a required commercial host
+            or service cost must be disclosed clearly.
+          </p>
+        </details>
       </section>
-      <section className="ecosystem-section" id="quality" tabIndex={-1}>
-        <div className="section-heading">
-          <div>
-            <div className="eyebrow">USEFUL INFORMATION, VISIBLE LIMITS</div>
-            <h2>What keeps the catalog useful?</h2>
-          </div>
-        </div>
-        <div className="three-columns">
-          <section className="info-card">
-            <FileCode2 />
-            <h3>Consistent information</h3>
-            <p>
-              Automatic checks require the expected fields, supported values,
-              and HTTPS link formats. They reject malformed listings. A valid
-              file can still contain an inaccurate claim.
-            </p>
-            <span className="small-text">
-              Working now: local validation and catalog build checks.
-            </span>
-          </section>
-          <section className="info-card">
-            <Search />
-            <h3>Claims with a source</h3>
-            <p>
-              Listing review checks the project’s public terms, access,
-              attribution, and requirements. Every catalog page shows where the
-              listing came from and when it was reviewed.
-            </p>
-            <span className="small-text">
-              Working now: a small, manually reviewed catalog.
-            </span>
-          </section>
-          <section className="info-card">
-            <Users />
-            <h3>Room for correction</h3>
-            <p>
-              People using a tool can spot missing requirements and misleading
-              claims. Project pages let you prepare a correction note and open an issue for review.
-            </p>
-            <span className="small-text">
-              Save a note, then open a correction issue in the public catalog.
-            </span>
-          </section>
-        </div>
-        <p className="catalog-note">
-          These checks reduce incomplete or misleading listings. They do not
-          scan downloads, verify every claim, or certify software for
-          production. Follow the project’s terms and evaluate it for your
-          environment.
-        </p>
-      </section>
-      <div className="notice">
-        <FileCode2 size={24} />
+      <div className="story-bottom">
         <div>
-          <h3>What happens when I open a YAML file here?</h3>
+          <span className="eyebrow">READY TO SHARE?</span>
+          <h2>Start with a draft.</h2>
           <p>
-            It stays in your browser for validation and preview. Download to
-            save your work. Nothing is sent until you open a listing request on GitHub. Registered profiles are checked daily; every published change requires review.
+            You can prepare a profile without creating an OIC account. Download
+            it and keep control of your project.
           </p>
-          <Link className="text-link" to="/guide">
-            Follow the listing guide <ArrowRight size={16} />
+        </div>
+        <div className="story-next">
+          <Link to="/share">
+            Open the listing form <ArrowRight size={17} />
+          </Link>
+          <Link to="/guide">
+            Read the full listing guide <ArrowRight size={17} />
           </Link>
         </div>
       </div>
@@ -265,9 +202,7 @@ export function Platforms() {
             width="375"
             height="175"
           />
-          <span className="platform-status">
-            First browser preview listed
-          </span>
+          <span className="platform-status">First browser preview listed</span>
         </div>
         <div>
           <h3>Free additions to an industrial platform.</h3>

@@ -11,6 +11,7 @@ import "./resources.css";
 import "./charter.css";
 import "./polish.css";
 import "./explore.css";
+import "./experience.css";
 const root = document.getElementById("root")!;
 const app = (
   <React.StrictMode>

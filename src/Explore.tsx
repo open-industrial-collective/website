@@ -104,7 +104,9 @@ function ToolCard({
   const logo = p.profile?.branding?.logo.on_light;
   const motion = image?.type === "image" && Boolean(image.poster);
   const context = d.works_with?.length
-    ? d.works_with.map((w) => `${relationshipLabels[w.relationship]} ${w.name}`).join(" · ")
+    ? d.works_with
+        .map((w) => `${relationshipLabels[w.relationship]} ${w.name}`)
+        .join(" · ")
     : values(p, "environment").join(" · ");
   return (
     <article className="tool-card">
@@ -131,16 +133,29 @@ function ToolCard({
             <small>{capabilities[d.primary]}</small>
           </>
         )}
-        {motion && <span className="tool-motion"><Play size={12} fill="currentColor" /> GIF preview</span>}
+        {motion && (
+          <span className="tool-motion">
+            <Play size={12} fill="currentColor" /> GIF preview
+          </span>
+        )}
       </Link>
       <div className="tool-content">
         <div className="tool-heading">
-          {logo ? <img className="tool-logo" src={logo} alt="" loading="lazy" /> : <span className="tool-logo tool-logo-fallback" aria-hidden="true">{p.name.slice(0, 1)}</span>}
+          {logo ? (
+            <img className="tool-logo" src={logo} alt="" loading="lazy" />
+          ) : (
+            <span className="tool-logo tool-logo-fallback" aria-hidden="true">
+              {p.name.slice(0, 1)}
+            </span>
+          )}
           <div>
-            <span className="tool-type">{d.product_type ? productTypes[d.product_type] : "Tool"}</span>
+            <span className="tool-type">
+              {d.product_type ? productTypes[d.product_type] : "Tool"}
+            </span>
             <h2>
               <Link to={`/projects/${p.id}`} state={{ explore: returnTo }}>
-                {p.name}<ArrowUpRight size={17} />
+                {p.name}
+                <ArrowUpRight size={17} />
               </Link>
             </h2>
             <p className="tool-publisher">{p.maintainer}</p>
@@ -148,13 +163,21 @@ function ToolCard({
         </div>
         <p className="tool-summary">{p.summary}</p>
         <div className="tool-facts">
-          <span className="tool-fact-capability"><MonitorPlay size={13} />{capabilities[d.primary]}</span>
+          <span className="tool-fact-capability">
+            <MonitorPlay size={13} />
+            {capabilities[d.primary]}
+          </span>
           {context && <span className="tool-fact-context">{context}</span>}
         </div>
         <div className="tool-badges">
-          <span className="tool-badge-free"><CircleCheck size={13} /> Free {p.profile?.access.edition || "edition"}</span>
+          <span className="tool-badge-free">
+            <CircleCheck size={13} /> Free{" "}
+            {p.profile?.access.edition || "edition"}
+          </span>
           <span className="tool-badge-source">{sourceLabels[p.source]}</span>
-          {stage && <span className="tool-badge-stage">{label("stage", stage)}</span>}
+          {stage && (
+            <span className="tool-badge-stage">{label("stage", stage)}</span>
+          )}
           {p.software_requirements === "paid-platform-required" && (
             <span className="tool-badge-cost">Paid host required</span>
           )}
@@ -265,8 +288,10 @@ function FilterGroup({
   );
 }
 export default function Explore() {
-  const [params, setParams] = useSearchParams(), location = useLocation();
+  const [params, setParams] = useSearchParams(),
+    location = useLocation();
   const [drawer, setDrawer] = useState(false),
+    [filtersCollapsed, setFiltersCollapsed] = useState(false),
     [compareOpen, setCompareOpen] = useState(false),
     [suggesting, setSuggesting] = useState(false);
   const [queryDraft, setQueryDraft] = useState(params.get("q") || "");
@@ -334,10 +359,12 @@ export default function Explore() {
   }
   const filterContent = (
     <>
-      <div className="filter-heading">
-        <strong>Refine your search</strong>
-        {active.length > 0 && <button onClick={clear}>Clear all</button>}
-      </div>
+      {active.length > 0 && (
+        <div className="filter-heading">
+          <span>{active.length} selected</span>
+          <button onClick={clear}>Clear all</button>
+        </div>
+      )}
       {(
         [
           "capability",
@@ -374,6 +401,24 @@ export default function Explore() {
       <Link to="/explore/glossary">
         About these filters <ArrowUpRight size={13} />
       </Link>
+      <div className="explore-filter-collections">
+        <strong>Quick paths</strong>
+        {collections
+          .filter(
+            (c) =>
+              filterProjects(projects, new URLSearchParams(c.params)).length >
+              0,
+          )
+          .map((c) => (
+            <Link
+              key={c.name}
+              to={`/explore?${c.params}`}
+              title={c.description}
+            >
+              {c.name} <ArrowRight size={13} />
+            </Link>
+          ))}
+      </div>
     </>
   );
   const suggestions = queryDraft.trim()
@@ -431,12 +476,13 @@ export default function Explore() {
       className={`container page explore-page ${compared.length ? "has-comparison" : ""}`}
     >
       <div className="explore-intro">
-        <div className="eyebrow">THE COLLECTIVE TOOLBOX</div>
-        <h1>Find your next useful tool.</h1>
-        <p>
-          Free industrial software. Clear requirements. A direct route to trying
-          it.
-        </p>
+        <div>
+          <h1>Explore tools</h1>
+          <p>Find free industrial software. Check the fit. Try it.</p>
+        </div>
+        <span className="explore-intro-count">
+          {projects.length} tools in the catalog
+        </span>
       </div>
       <div className="explore-search-row">
         <div className="explore-search">
@@ -527,28 +573,26 @@ export default function Explore() {
           Filters {active.length > 0 && <span>{active.length}</span>}
         </button>
       </div>
-      <div className="explore-shortcuts" aria-label="Curated collections">
-        <span>Start here</span>
-        {collections
-          .filter(
-            (c) =>
-              filterProjects(projects, new URLSearchParams(c.params)).length >
-              0,
-          )
-          .map((c) => (
-            <Link
-              key={c.name}
-              title={`Curated by OIC. ${c.description}`}
-              to={`/explore?${c.params}`}
-            >
-              {c.name}
-              <ArrowRight size={13} />
-            </Link>
-          ))}
-      </div>
-      <div className="explore-workspace">
+      <div
+        className={`explore-workspace ${filtersCollapsed ? "filters-collapsed" : ""}`}
+      >
         <aside className="explore-filters" aria-label="Catalog filters">
-          {filterContent}
+          <button
+            className="filter-collapse"
+            type="button"
+            aria-expanded={!filtersCollapsed}
+            aria-controls="desktop-filter-content"
+            aria-label={filtersCollapsed ? "Show filters" : "Hide filters"}
+            onClick={() => setFiltersCollapsed((current) => !current)}
+          >
+            <SlidersHorizontal size={18} />
+            {!filtersCollapsed && <span>Filters</span>}
+            <span className="filter-collapse-count">{active.length || ""}</span>
+            <ArrowRight className="filter-collapse-arrow" size={16} />
+          </button>
+          <div id="desktop-filter-content" hidden={filtersCollapsed}>
+            {filterContent}
+          </div>
         </aside>
         <section className="explore-results" aria-label="Tool results">
           <div className="explore-toolbar">

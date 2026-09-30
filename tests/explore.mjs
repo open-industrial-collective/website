@@ -12,6 +12,14 @@ page.on("pageerror", (e) => errors.push(e.message));
 await page.goto(base + "/explore");
 await expect(page.getByRole("status")).toHaveText(countLabel());
 await expect(page.getByText(/example listing/i)).toHaveCount(0);
+await page.getByRole("button", { name: "Hide filters" }).click();
+await expect(page.getByRole("button", { name: "Show filters" })).toHaveAttribute(
+  "aria-expanded",
+  "false",
+);
+await expect(page.locator("#desktop-filter-content")).toBeHidden();
+await page.getByRole("button", { name: "Show filters" }).click();
+await expect(page.locator("#desktop-filter-content")).toBeVisible();
 await page.getByRole("checkbox", { name: "Open source", exact: false }).check();
 await expect(page.getByRole("status")).toHaveText(
   countLabel((p) => p.source === "open-source"),
