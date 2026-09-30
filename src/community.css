@@ -3,7 +3,7 @@
 }
 .people-heading {
   max-width: 830px;
-  margin-bottom: 45px;
+  margin-bottom: 28px;
 }
 .people-heading h1 {
   max-width: 780px;
@@ -45,6 +45,12 @@
   color: var(--on-dark);
   overflow: hidden;
   position: relative;
+}
+.people-actions-section {
+  padding-top: 0;
+}
+.people-actions-section + .people-stewardship {
+  margin-top: 70px;
 }
 .people-stewardship::after {
   content: "";
@@ -203,7 +209,9 @@
   border: 1px solid var(--line);
   border-radius: 16px;
   background: var(--tint);
-  transition: border-color .2s, transform .2s;
+  transition:
+    border-color 0.2s,
+    transform 0.2s;
 }
 .people-entry:hover {
   border-color: var(--accent);
@@ -230,7 +238,7 @@
 }
 .people-principles {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, .8fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr);
   gap: 45px;
   align-items: center;
 }
@@ -302,6 +310,9 @@
   }
 }
 @media (max-width: 650px) {
+  .people-actions-section + .people-stewardship {
+    margin-top: 48px;
+  }
   .people-page {
     padding-bottom: 65px;
   }

@@ -7,6 +7,10 @@ export const site = {
   repository: "https://github.com/open-industrial-collective/website",
   participation:
     "https://github.com/open-industrial-collective/website/issues/new?template=participation.yml",
+  toolSuggestion:
+    "https://github.com/open-industrial-collective/website/issues/new?template=tool-suggestion.yml",
+  correction:
+    "https://github.com/open-industrial-collective/website/issues/new?template=correction.yml",
   discussions: "",
   catalogDirectory: "content/projects",
 };

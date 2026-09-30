@@ -1,10 +1,12 @@
 # Open Industrial Collective
 
-[Live website](https://openindustrialcollective.org) · [Offer a contribution](https://github.com/open-industrial-collective/website/issues/new?template=participation.yml) · [Submit a listing](https://github.com/open-industrial-collective/website/issues/new?template=listing.yml) · [Report a correction](https://github.com/open-industrial-collective/website/issues/new?template=correction.yml)
+[Live website](https://openindustrialcollective.org) · [Suggest a tool](https://github.com/open-industrial-collective/website/issues/new?template=tool-suggestion.yml) · [Offer a contribution](https://github.com/open-industrial-collective/website/issues/new?template=participation.yml) · [Submit a listing](https://github.com/open-industrial-collective/website/issues/new?template=listing.yml) · [Report a correction](https://github.com/open-industrial-collective/website/issues/new?template=correction.yml)
 
 Free industrial tool discovery. React + Vite, static at runtime. This public repository contains the website, profile standard, approved listing snapshots and review workflow. Application source belongs to each project and may remain private. The active catalog contains the publisher-submitted Dimension Engine Showcase and Visual Toolkit. The four initial example listings have been retired.
 
 ## People and participation
+
+The Community page leads with a short public suggestion Issue, the publisher-owned YAML path, and contribution offers. Suggestions require a name, public link and industrial use; they do not claim owner control or grant media rights. A steward triages each suggestion as **needs source/free-access check**, **needs publisher follow-up**, **ready for separately attributed curation**, or **out of scope/closed** in the Issue discussion. An owner-authored listing still requires a public profile repository and exact-snapshot review. Corrections use their own Issue Form. All Issues require GitHub sign-in and are public. No non-GitHub contact address is published until a monitored destination is approved.
 
 The `/community` page explains how to participate and shows a small reviewed stewardship roster from `src/people.ts`. It currently lists Grindstone Systems as founding initiator. GitHub organization membership is private by default and is never imported into the public page. Add an individual only after they accept a scoped role and separately approve the displayed fields; keep the consent record outside the published bundle. The live `Offer a contribution` Issue template is a public first-step invitation, not an application for organization access. OIC is still founder-led and does not promise a response time. See the private coordination handbook's `docs/governance/MEMBERSHIP_AND_STEWARDSHIP.md` for the full working model.
 
@@ -26,6 +28,8 @@ The coordinated development workspace also keeps this directory under `website/`
 Read the [public Listing Charter](CHARTER.md) before preparing a profile. It defines the admission standard, objective preflight checks, maintainer decision process, withdrawal path, and the limits of catalog review. The website renders this same document at `/charter`.
 
 Start with [the v2 template](public/templates/project-v2.yaml), or use [the editor](https://openindustrialcollective.org/share). Commit `.oic/project.yaml` and its declared files in a public repository. OIC can host a listing-only repository if your source is private. The Dimension Engine profile is [here](https://github.com/open-industrial-collective/dimension-engine-listing).
+
+The editor downloads incomplete work as `project-draft.yaml`; open it later in the form to continue. Only a schema-valid, preflight-clear profile can download `project.yaml`. Downloading does not submit or publish a listing. Drafts stay on the device until explicitly downloaded.
 
 The [use and security page](https://openindustrialcollective.org/safety) states the plant-deployment boundary, links to CISA and NIST primary guidance, and explains reporting. The [security policy](SECURITY.md) uses GitHub private vulnerability reporting, which is enabled for this repository. CISA's logo is not used; citing government guidance does not imply agency endorsement.
 

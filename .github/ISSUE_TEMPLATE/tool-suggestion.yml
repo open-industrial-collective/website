@@ -1,0 +1,47 @@
+name: Suggest a tool
+description: Point OIC to a free industrial tool you have found. No YAML or ownership claim needed.
+title: "Tool suggestion: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This is a public GitHub Issue. Do not include private plant information, credentials, personal contact details or private links. A suggestion is not a publisher submission, permission to use media, or an automatic listing. OIC will check the public sources and free access before any curated entry is considered.
+  - type: input
+    id: name
+    attributes:
+      label: Tool or project name
+    validations:
+      required: true
+  - type: input
+    id: link
+    attributes:
+      label: Public project link
+      description: An official website or public project page is best. Do not link to a private plant system.
+      placeholder: https://...
+    validations:
+      required: true
+  - type: textarea
+    id: use
+    attributes:
+      label: How could it help with industrial work?
+      description: One sentence is enough. What task does it help with?
+    validations:
+      required: true
+  - type: dropdown
+    id: relationship
+    attributes:
+      label: Your relationship to the tool (optional)
+      options:
+        - Not specified
+        - I found or use it
+        - I maintain or publish it
+        - I am unsure
+  - type: textarea
+    id: free_access
+    attributes:
+      label: What do you know about free access? (optional)
+      description: Mention known limits or a separate paid host platform. It is fine to say you are unsure.
+  - type: markdown
+    attributes:
+      value: |
+        A steward may ask for more detail, mark the suggestion as out of scope, or invite a maintainer to submit their own portable profile later. Suggestions are attributed to the public Issue author and are not presented as publisher-authored listings.
