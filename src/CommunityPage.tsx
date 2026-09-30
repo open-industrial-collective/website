@@ -1,50 +1,46 @@
-import { ArrowRight, ArrowUpRight, GitPullRequest, ShieldCheck, Users } from "lucide-react";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  GitPullRequest,
+  ShieldCheck,
+  Users,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 import { site } from "./site.config";
 import { publicStewards } from "./people";
-
-const roles = [
-  {
-    number: "01",
-    title: "Participant",
-    detail: "Explore tools, ask practical questions and point out what is missing.",
-  },
-  {
-    number: "02",
-    title: "Contributor",
-    detail: "Share a project, improve a listing or help make a guide more useful.",
-  },
-  {
-    number: "03",
-    title: "Steward",
-    detail: "Accept a defined responsibility for the catalog, community or technical work.",
-  },
-];
 
 export function CommunityPage() {
   return (
     <div className="container page people-page">
       <div className="page-heading people-heading">
-        <div className="eyebrow">PEOPLE & PARTICIPATION</div>
-        <h1>Made useful together.</h1>
+        <div className="eyebrow">PEOPLE & JOIN</div>
+        <h1>There’s room to contribute.</h1>
         <p>
-          OIC starts with free industrial tools. It grows when builders and
-          practitioners improve what everyone can find, understand and try.
+          Meet the people currently responsible for OIC, and find a practical
+          way to help shape the catalog.
         </p>
         <div className="people-heading-actions">
-          <Link className="button primary" to="/share">
-            Share a project <ArrowRight size={17} />
-          </Link>
+          <a
+            className="button primary"
+            href={site.participation}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Offer a contribution <ArrowUpRight size={17} />
+          </a>
           <a className="people-quiet-link" href="#ways-to-join">
-            Find your way in <ArrowRight size={16} />
+            See ways to help <ArrowRight size={16} />
           </a>
         </div>
       </div>
 
-      <section className="people-stewardship" aria-labelledby="stewardship-title">
+      <section
+        className="people-stewardship"
+        aria-labelledby="stewardship-title"
+      >
         <div className="people-stewardship-copy">
           <span className="eyebrow">CURRENT STEWARDSHIP</span>
-          <h2 id="stewardship-title">One starting point. Room to grow.</h2>
+          <h2 id="stewardship-title">Who’s looking after OIC?</h2>
           <p>
             Grindstone Systems initiated OIC and currently maintains this
             website. The goal is shared stewardship built around real work and
@@ -63,13 +59,19 @@ export function CommunityPage() {
         <div className="people-roster">
           {publicStewards.map((steward) => (
             <article className="people-founder-card" key={steward.id}>
-              <div className="people-founder-mark" aria-hidden="true">{steward.initials}</div>
+              <div className="people-founder-mark" aria-hidden="true">
+                {steward.initials}
+              </div>
               <div>
                 <span className="people-role-tag">{steward.role}</span>
                 <h3>{steward.name}</h3>
                 <p>{steward.scope}</p>
                 {steward.profileUrl && (
-                  <a href={steward.profileUrl} target="_blank" rel="noopener noreferrer">
+                  <a
+                    href={steward.profileUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     Profile <ArrowUpRight size={14} />
                     <span className="sr-only"> (opens in a new tab)</span>
                   </a>
@@ -80,83 +82,67 @@ export function CommunityPage() {
         </div>
       </section>
 
-      <section className="people-section" id="ways-to-join" aria-labelledby="ways-title" tabIndex={-1}>
+      <section
+        className="people-section people-actions-section"
+        id="ways-to-join"
+        aria-labelledby="ways-title"
+        tabIndex={-1}
+      >
         <div className="people-section-intro">
-          <span className="eyebrow">HOW TO TAKE PART</span>
-          <h2 id="ways-title">Start where you can help.</h2>
+          <span className="eyebrow">TAKE PART</span>
+          <h2 id="ways-title">Start with a useful action.</h2>
           <p>
-            You can contribute without joining the GitHub organization. There
-            is no OIC membership fee or application for general participation.
+            No membership or fee is needed to browse, share, or point out a gap.
+            Organization access follows an accepted responsibility, not a public
+            application.
           </p>
         </div>
-        <div className="people-steps">
-          {roles.map((role) => (
-            <article className="people-step" key={role.number}>
-              <span className="people-step-number">{role.number}</span>
-              <h3>{role.title}</h3>
-              <p>{role.detail}</p>
-            </article>
-          ))}
-        </div>
-        <div className="people-entry-grid">
-          <Link to="/explore" className="people-entry">
-            <Users size={23} strokeWidth={1.7} />
-            <span><strong>Find a gap</strong><small>Try a tool and check its listing.</small></span>
-            <ArrowRight size={18} />
-          </Link>
-          <Link to="/share" className="people-entry">
-            <GitPullRequest size={23} strokeWidth={1.7} />
-            <span><strong>Share your work</strong><small>Prepare a portable project profile.</small></span>
-            <ArrowRight size={18} />
-          </Link>
-        </div>
-      </section>
-
-      <section className="people-section people-principles" aria-labelledby="steward-title">
-        <div className="people-section-intro">
-          <span className="eyebrow">AS OIC GROWS</span>
-          <h2 id="steward-title">Stewardship has a job to do.</h2>
-          <p>
-            A steward accepts a specific scope, review partner and decision
-            responsibility. Roles can cover the catalog, community, website or
-            industrial practice. GitHub access follows the work; it is not a
-            public badge or a prerequisite for contributing.
-          </p>
-        </div>
-        <div className="people-principle-card">
-          <ShieldCheck size={24} strokeWidth={1.6} />
-          <div>
-            <h3>Clear roles, visible limits</h3>
+        <div className="people-action-grid">
+          <Link to="/explore" className="people-action-card">
+            <span>01</span>
+            <Users size={25} />
+            <h3>Try a tool</h3>
             <p>
-              Individual steward profiles will appear here after each person
-              accepts a role and agrees to be listed. A project listing alone
-              does not make its author an OIC steward.
+              Explore the catalog and tell us when a listing needs a correction.
             </p>
-          </div>
+            <b>
+              Explore tools <ArrowRight size={16} />
+            </b>
+          </Link>
+          <Link to="/share" className="people-action-card">
+            <span>02</span>
+            <GitPullRequest size={25} />
+            <h3>Share your project</h3>
+            <p>
+              Prepare a portable profile for a free industrial tool you
+              maintain.
+            </p>
+            <b>
+              Prepare a listing <ArrowRight size={16} />
+            </b>
+          </Link>
+          <a
+            href={site.participation}
+            className="people-action-card"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span>03</span>
+            <ShieldCheck size={25} />
+            <h3>Help the Collective</h3>
+            <p>Offer a concrete improvement through a public GitHub issue.</p>
+            <b>
+              Offer a contribution <ArrowUpRight size={16} />
+            </b>
+          </a>
         </div>
+        <p className="people-actions-note">
+          OIC is currently founder-led. Public contributions are a starting
+          point for collaboration; they do not grant an organization role.
+          Please keep private plant and personal information out of public
+          issues.
+        </p>
       </section>
-
-      <div className="people-endnote">
-        <div>
-          <span className="eyebrow">JOINING TODAY</span>
-          <h2>Useful contributions come first.</h2>
-          <p>
-            Have a concrete correction, question or small task in mind? Offer a
-            contribution in a public GitHub Issue. It is a starting point for
-            useful work, not an application for organization access. Please do
-            not post private plant or personal information there.
-          </p>
-        </div>
-        <a className="button" href={site.participation} target="_blank" rel="noopener noreferrer">
-          Offer a contribution <ArrowUpRight size={17} />
-          <span className="sr-only"> (opens in a new tab)</span>
-        </a>
-      </div>
-      {site.discussions && (
-        <a className="people-discussions" href={site.discussions} target="_blank" rel="noopener noreferrer">
-          Join the OIC discussion <ArrowUpRight size={16} />
-        </a>
-      )}
     </div>
   );
 }

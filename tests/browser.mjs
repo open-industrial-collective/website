@@ -37,7 +37,9 @@ if (base.includes("127.0.0.1"))
   });
 await mkdir(new URL("../qa/", import.meta.url), { recursive: true });
 await page.goto(base);
-await page.getByRole("heading", { name: /A better starting point/ }).waitFor();
+await page
+  .getByRole("heading", { name: /Find the tool. Get to work./ })
+  .waitFor();
 await expect(
   page
     .getByRole("link", { name: "Dimension Engine Showcase", exact: true })
@@ -114,7 +116,9 @@ await page.getByRole("checkbox", { name: "Closed source" }).check();
 await expect(page.getByRole("status")).toHaveText("1 tool");
 await page.getByRole("checkbox", { name: "Closed source" }).uncheck();
 await page.getByRole("checkbox", { name: "Open source", exact: false }).check();
-await expect(page.getByRole("status")).toHaveText("1 tool");
+await expect(page.getByRole("status")).toHaveText(
+  countLabel((project) => project.source === "open-source"),
+);
 await page.getByRole("link", { name: "Visual Toolkit", exact: true }).click();
 await page
   .getByRole("heading", { name: "Visual Toolkit", exact: true })
@@ -153,7 +157,9 @@ await page.getByRole("link", { name: "Find these tools" }).click();
 await expect(page.getByRole("status")).toHaveText(countLabel());
 await page.getByRole("checkbox", { name: "Ignition Perspective" }).check();
 await expect(page.getByRole("status")).toHaveText("1 tool");
-await expect(page.getByRole("link", { name: "Visual Toolkit", exact: true })).toBeVisible();
+await expect(
+  page.getByRole("link", { name: "Visual Toolkit", exact: true }),
+).toBeVisible();
 await page.goto(base + "/how-it-works#quality");
 await expect(
   page.getByRole("heading", { name: "What keeps the catalog useful?" }),
@@ -367,7 +373,7 @@ for (const path of [
       .getByRole("link", { name: "People & join", exact: true })
       .click();
     await page
-      .getByRole("heading", { name: "Made useful together." })
+      .getByRole("heading", { name: "There’s room to contribute." })
       .waitFor();
     await expect(
       page.getByRole("heading", { name: "Grindstone Systems" }),
