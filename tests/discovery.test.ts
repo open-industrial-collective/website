@@ -7,6 +7,7 @@ import {
   facetOptions,
   matches,
   normalizeSearch,
+  selections,
   values,
 } from "../src/discovery.ts";
 import type { Listing } from "../src/catalog.ts";
@@ -85,6 +86,19 @@ test("kind facets distinguish browser previews from web tools while old links st
   assert.deepEqual(values(explicit, "type"), ["web-tool"]);
   explicit.profile!.discovery!.product_type = "demo";
   assert.deepEqual(values(explicit, "type"), ["interactive-demo"]);
+});
+test("Ignition variants appear as one platform filter and old links still work", () => {
+  const toolkit = realCatalog.find((p) => p.id === "visual-toolkit")!;
+  assert.deepEqual(values(toolkit, "works"), ["Ignition Platform"]);
+  assert.deepEqual(
+    facetOptions(realCatalog, query(""), "works").map((option) => option.value),
+    ["Ignition Platform"],
+  );
+  for (const old of ["Ignition", "Ignition Perspective", "Ignition Platform"]) {
+    const params = query(`works=${encodeURIComponent(old)}`);
+    assert.deepEqual(selections(params, "works"), ["Ignition Platform"]);
+    assert.equal(filterProjects([toolkit], params).length, 1);
+  }
 });
 test("aliases, facets and multiword search work without removing constraints", () => {
   assert.equal(

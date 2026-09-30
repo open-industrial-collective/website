@@ -69,15 +69,6 @@ export function CommunityPage() {
             </b>
           </a>
         </div>
-        <p className="people-actions-note">
-          Found an error in a listing?{" "}
-          <a href={site.correction} target="_blank" rel="noopener noreferrer">
-            Suggest a correction on GitHub ↗
-          </a>{" "}
-          (sign-in required; public Issue). For private security reports, use
-          the <Link to="/safety">security route</Link>. Keep private plant and
-          personal information out of public Issues.
-        </p>
       </section>
       <section
         className="people-stewardship"
@@ -108,7 +99,14 @@ export function CommunityPage() {
               </div>
               <div>
                 <span className="people-role-tag">{steward.role}</span>
-                <h3>{steward.name}</h3>
+                <h3>
+                  {steward.websiteUrl ? (
+                    <a href={steward.websiteUrl} target="_blank" rel="noopener noreferrer">
+                      {steward.name} <ArrowUpRight size={17} aria-hidden="true" />
+                      <span className="sr-only"> (opens in a new tab)</span>
+                    </a>
+                  ) : steward.name}
+                </h3>
                 <p>{steward.scope}</p>
                 {steward.profileUrl && (
                   <a

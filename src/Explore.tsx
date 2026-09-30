@@ -16,6 +16,7 @@ import data from "./catalog.generated.json";
 import { sourceLabels, type Listing } from "./catalog";
 import {
   capabilities,
+  canonicalWorksWith,
   browseKind,
   collections,
   discovery,
@@ -151,7 +152,8 @@ function ToolCard({
   const logo = p.profile?.branding?.logo.on_light;
   const motion = image?.type === "image" && Boolean(image.poster);
   const context = d.works_with
-    ?.map((w) => `${relationshipLabels[w.relationship]} ${w.name}`)
+    ?.map((w) => `${relationshipLabels[w.relationship]} ${canonicalWorksWith(w.name)}`)
+    .filter((value, index, all) => all.indexOf(value) === index)
     .join(" · ");
   return (
     <article className="tool-card">
@@ -207,13 +209,20 @@ function ToolCard({
           </div>
         </div>
         <p className="tool-summary">{p.summary}</p>
+        <div className="tool-status">
+          <strong>Free to use</strong>
+          <span>{p.profile?.access.edition || "Free edition"}</span>
+          {p.software_requirements === "paid-platform-required" && (
+            <em>Paid host required</em>
+          )}
+        </div>
         <div className="tool-spec" aria-label="Tool details">
           <div>
-            <span>Use</span>
+            <span>Best for</span>
             <strong>{capabilities[d.primary]}</strong>
           </div>
           <div>
-            <span>Format</span>
+            <span>Available as</span>
             <strong>{listingFormat(p)}</strong>
           </div>
           {context && (
@@ -223,17 +232,11 @@ function ToolCard({
             </div>
           )}
         </div>
-        <div className="tool-status">
-          <strong>Free {p.profile?.access.edition || "edition"}</strong>
-          <span>
-            {sourceLabels[p.source]} ·{" "}
-            {label("stage", values(p, "stage")[0] || "unknown")}
-          </span>
-          {p.software_requirements === "paid-platform-required" && (
-            <em>Paid host required</em>
-          )}
-        </div>
-        <div className="tool-dates">
+        <details className="free-scope">
+          <summary>Terms & listing details</summary>
+          <p>{p.cost_notes}</p>
+          <p>{sourceLabels[p.source]} · {label("stage", values(p, "stage")[0] || "unknown")}</p>
+          <div className="tool-dates">
           <span>
             Added{" "}
             <time dateTime={p.listing.added || ""}>
@@ -264,10 +267,7 @@ function ToolCard({
               <span title="No software release declared">—</span>
             )}
           </span>
-        </div>
-        <details className="free-scope">
-          <summary>Free scope & requirements</summary>
-          <p>{p.cost_notes}</p>
+          </div>
         </details>
         <div className="tool-actions">
           <a href={action.url} target="_blank" rel="noopener noreferrer">
@@ -496,7 +496,6 @@ export default function Explore() {
   const compareButtonRef = useRef<HTMLButtonElement>(null);
   const filterButtonRef = useRef<HTMLButtonElement>(null);
   const [drawer, setDrawer] = useState(false),
-    [filtersCollapsed, setFiltersCollapsed] = useState(false),
     [compareOpen, setCompareOpen] = useState(false),
     [suggesting, setSuggesting] = useState(false);
   const [queryDraft, setQueryDraft] = useState(params.get("q") || "");
@@ -681,13 +680,7 @@ export default function Explore() {
       className={`container page explore-page ${compared.length ? "has-comparison" : ""}`}
     >
       <div className="explore-intro">
-        <div>
-          <h1>Explore projects</h1>
-          <p>Find free industrial software. Check the fit. Try it.</p>
-        </div>
-        <span className="explore-intro-count">
-          {projects.length} {projects.length === 1 ? "project" : "projects"} in the catalog
-        </span>
+        <h1>Explore projects</h1>
       </div>
       <div className="explore-search-row">
         <div className="explore-search">
@@ -779,27 +772,7 @@ export default function Explore() {
           Filters {active.length > 0 && <span>{active.length}</span>}
         </button>
       </div>
-      <div
-        className={`explore-workspace ${filtersCollapsed ? "filters-collapsed" : ""}`}
-      >
-        <aside className="explore-filters" aria-label="Catalog filters">
-          <button
-            className="filter-collapse"
-            type="button"
-            aria-expanded={!filtersCollapsed}
-            aria-controls="desktop-filter-content"
-            aria-label={filtersCollapsed ? "Show filters" : "Hide filters"}
-            onClick={() => setFiltersCollapsed((current) => !current)}
-          >
-            <SlidersHorizontal size={18} />
-            {!filtersCollapsed && <span>Filters</span>}
-            <span className="filter-collapse-count">{active.length || ""}</span>
-            <ArrowRight className="filter-collapse-arrow" size={16} />
-          </button>
-          <div id="desktop-filter-content" hidden={filtersCollapsed}>
-            {filterContent}
-          </div>
-        </aside>
+      <div className="explore-workspace">
         <section className="explore-results" aria-label="Project results">
           <div className="explore-toolbar">
             <span role="status" aria-live="polite">
