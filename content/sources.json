@@ -16,5 +16,14 @@
     "controller_account_id": 10232151,
     "review_policy": "all-updates",
     "listing_permission": "Owner authorized OIC publication of the profile and approved media in enrollment issue #14. Software source is Apache-2.0; that license is separate from the listing permission."
+  },
+  "documentation-toolkit": {
+    "repository_id": 1396831416,
+    "repository": "Grindstone-Systems/documentation-toolkit",
+    "path": ".oic/project.yaml",
+    "ref": "main",
+    "controller_account_id": 10232151,
+    "review_policy": "all-updates",
+    "listing_permission": "Owner authorized OIC publication of the profile and approved media in enrollment issue #20. Software source is Apache-2.0; that license is separate from the listing permission."
   }
 }

@@ -393,6 +393,608 @@
   },
   {
     "schema": "oic/project/v1",
+    "id": "documentation-toolkit",
+    "name": "Documentation Toolkit",
+    "summary": "Experimental: turn an Ignition backup or project export into a searchable engineering reference and editable manual pack, in your browser.",
+    "description": "> **Experimental · testing phase.** It works and it's private, but it's still being proven on real projects. Check generated documents against the source before relying on them, and please report what it gets wrong.\n\nDocumentation Toolkit turns the files an Ignition project already produces into documentation a team can hand over. Open a gateway backup, a project export or a tag export and it builds a searchable engineering reference in your browser, with every fact traced to the file it came from. Nothing is uploaded.\n\n## What you get\n\n- **An engineering reference**: system overview, a system map of pages, views and data, projects, navigation, Perspective views, tags and UDTs, alarms, connections, named queries, scripts, cross-references and gaps, plus appendices with complete inventories.\n- **Manual frameworks** for operators and maintenance. Screens, alarms and equipment come from configuration. Operating procedures, alarm responses and safety information are marked **Unresolved** until the site supplies them; the toolkit doesn't invent them.\n- **Coverage you can trust.** Every resource type is counted as found and read. Anything the toolkit can't interpret yet, such as Vision windows, is listed and explained rather than silently dropped.\n- **Your branding**: customer name, logo, revision, a few themes, Letter or A4, section choice, screenshots attached to screens, and redaction of addresses, usernames or code.\n\n## Exports\n\n- Offline HTML: one file with search that opens without a server\n- Word (.docx) with real heading styles and tables\n- PDF through the browser's print dialog\n- CSV inventories of tags, alarms, views and queries\n- An agent workspace: evidence as JSON and one Markdown file per section\n\n## Bring your own AI assistant\n\nThe basic pack needs no AI. To go further, save the workspace and open it with Claude Code, Codex or another assistant. An optional local extension (`oic-docs`) adds MCP tools to search evidence, trace relationships, write draft sections and rebuild the pack. It reads only the workspace, never touches a gateway, and can't mark anything as confirmed.\n\n## Privacy\n\nProcessing happens on your device. The app loads only its own files, keeps working offline once loaded, and never reads credentials from a backup. A CI check fails the build if any request leaves the app's origin.\n\n## Where it fits\n\nDocumentation Toolkit reads exported files. It doesn't connect to a gateway, run project code or replace the Designer. It's in preview: project exports, tag exports and 8.3 backups are supported, and 8.1 backups document projects only. It has been tested on a synthetic sample and a small number of real backups. The code is open source under Apache-2.0.\n",
+    "category": "Engineering",
+    "tags": [
+      "Experimental",
+      "Documentation",
+      "Ignition",
+      "Perspective",
+      "Handover",
+      "MCP",
+      "AI agents",
+      "Open source"
+    ],
+    "platforms": [
+      "Web browser",
+      "Node.js (optional)"
+    ],
+    "source": "open-source",
+    "repository": "https://github.com/Grindstone-Systems/documentation-toolkit",
+    "license": "Apache License 2.0",
+    "license_url": "https://github.com/Grindstone-Systems/documentation-toolkit/blob/main/LICENSE",
+    "cost": "free",
+    "cost_notes": "Experimental, in its testing phase. The app is a static site that runs entirely in your browser, with no account, server, upload or time limit. Documents you export are yours. The source is Apache-2.0 and can be self-hosted. The optional local extension (CLI and MCP server) runs on your own machine and uses your own AI assistant, if you choose to use one.",
+    "software_requirements": "no-paid-required",
+    "homepage": "https://grindstone-systems.github.io/documentation-toolkit/",
+    "get_started": "https://grindstone-systems.github.io/documentation-toolkit/",
+    "documentation": "https://github.com/Grindstone-Systems/documentation-toolkit#readme",
+    "maintainer": "Grindstone Systems",
+    "profile": {
+      "schema": "oic/project/v2",
+      "id": "documentation-toolkit",
+      "name": "Documentation Toolkit",
+      "summary": "Experimental: turn an Ignition backup or project export into a searchable engineering reference and editable manual pack, in your browser.",
+      "category": "Engineering",
+      "tags": [
+        "Experimental",
+        "Documentation",
+        "Ignition",
+        "Perspective",
+        "Handover",
+        "MCP",
+        "AI agents",
+        "Open source"
+      ],
+      "platforms": [
+        "Web browser",
+        "Node.js (optional)"
+      ],
+      "publisher": {
+        "name": "Grindstone Systems",
+        "url": "https://github.com/Grindstone-Systems"
+      },
+      "description": {
+        "file": "./overview.md"
+      },
+      "branding": {
+        "logo": {
+          "on_light": "/images/projects/cb84495fd3c5cc76fa651f04402e29239e16d465843ad35580649e1df57e066c.webp",
+          "on_dark": "/images/projects/cb84495fd3c5cc76fa651f04402e29239e16d465843ad35580649e1df57e066c.webp",
+          "alt": "Documentation Toolkit mark, a white page outline with two text lines and a blue node on a charcoal tile"
+        }
+      },
+      "media": [
+        {
+          "id": "workspace",
+          "type": "image",
+          "src": "/images/projects/d20894ce551e27b76d852d7b34133fcc61b72426da699203a56ed6af97beebed.webp",
+          "title": "A reference built in the browser",
+          "alt": "The Documentation Toolkit workspace with inputs and counts on the left, a generated engineering reference showing a system map of pages, views and tag folders in the middle, and branding controls on the right.",
+          "caption": "Workspace · The synthetic Riverbend sample project and tag export, processed on the device",
+          "credit": "Grindstone Systems",
+          "rights": "Provided for display, resizing and caching in the OIC project listing."
+        },
+        {
+          "id": "evidence",
+          "type": "image",
+          "src": "/images/projects/e7df3ad9d2b0d00c397eda9362e252a06532a5a9eab8912fb07cbc02b99db833.webp",
+          "title": "Every fact traced to its source",
+          "alt": "The Evidence tab showing the tag P101/Speed with its source file, configuration fields including an OPC item path expanded from its UDT, the view that uses it and the document section that cites it.",
+          "caption": "Evidence explorer · Configuration, source file, links and where each item appears in the document",
+          "credit": "Grindstone Systems",
+          "rights": "Provided for display, resizing and caching in the OIC project listing."
+        },
+        {
+          "id": "operator-framework",
+          "type": "image",
+          "src": "/images/projects/faf7644f0ee88d8eca70daf100f647427174a1d0bf44781e0192985401b4091e.webp",
+          "title": "Frameworks that don't invent procedures",
+          "alt": "The Operator Manual Framework pack showing an Alarm responses section marked Unresolved, listing critical and high alarms with an empty Approved response column.",
+          "caption": "Operator Manual Framework · Alarms come from configuration; responses stay Unresolved until the site supplies them",
+          "credit": "Grindstone Systems",
+          "rights": "Provided for display, resizing and caching in the OIC project listing."
+        },
+        {
+          "id": "coverage",
+          "type": "image",
+          "src": "/images/projects/bb476dc34b15b4762942523b6f377f0a0e69db18c0958bca0d1b95885994acd6.webp",
+          "title": "Explicit about coverage",
+          "alt": "The Coverage tab in dark mode listing each resource type with found and read counts, a Vision window listed but not read, and one unresolved tag reference.",
+          "caption": "Coverage · Anything found but not read is counted and explained, never silently dropped",
+          "credit": "Grindstone Systems",
+          "rights": "Provided for display, resizing and caching in the OIC project listing."
+        },
+        {
+          "id": "reference",
+          "type": "image",
+          "src": "/images/projects/c664df5f0930e39c80a4ab09c3b6f0e5d65e86a666c64b692c9a53bc40108051.webp",
+          "title": "The exported reference",
+          "alt": "The exported offline HTML reference with a contents sidebar and search box, a tag summary by folder, UDT definitions and an alarm table.",
+          "caption": "Offline HTML export · One self-contained file with search; also exported as Word, PDF and CSV",
+          "credit": "Grindstone Systems",
+          "rights": "Provided for display, resizing and caching in the OIC project listing."
+        },
+        {
+          "id": "agents",
+          "type": "image",
+          "src": "/images/projects/c577653ef69eb554015e0526f06af78434705fff46b306ba3f8170772cf29228.webp",
+          "title": "Bring your own AI assistant",
+          "alt": "The AI agent extension page in dark mode with steps to save a workspace, set up the local MCP tools for Claude Code or Codex, and the boundaries the tools enforce.",
+          "caption": "Agent extension · Optional; uses your own Claude Code, Codex or MCP client on your machine",
+          "credit": "Grindstone Systems",
+          "rights": "Provided for display, resizing and caching in the OIC project listing."
+        }
+      ],
+      "source": {
+        "availability": "open-source",
+        "repository": "https://github.com/Grindstone-Systems/documentation-toolkit"
+      },
+      "license": {
+        "name": "Apache License 2.0",
+        "url": "https://github.com/Grindstone-Systems/documentation-toolkit/blob/main/LICENSE",
+        "spdx_expression": "Apache-2.0"
+      },
+      "access": {
+        "edition": "Hosted web app",
+        "cost": "free",
+        "notes": "Experimental, in its testing phase. The app is a static site that runs entirely in your browser, with no account, server, upload or time limit. Documents you export are yours. The source is Apache-2.0 and can be self-hosted. The optional local extension (CLI and MCP server) runs on your own machine and uses your own AI assistant, if you choose to use one.",
+        "account_required": false
+      },
+      "requirements": [
+        {
+          "name": "Modern web browser",
+          "kind": "software",
+          "cost": "free",
+          "notes": "Current Chrome, Edge, Firefox or Safari. Processing and export work offline once the app has loaded."
+        },
+        {
+          "name": "Ignition exports",
+          "kind": "software",
+          "cost": "optional-paid",
+          "notes": "A project export (8.x), a tag export (JSON) or a gateway backup. 8.3 backups include gateway configuration; 8.1 backups document projects only. A sample project is built in."
+        },
+        {
+          "name": "Node.js 22",
+          "kind": "software",
+          "cost": "free",
+          "notes": "Only for the optional local extension (oic-docs CLI and MCP server), built from source until it is published.",
+          "applies_to": [
+            "agents"
+          ]
+        },
+        {
+          "name": "AI assistant",
+          "kind": "service",
+          "cost": "optional-paid",
+          "notes": "Optional. Claude Code, Codex or another MCP client, on your own subscription. The basic pack needs no AI.",
+          "applies_to": [
+            "agents"
+          ]
+        }
+      ],
+      "actions": [
+        {
+          "id": "app",
+          "type": "demo",
+          "url": "https://grindstone-systems.github.io/documentation-toolkit/",
+          "primary": true,
+          "label": "Open the toolkit",
+          "description": "Open a backup or project export, or explore the sample. Runs in your browser with no account or upload."
+        },
+        {
+          "id": "sample",
+          "type": "demo",
+          "url": "https://grindstone-systems.github.io/documentation-toolkit/#/workspace/sample",
+          "primary": false,
+          "label": "Explore the sample"
+        },
+        {
+          "id": "agents",
+          "type": "docs",
+          "url": "https://github.com/Grindstone-Systems/documentation-toolkit/blob/main/docs/LOCAL.md",
+          "primary": false,
+          "label": "Set up the agent extension"
+        }
+      ],
+      "resources": [
+        {
+          "id": "source",
+          "kind": "source",
+          "title": "Source code",
+          "url": "https://github.com/Grindstone-Systems/documentation-toolkit",
+          "access": "public",
+          "description": "Apache-2.0 TypeScript engine, adapters, renderers, the browser app and the oic-docs CLI and MCP server."
+        },
+        {
+          "id": "privacy",
+          "kind": "document",
+          "title": "Privacy and security",
+          "url": "https://github.com/Grindstone-Systems/documentation-toolkit/blob/main/docs/PRIVACY.md",
+          "access": "public",
+          "description": "What stays on the device, how untrusted files are handled, and the offline check that runs in CI."
+        },
+        {
+          "id": "workspace-format",
+          "kind": "document",
+          "title": "Workspace format",
+          "url": "https://github.com/Grindstone-Systems/documentation-toolkit/blob/main/docs/WORKSPACE.md",
+          "access": "public",
+          "description": "The portable folder of evidence, Markdown sections and settings that people and agents edit."
+        }
+      ],
+      "links": {
+        "homepage": "https://grindstone-systems.github.io/documentation-toolkit/",
+        "docs": "https://github.com/Grindstone-Systems/documentation-toolkit#readme",
+        "issues": "https://github.com/Grindstone-Systems/documentation-toolkit/issues",
+        "changelog": "https://github.com/Grindstone-Systems/documentation-toolkit/commits/main"
+      },
+      "faq": [
+        {
+          "question": "What does Experimental mean here?",
+          "answer": "The toolkit is in its testing phase. It is tested on a synthetic sample and a small number of real Ignition 8.1 and 8.3 backups, formats and outputs may still change, and generated documents should be checked against the source before anyone relies on them. Reports of what it gets wrong are welcome in the issue tracker."
+        },
+        {
+          "question": "Is my backup uploaded anywhere?",
+          "answer": "No. Files are read in your browser and never leave your device. The app makes no requests beyond its own files, and a CI check fails the build if that changes. Credentials in the backup are never read."
+        },
+        {
+          "question": "Does it need AI?",
+          "answer": "No. The reference, frameworks and every export are generated deterministically. AI is optional, through your own assistant and the local extension, and anything it writes is marked AI draft."
+        },
+        {
+          "question": "Will it write our operating procedures?",
+          "answer": "No. Operating steps, alarm responses and safety information can't be established from configuration. Those sections stay Unresolved until the site supplies approved text."
+        },
+        {
+          "question": "Which Ignition versions are supported?",
+          "answer": "Project exports from 8.x, tag exports (JSON) and 8.3 gateway backups. 8.1 backups document projects; their tags and connections live in an internal database that isn't decoded yet. Vision windows and reports are listed by name. Tested on a synthetic sample and a small number of real 8.1 and 8.3 backups."
+        },
+        {
+          "question": "Is this an Inductive Automation product?",
+          "answer": "No. It's an independent open-source utility that reads exported files. It doesn't replace the Designer or imply endorsement."
+        }
+      ],
+      "lifecycle": {
+        "stage": "preview",
+        "maintenance": "active"
+      },
+      "visibility": "listed",
+      "discovery": {
+        "primary": "development",
+        "secondary": [
+          "operations"
+        ],
+        "capabilities": [
+          "Engineering reference generation",
+          "Operator and maintenance manual frameworks",
+          "Tag, alarm and view inventories",
+          "Source coverage reporting",
+          "Word, HTML, PDF and CSV export",
+          "AI agent workspace and MCP tools"
+        ],
+        "product_type": "application",
+        "interfaces": [
+          "Web browser",
+          "CLI",
+          "MCP (stdio)"
+        ],
+        "works_with": [
+          {
+            "name": "Ignition",
+            "relationship": "integrates",
+            "version": "8.1, 8.3"
+          }
+        ],
+        "options": [
+          {
+            "resource_id": "source",
+            "delivery": "web",
+            "environments": [
+              "Web browser",
+              "Node.js 22 (CLI)"
+            ],
+            "deployment": [
+              "hosted",
+              "local"
+            ]
+          }
+        ],
+        "offline": "yes",
+        "air_gap": "unknown",
+        "commercial_use": "yes",
+        "support": [
+          "community",
+          "publisher"
+        ]
+      }
+    },
+    "authored": {
+      "schema": "oic/project/v2",
+      "id": "documentation-toolkit",
+      "name": "Documentation Toolkit",
+      "summary": "Experimental: turn an Ignition backup or project export into a searchable engineering reference and editable manual pack, in your browser.",
+      "category": "Engineering",
+      "tags": [
+        "Experimental",
+        "Documentation",
+        "Ignition",
+        "Perspective",
+        "Handover",
+        "MCP",
+        "AI agents",
+        "Open source"
+      ],
+      "platforms": [
+        "Web browser",
+        "Node.js (optional)"
+      ],
+      "publisher": {
+        "name": "Grindstone Systems",
+        "url": "https://github.com/Grindstone-Systems"
+      },
+      "description": {
+        "file": "./overview.md"
+      },
+      "branding": {
+        "logo": {
+          "on_light": "./media/logo.png",
+          "on_dark": "./media/logo.png",
+          "alt": "Documentation Toolkit mark, a white page outline with two text lines and a blue node on a charcoal tile"
+        }
+      },
+      "media": [
+        {
+          "id": "workspace",
+          "type": "image",
+          "src": "./media/workspace.jpg",
+          "title": "A reference built in the browser",
+          "alt": "The Documentation Toolkit workspace with inputs and counts on the left, a generated engineering reference showing a system map of pages, views and tag folders in the middle, and branding controls on the right.",
+          "caption": "Workspace · The synthetic Riverbend sample project and tag export, processed on the device",
+          "credit": "Grindstone Systems",
+          "rights": "Provided for display, resizing and caching in the OIC project listing."
+        },
+        {
+          "id": "evidence",
+          "type": "image",
+          "src": "./media/evidence.jpg",
+          "title": "Every fact traced to its source",
+          "alt": "The Evidence tab showing the tag P101/Speed with its source file, configuration fields including an OPC item path expanded from its UDT, the view that uses it and the document section that cites it.",
+          "caption": "Evidence explorer · Configuration, source file, links and where each item appears in the document",
+          "credit": "Grindstone Systems",
+          "rights": "Provided for display, resizing and caching in the OIC project listing."
+        },
+        {
+          "id": "operator-framework",
+          "type": "image",
+          "src": "./media/operator-framework.jpg",
+          "title": "Frameworks that don't invent procedures",
+          "alt": "The Operator Manual Framework pack showing an Alarm responses section marked Unresolved, listing critical and high alarms with an empty Approved response column.",
+          "caption": "Operator Manual Framework · Alarms come from configuration; responses stay Unresolved until the site supplies them",
+          "credit": "Grindstone Systems",
+          "rights": "Provided for display, resizing and caching in the OIC project listing."
+        },
+        {
+          "id": "coverage",
+          "type": "image",
+          "src": "./media/coverage.jpg",
+          "title": "Explicit about coverage",
+          "alt": "The Coverage tab in dark mode listing each resource type with found and read counts, a Vision window listed but not read, and one unresolved tag reference.",
+          "caption": "Coverage · Anything found but not read is counted and explained, never silently dropped",
+          "credit": "Grindstone Systems",
+          "rights": "Provided for display, resizing and caching in the OIC project listing."
+        },
+        {
+          "id": "reference",
+          "type": "image",
+          "src": "./media/reference.jpg",
+          "title": "The exported reference",
+          "alt": "The exported offline HTML reference with a contents sidebar and search box, a tag summary by folder, UDT definitions and an alarm table.",
+          "caption": "Offline HTML export · One self-contained file with search; also exported as Word, PDF and CSV",
+          "credit": "Grindstone Systems",
+          "rights": "Provided for display, resizing and caching in the OIC project listing."
+        },
+        {
+          "id": "agents",
+          "type": "image",
+          "src": "./media/agents.jpg",
+          "title": "Bring your own AI assistant",
+          "alt": "The AI agent extension page in dark mode with steps to save a workspace, set up the local MCP tools for Claude Code or Codex, and the boundaries the tools enforce.",
+          "caption": "Agent extension · Optional; uses your own Claude Code, Codex or MCP client on your machine",
+          "credit": "Grindstone Systems",
+          "rights": "Provided for display, resizing and caching in the OIC project listing."
+        }
+      ],
+      "source": {
+        "availability": "open-source",
+        "repository": "https://github.com/Grindstone-Systems/documentation-toolkit"
+      },
+      "license": {
+        "name": "Apache License 2.0",
+        "url": "https://github.com/Grindstone-Systems/documentation-toolkit/blob/main/LICENSE",
+        "spdx_expression": "Apache-2.0"
+      },
+      "access": {
+        "edition": "Hosted web app",
+        "cost": "free",
+        "notes": "Experimental, in its testing phase. The app is a static site that runs entirely in your browser, with no account, server, upload or time limit. Documents you export are yours. The source is Apache-2.0 and can be self-hosted. The optional local extension (CLI and MCP server) runs on your own machine and uses your own AI assistant, if you choose to use one.",
+        "account_required": false
+      },
+      "requirements": [
+        {
+          "name": "Modern web browser",
+          "kind": "software",
+          "cost": "free",
+          "notes": "Current Chrome, Edge, Firefox or Safari. Processing and export work offline once the app has loaded."
+        },
+        {
+          "name": "Ignition exports",
+          "kind": "software",
+          "cost": "optional-paid",
+          "notes": "A project export (8.x), a tag export (JSON) or a gateway backup. 8.3 backups include gateway configuration; 8.1 backups document projects only. A sample project is built in."
+        },
+        {
+          "name": "Node.js 22",
+          "kind": "software",
+          "cost": "free",
+          "notes": "Only for the optional local extension (oic-docs CLI and MCP server), built from source until it is published.",
+          "applies_to": [
+            "agents"
+          ]
+        },
+        {
+          "name": "AI assistant",
+          "kind": "service",
+          "cost": "optional-paid",
+          "notes": "Optional. Claude Code, Codex or another MCP client, on your own subscription. The basic pack needs no AI.",
+          "applies_to": [
+            "agents"
+          ]
+        }
+      ],
+      "actions": [
+        {
+          "id": "app",
+          "type": "demo",
+          "url": "https://grindstone-systems.github.io/documentation-toolkit/",
+          "primary": true,
+          "label": "Open the toolkit",
+          "description": "Open a backup or project export, or explore the sample. Runs in your browser with no account or upload."
+        },
+        {
+          "id": "sample",
+          "type": "demo",
+          "url": "https://grindstone-systems.github.io/documentation-toolkit/#/workspace/sample",
+          "primary": false,
+          "label": "Explore the sample"
+        },
+        {
+          "id": "agents",
+          "type": "docs",
+          "url": "https://github.com/Grindstone-Systems/documentation-toolkit/blob/main/docs/LOCAL.md",
+          "primary": false,
+          "label": "Set up the agent extension"
+        }
+      ],
+      "resources": [
+        {
+          "id": "source",
+          "kind": "source",
+          "title": "Source code",
+          "url": "https://github.com/Grindstone-Systems/documentation-toolkit",
+          "access": "public",
+          "description": "Apache-2.0 TypeScript engine, adapters, renderers, the browser app and the oic-docs CLI and MCP server."
+        },
+        {
+          "id": "privacy",
+          "kind": "document",
+          "title": "Privacy and security",
+          "url": "https://github.com/Grindstone-Systems/documentation-toolkit/blob/main/docs/PRIVACY.md",
+          "access": "public",
+          "description": "What stays on the device, how untrusted files are handled, and the offline check that runs in CI."
+        },
+        {
+          "id": "workspace-format",
+          "kind": "document",
+          "title": "Workspace format",
+          "url": "https://github.com/Grindstone-Systems/documentation-toolkit/blob/main/docs/WORKSPACE.md",
+          "access": "public",
+          "description": "The portable folder of evidence, Markdown sections and settings that people and agents edit."
+        }
+      ],
+      "links": {
+        "homepage": "https://grindstone-systems.github.io/documentation-toolkit/",
+        "docs": "https://github.com/Grindstone-Systems/documentation-toolkit#readme",
+        "issues": "https://github.com/Grindstone-Systems/documentation-toolkit/issues",
+        "changelog": "https://github.com/Grindstone-Systems/documentation-toolkit/commits/main"
+      },
+      "faq": [
+        {
+          "question": "What does Experimental mean here?",
+          "answer": "The toolkit is in its testing phase. It is tested on a synthetic sample and a small number of real Ignition 8.1 and 8.3 backups, formats and outputs may still change, and generated documents should be checked against the source before anyone relies on them. Reports of what it gets wrong are welcome in the issue tracker."
+        },
+        {
+          "question": "Is my backup uploaded anywhere?",
+          "answer": "No. Files are read in your browser and never leave your device. The app makes no requests beyond its own files, and a CI check fails the build if that changes. Credentials in the backup are never read."
+        },
+        {
+          "question": "Does it need AI?",
+          "answer": "No. The reference, frameworks and every export are generated deterministically. AI is optional, through your own assistant and the local extension, and anything it writes is marked AI draft."
+        },
+        {
+          "question": "Will it write our operating procedures?",
+          "answer": "No. Operating steps, alarm responses and safety information can't be established from configuration. Those sections stay Unresolved until the site supplies approved text."
+        },
+        {
+          "question": "Which Ignition versions are supported?",
+          "answer": "Project exports from 8.x, tag exports (JSON) and 8.3 gateway backups. 8.1 backups document projects; their tags and connections live in an internal database that isn't decoded yet. Vision windows and reports are listed by name. Tested on a synthetic sample and a small number of real 8.1 and 8.3 backups."
+        },
+        {
+          "question": "Is this an Inductive Automation product?",
+          "answer": "No. It's an independent open-source utility that reads exported files. It doesn't replace the Designer or imply endorsement."
+        }
+      ],
+      "lifecycle": {
+        "stage": "preview",
+        "maintenance": "active"
+      },
+      "visibility": "listed",
+      "discovery": {
+        "primary": "development",
+        "secondary": [
+          "operations"
+        ],
+        "capabilities": [
+          "Engineering reference generation",
+          "Operator and maintenance manual frameworks",
+          "Tag, alarm and view inventories",
+          "Source coverage reporting",
+          "Word, HTML, PDF and CSV export",
+          "AI agent workspace and MCP tools"
+        ],
+        "product_type": "application",
+        "interfaces": [
+          "Web browser",
+          "CLI",
+          "MCP (stdio)"
+        ],
+        "works_with": [
+          {
+            "name": "Ignition",
+            "relationship": "integrates",
+            "version": "8.1, 8.3"
+          }
+        ],
+        "options": [
+          {
+            "resource_id": "source",
+            "delivery": "web",
+            "environments": [
+              "Web browser",
+              "Node.js 22 (CLI)"
+            ],
+            "deployment": [
+              "hosted",
+              "local"
+            ]
+          }
+        ],
+        "offline": "yes",
+        "air_gap": "unknown",
+        "commercial_use": "yes",
+        "support": [
+          "community",
+          "publisher"
+        ]
+      }
+    },
+    "listing": {
+      "origin": "community",
+      "reviewed": "2026-09-29",
+      "submitted_by": "Grindstone Systems",
+      "added": "2026-09-29",
+      "source": {
+        "repository": "Grindstone-Systems/documentation-toolkit",
+        "commit": "abb37776861eecaa8c9a104c1ad285f7f9045706",
+        "digest": "abd7bbf701c6bd8a2b510ff2af8d5d50aa8f9b17c209f500047ef2e873d176a3"
+      }
+    }
+  },
+  {
+    "schema": "oic/project/v1",
     "id": "visual-toolkit",
     "name": "Visual Toolkit",
     "summary": "Generate state-aware industrial symbols and stylised 3D equipment from parameters, connect them into skids, then export SVG, smart SVG or glTF.",
