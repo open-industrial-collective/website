@@ -3,12 +3,10 @@ import { Link, useLocation, useSearchParams } from "react-router-dom";
 import {
   ArrowRight,
   ArrowUpRight,
-  CircleCheck,
   Check,
   Columns3,
   Grid2X2,
   List,
-  MonitorPlay,
   Play,
   Search,
   SlidersHorizontal,
@@ -18,6 +16,7 @@ import data from "./catalog.generated.json";
 import { sourceLabels, type Listing } from "./catalog";
 import {
   capabilities,
+  browseKind,
   collections,
   discovery,
   facetOptions,
@@ -27,13 +26,62 @@ import {
   groups,
   label,
   primaryAction,
-  productTypes,
   relationshipLabels,
   selections,
   values,
   type Group,
 } from "./discovery";
 const projects = data as Listing[];
+
+const publisherSites: Record<string, string> = {
+  "Grindstone Systems": "https://www.grindstonesystems.com/",
+};
+function publisherUrl(p: Listing) {
+  return (
+    publisherSites[p.profile?.publisher.name || p.maintainer] ||
+    p.profile?.publisher.url
+  );
+}
+export function shortDate(date?: string) {
+  if (!date) return "—";
+  const parsed = new Date(`${date}T00:00:00Z`);
+  return Number.isNaN(parsed.valueOf())
+    ? "—"
+    : new Intl.DateTimeFormat("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+        timeZone: "UTC",
+      }).format(parsed);
+}
+export function listingKind(p: Listing) {
+  const kind = browseKind(p);
+  return kind ? label("type", kind) : "Tool";
+}
+function listingFormat(p: Listing) {
+  const d = discovery(p);
+  const format = [...new Set(d.options?.map((o) => o.delivery) || [])];
+  return format.length
+    ? format.map((f) => label("delivery", f)).join(" + ")
+    : "Not provided";
+}
+export function PublisherLink({ p }: { p: Listing }) {
+  const url = publisherUrl(p);
+  return url ? (
+    <a
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="publisher-link"
+    >
+      {p.profile?.publisher.name || p.maintainer}
+      <ArrowUpRight size={12} aria-hidden="true" />
+      <span className="sr-only"> (opens in a new tab)</span>
+    </a>
+  ) : (
+    <span>{p.maintainer}</span>
+  );
+}
 
 function Modal({
   title,
@@ -100,14 +148,11 @@ function ToolCard({
   const d = discovery(p),
     action = primaryAction(p),
     image = p.profile?.media?.find((m) => m.type === "image");
-  const stage = values(p, "stage")[0];
   const logo = p.profile?.branding?.logo.on_light;
   const motion = image?.type === "image" && Boolean(image.poster);
-  const context = d.works_with?.length
-    ? d.works_with
-        .map((w) => `${relationshipLabels[w.relationship]} ${w.name}`)
-        .join(" · ")
-    : values(p, "environment").join(" · ");
+  const context = d.works_with
+    ?.map((w) => `${relationshipLabels[w.relationship]} ${w.name}`)
+    .join(" · ");
   return (
     <article className="tool-card">
       <Link
@@ -149,38 +194,76 @@ function ToolCard({
             </span>
           )}
           <div>
-            <span className="tool-type">
-              {d.product_type ? productTypes[d.product_type] : "Tool"}
-            </span>
+            <span className="tool-type">{listingKind(p)}</span>
             <h2>
               <Link to={`/projects/${p.id}`} state={{ explore: returnTo }}>
                 {p.name}
                 <ArrowUpRight size={17} />
               </Link>
             </h2>
-            <p className="tool-publisher">{p.maintainer}</p>
+            <p className="tool-publisher">
+              <PublisherLink p={p} />
+            </p>
           </div>
         </div>
         <p className="tool-summary">{p.summary}</p>
-        <div className="tool-facts">
-          <span className="tool-fact-capability">
-            <MonitorPlay size={13} />
-            {capabilities[d.primary]}
-          </span>
-          {context && <span className="tool-fact-context">{context}</span>}
+        <div className="tool-spec" aria-label="Tool details">
+          <div>
+            <span>Use</span>
+            <strong>{capabilities[d.primary]}</strong>
+          </div>
+          <div>
+            <span>Format</span>
+            <strong>{listingFormat(p)}</strong>
+          </div>
+          {context && (
+            <div>
+              <span>Works with</span>
+              <strong>{context}</strong>
+            </div>
+          )}
         </div>
-        <div className="tool-badges">
-          <span className="tool-badge-free">
-            <CircleCheck size={13} /> Free{" "}
-            {p.profile?.access.edition || "edition"}
+        <div className="tool-status">
+          <strong>Free {p.profile?.access.edition || "edition"}</strong>
+          <span>
+            {sourceLabels[p.source]} ·{" "}
+            {label("stage", values(p, "stage")[0] || "unknown")}
           </span>
-          <span className="tool-badge-source">{sourceLabels[p.source]}</span>
-          {stage && (
-            <span className="tool-badge-stage">{label("stage", stage)}</span>
-          )}
           {p.software_requirements === "paid-platform-required" && (
-            <span className="tool-badge-cost">Paid host required</span>
+            <em>Paid host required</em>
           )}
+        </div>
+        <div className="tool-dates">
+          <span>
+            Added{" "}
+            <time dateTime={p.listing.added || ""}>
+              {shortDate(p.listing.added)}
+            </time>
+          </span>
+          <span>
+            Listing reviewed{" "}
+            <time dateTime={p.listing.reviewed}>
+              {shortDate(p.listing.reviewed)}
+            </time>
+          </span>
+          <span>
+            Release{" "}
+            {p.profile?.release ? (
+              <>
+                <a
+                  href={p.profile.release.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  v{p.profile.release.version}
+                </a>
+                {p.profile.release.date &&
+                  ` · ${shortDate(p.profile.release.date)}`}
+              </>
+            ) : (
+              <span title="No software release declared">—</span>
+            )}
+          </span>
         </div>
         <details className="free-scope">
           <summary>Free scope & requirements</summary>
@@ -208,6 +291,126 @@ function ToolCard({
         </small>
       </div>
     </article>
+  );
+}
+function ToolTable({
+  items,
+  compared,
+  toggleCompare,
+  returnTo,
+}: {
+  items: Listing[];
+  compared: string[];
+  toggleCompare: (id: string) => void;
+  returnTo: string;
+}) {
+  return (
+    <div
+      className="tool-table-scroll"
+      role="region"
+      aria-label="Compare tool listings"
+      tabIndex={0}
+    >
+      <table className="tool-table">
+        <thead>
+          <tr>
+            <th scope="col">Project</th>
+            <th scope="col">Kind / format</th>
+            <th scope="col">Use</th>
+            <th scope="col">Access / source</th>
+            <th scope="col">Added</th>
+            <th scope="col">Reviewed</th>
+            <th scope="col">Release</th>
+            <th scope="col">Compare</th>
+          </tr>
+        </thead>
+        <tbody>
+          {items.map((p) => {
+            const image = p.profile?.media?.find((m) => m.type === "image");
+            const selected = compared.includes(p.id);
+            return (
+              <tr key={p.id}>
+                <th scope="row">
+                  <div className="table-project">
+                    {image?.type === "image" && (
+                      <img
+                        src={image.poster || image.src}
+                        alt=""
+                        loading="lazy"
+                      />
+                    )}
+                    <div>
+                      <Link
+                        to={`/projects/${p.id}`}
+                        state={{ explore: returnTo }}
+                      >
+                        {p.name}
+                        <ArrowUpRight size={14} aria-hidden="true" />
+                      </Link>
+                      <small>
+                        <PublisherLink p={p} />
+                      </small>
+                    </div>
+                  </div>
+                </th>
+                <td>
+                  <strong>{listingKind(p)}</strong>
+                  <small>{listingFormat(p)}</small>
+                </td>
+                <td>{capabilities[discovery(p).primary]}</td>
+                <td>
+                  <strong className="table-free">Free</strong>
+                  <small>
+                    {sourceLabels[p.source]}
+                    {p.software_requirements === "paid-platform-required" &&
+                      " · Paid host required"}
+                  </small>
+                </td>
+                <td>
+                  <time dateTime={p.listing.added || ""}>
+                    {shortDate(p.listing.added)}
+                  </time>
+                </td>
+                <td>
+                  <time dateTime={p.listing.reviewed}>
+                    {shortDate(p.listing.reviewed)}
+                  </time>
+                </td>
+                <td>
+                  {p.profile?.release ? (
+                    <>
+                      <a
+                        href={p.profile.release.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        v{p.profile.release.version}
+                      </a>
+                      {p.profile.release.date && (
+                        <small>{shortDate(p.profile.release.date)}</small>
+                      )}
+                    </>
+                  ) : (
+                    <span title="No software release declared">—</span>
+                  )}
+                </td>
+                <td>
+                  <button
+                    type="button"
+                    disabled={compared.length === 3 && !selected}
+                    aria-label={`Compare ${p.name}`}
+                    aria-pressed={selected}
+                    onClick={() => toggleCompare(p.id)}
+                  >
+                    {selected ? <Check size={17} /> : <Columns3 size={17} />}
+                  </button>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
   );
 }
 export function FitDetails({ project }: { project: Listing }) {
@@ -290,6 +493,8 @@ function FilterGroup({
 export default function Explore() {
   const [params, setParams] = useSearchParams(),
     location = useLocation();
+  const compareButtonRef = useRef<HTMLButtonElement>(null);
+  const filterButtonRef = useRef<HTMLButtonElement>(null);
   const [drawer, setDrawer] = useState(false),
     [filtersCollapsed, setFiltersCollapsed] = useState(false),
     [compareOpen, setCompareOpen] = useState(false),
@@ -565,6 +770,7 @@ export default function Explore() {
         </div>
         <button
           className="button explore-filter-toggle"
+          ref={filterButtonRef}
           onClick={() => setDrawer(true)}
           aria-haspopup="dialog"
           aria-expanded={drawer}
@@ -661,18 +867,32 @@ export default function Explore() {
               </button>
             </div>
           )}
-          <div className={`tool-results ${view}`}>
-            {filtered.map((p) => (
-              <ToolCard
-                key={p.id}
-                p={p}
+          {view === "list" ? (
+            <>
+              <p className="table-hint">
+                Scroll sideways to compare every column <ArrowRight size={14} />
+              </p>
+              <ToolTable
+                items={filtered}
+                compared={compared}
+                toggleCompare={toggleCompare}
                 returnTo={returnTo}
-                selected={compared.includes(p.id)}
-                disabled={compared.length === 3 && !compared.includes(p.id)}
-                toggle={() => toggleCompare(p.id)}
               />
-            ))}
-          </div>
+            </>
+          ) : (
+            <div className="tool-results grid">
+              {filtered.map((p) => (
+                <ToolCard
+                  key={p.id}
+                  p={p}
+                  returnTo={returnTo}
+                  selected={compared.includes(p.id)}
+                  disabled={compared.length === 3 && !compared.includes(p.id)}
+                  toggle={() => toggleCompare(p.id)}
+                />
+              ))}
+            </div>
+          )}
           {!filtered.length && (
             <div className="explore-empty">
               <Search size={30} />
@@ -704,12 +924,21 @@ export default function Explore() {
       {drawer && (
         <Modal
           title="Filters"
-          close={() => setDrawer(false)}
+          close={() => {
+            setDrawer(false);
+            requestAnimationFrame(() => filterButtonRef.current?.focus());
+          }}
           className="filter-drawer"
         >
           <div className="drawer-body">{filterContent}</div>
           <footer>
-            <button className="button primary" onClick={() => setDrawer(false)}>
+            <button
+              className="button primary"
+              onClick={() => {
+                setDrawer(false);
+                requestAnimationFrame(() => filterButtonRef.current?.focus());
+              }}
+            >
               Show {filtered.length}{" "}
               {filtered.length === 1 ? "result" : "results"}
               <ArrowRight size={16} />
@@ -740,6 +969,7 @@ export default function Explore() {
           </div>
           <button
             className="button primary"
+            ref={compareButtonRef}
             disabled={compared.length < 2}
             onClick={() => setCompareOpen(true)}
           >
@@ -751,7 +981,10 @@ export default function Explore() {
       {compareOpen && (
         <Modal
           title="Compare tools"
-          close={() => setCompareOpen(false)}
+          close={() => {
+            setCompareOpen(false);
+            requestAnimationFrame(() => compareButtonRef.current?.focus());
+          }}
           className="compare-dialog"
         >
           <p className="compare-note">
@@ -828,8 +1061,8 @@ export function DiscoveryGlossary() {
       <section>
         <h2>Keep the dimensions separate</h2>
         <p>
-          Product type describes what you get. Delivery describes its format.
-          Runs on describes the operating environment; deployment says where it
+          Kind describes what you get. Delivery describes its format. Runs on
+          describes the operating environment; deployment says where it
           operates. Interfaces describe how it exchanges data.
         </p>
         <p>
@@ -842,6 +1075,13 @@ export function DiscoveryGlossary() {
           filters include only explicitly declared information. Missing
           information is shown as “Not provided”. Package filters must match the
           same declared delivery option.
+        </p>
+        <p>
+          Kind is a browsing label based on the listed edition and delivery. An
+          interactive demo does not imply a downloadable application or module.
+          Added is the first catalog publication date; listing reviewed is the
+          latest approved listing review. A software version appears only when
+          the publisher declares a release.
         </p>
       </section>
       <section>

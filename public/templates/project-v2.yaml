@@ -133,6 +133,8 @@ visibility: listed
 # discovery:
 #   primary: visualization
 #   product_type: application
+#   # Choose application, tool, demo, extension, resource, library, or assets.
+#   # An Ignition module is an extension delivered as a module in options[].
 #   capabilities: [Symbol generation, SVG export]
 #   works_with:
 #     - name: Ignition Perspective

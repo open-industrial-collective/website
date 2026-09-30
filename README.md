@@ -86,6 +86,8 @@ Each `options[]` entry describes one valid delivery/environment/deployment combi
 
 Explore supports OR within filter groups, AND across groups, facets that respect the other constraints, aliases, explicit zero-result relaxations, and shareable search/filter/sort/view/comparison URLs. Filter and view changes create history entries; typing updates the current entry. Desktop filters use a sidebar; mobile uses a modal drawer. Compare up to three listings without scores. Collection shortcuts derive from the same records and show only when matching inventory exists. Listing `added` is the original publication date, separate from `reviewed` and software `release.date`; unknown dates sort last.
 
+Explorer cards separate kind, use, delivery format, access and source terms into labeled lines. List view is a horizontally scrollable comparison table on narrow screens. New profiles may declare `application`, `tool` or `demo` as their product type; a module is an extension delivered as `module` in `options[]`. Existing listings get an editorial browsing label from approved edition and delivery fields. A demo label does not imply a downloadable application or module. Publisher names link to the publisher's verified website when known, otherwise to the submitted publisher URL. The site shows `added` and latest listing `reviewed` dates and displays a software version only when the publisher declares `release`. A review date is never presented as a software release date.
+
 The catalog does not add analytics or activity claims. `npm run check` covers schema, package matching, facets, aliases, sorting and prerender output; `node tests/explore.mjs` covers navigation, keyboard focus, comparison and mobile return context against a running preview.
 
 ## Search discovery

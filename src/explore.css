@@ -256,6 +256,16 @@
   border-color: #b7a99a;
   box-shadow: 0 15px 32px #27292517;
 }
+@keyframes explore-enter {
+  from { opacity: 0; translate: 0 9px; }
+  to { opacity: 1; translate: 0 0; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .tool-results.grid .tool-card { animation: explore-enter .4s ease-out both; }
+  .tool-results.grid .tool-card:nth-child(2n) { animation-delay: .06s; }
+  .tool-table tbody tr { animation: explore-enter .34s ease-out both; }
+  .tool-table tbody tr:nth-child(2n) { animation-delay: .05s; }
+}
 .tool-art {
   height: 190px;
   position: relative;
@@ -962,4 +972,146 @@
 @media (prefers-reduced-motion: reduce) {
   .tool-card, .tool-art img { transition: none; }
   .tool-card:hover, .tool-card:hover .tool-art img { transform: none; }
+}
+
+/* A quiet specification sheet replaces stacks of category pills. */
+.tool-heading { align-items: flex-start; }
+.tool-heading > div { flex: 1; }
+.tool-publisher a, .table-project small a {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  color: #625f58;
+  text-decoration-color: transparent;
+  text-underline-offset: 3px;
+}
+.tool-publisher a:hover, .table-project small a:hover { color: #99452d; text-decoration-color: currentColor; }
+.tool-spec {
+  display: grid;
+  gap: 0;
+  margin-top: auto;
+  border-top: 1px solid #e6e1d7;
+  border-bottom: 1px solid #e6e1d7;
+}
+.tool-spec > div {
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr);
+  gap: 10px;
+  padding: 8px 0;
+  font-size: 11px;
+  line-height: 1.4;
+}
+.tool-spec > div + div { border-top: 1px solid #eeeae2; }
+.tool-spec span { color: #807970; }
+.tool-spec strong { color: #343934; font-weight: 580; overflow-wrap: anywhere; }
+.tool-status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 3px 8px;
+  padding: 10px 0 0;
+  font-size: 11px;
+  line-height: 1.45;
+}
+.tool-status strong { color: #20614c; font-weight: 700; }
+.tool-status span { color: #706a61; }
+.tool-status em { color: #9a482e; font-style: normal; font-weight: 650; }
+.tool-dates {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px 12px;
+  margin: 7px 0 0;
+  color: #817b71;
+  font-size: 10px;
+  line-height: 1.45;
+  font-variant-numeric: tabular-nums;
+}
+.tool-dates time, .tool-dates a, .tool-dates span span { color: #4b4c46; }
+.tool-dates a { text-underline-offset: 2px; }
+.tool-content .free-scope { margin: 8px 0 10px; }
+.tool-actions { margin-top: auto; }
+.tool-table-scroll {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid #d8d3c8;
+  border-radius: 16px;
+  background: #fffdf8;
+  box-shadow: 0 7px 24px #2729250a;
+  scrollbar-color: #afa79a transparent;
+}
+.tool-table-scroll:focus-visible { outline: 2px solid #a44b32; outline-offset: 3px; }
+.tool-table {
+  width: 100%;
+  min-width: 880px;
+  border-collapse: collapse;
+  table-layout: fixed;
+  text-align: left;
+  font-size: 11px;
+  line-height: 1.4;
+  font-variant-numeric: tabular-nums;
+}
+.tool-table th:nth-child(1) { width: 23%; }
+.tool-table th:nth-child(2) { width: 15%; }
+.tool-table th:nth-child(3) { width: 14%; }
+.tool-table th:nth-child(4) { width: 15%; }
+.tool-table th:nth-child(5), .tool-table th:nth-child(6) { width: 9%; }
+.tool-table th:nth-child(7) { width: 7%; }
+.tool-table th:nth-child(8) { width: 8%; }
+.tool-table thead { background: #f1eee6; color: #6e675d; }
+.tool-table thead th {
+  padding: 13px 12px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .035em;
+  white-space: nowrap;
+}
+.tool-table tbody tr { border-top: 1px solid #e8e3d9; transition: background-color .18s ease; }
+.tool-table tbody tr:hover { background: #f6f4ee; }
+.tool-table tbody th, .tool-table tbody td { padding: 16px 12px; vertical-align: middle; font-weight: 450; overflow-wrap: anywhere; }
+.tool-table tbody td > strong { display: block; font-weight: 650; color: #343934; }
+.tool-table tbody td small { display: block; color: #777168; margin-top: 3px; font-size: 10px; }
+.tool-table .table-free { color: #20614c; }
+.table-project { display: flex; align-items: center; gap: 11px; min-width: 0; }
+.table-project > img { width: 62px; height: 50px; flex: 0 0 62px; object-fit: cover; border-radius: 7px; background: #23383d; }
+.table-project > div { min-width: 0; }
+.table-project > div > a { display: inline; overflow-wrap: normal; font-size: 13px; font-weight: 700; text-decoration: none; line-height: 1.25; }
+.table-project > div > a svg { color: #a44b32; vertical-align: -2px; margin-left: 3px; }
+.table-project small { display: block; margin-top: 5px; font-size: 10px; font-weight: 450; }
+.tool-table td:last-child { text-align: center; }
+.tool-table td:last-child button { width: 36px; height: 36px; border: 1px solid transparent; border-radius: 9px; display: inline-grid; place-items: center; color: #5e625d; background: transparent; }
+.tool-table td:last-child button:hover, .tool-table td:last-child button[aria-pressed="true"] { color: #9c452f; background: #f2e9e2; }
+.tool-table td:last-child button:disabled { opacity: .35; cursor: not-allowed; }
+.table-hint { display: none; }
+@media (max-width: 1200px) {
+  .table-hint { display: inline-flex; align-items: center; gap: 5px; margin: 0 0 8px; color: #777168; font-size: 11px; }
+}
+@media (max-width: 700px) {
+  .tool-table-scroll { margin-top: 2px; }
+  .tool-table { min-width: 880px; }
+  .tool-table tbody th, .tool-table tbody td { padding: 13px 10px; }
+  .tool-table td:last-child button { width: 44px; height: 44px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tool-table tbody tr { transition: none; }
+}
+.detail-heading .publisher-link { color: inherit; text-underline-offset: 3px; }
+.detail-heading .publisher-link:hover { color: #9a452e; }
+.detail-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 0;
+  margin: -12px 0 28px;
+  padding: 14px 0;
+  border-top: 1px solid #ddd8cd;
+  border-bottom: 1px solid #ddd8cd;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+.detail-meta > span { display: flex; flex-direction: column; gap: 4px; padding: 0 22px; border-left: 1px solid #e4dfd4; }
+.detail-meta > span:first-child { border-left: 0; padding-left: 0; }
+.detail-meta strong { color: #777168; font-size: 10px; font-weight: 600; }
+.detail-meta a { color: #a44b32; }
+@media (max-width: 700px) {
+  .detail-meta { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: -10px; }
+  .detail-meta > span { border: 0; padding: 0 10px 0 0; }
 }

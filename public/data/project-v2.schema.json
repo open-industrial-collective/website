@@ -710,6 +710,8 @@
         "product_type": {
           "enum": [
             "application",
+            "tool",
+            "demo",
             "extension",
             "resource",
             "library",
