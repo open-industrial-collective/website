@@ -3,7 +3,7 @@ export const site = {
   name: "Open Industrial Collective",
   url: "https://openindustrialcollective.org",
   description:
-    "Discover free industrial software, modules, and practical solutions across vendors and industries. Open-source and closed-source options, with clear terms and requirements.",
+    "OIC helps builders share free industrial software and helps industry access, assess, and adopt it. Each project explains its free use, terms, and requirements.",
   repository: "https://github.com/open-industrial-collective/website",
   participation:
     "https://github.com/open-industrial-collective/website/issues/new?template=participation.yml",

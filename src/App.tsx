@@ -54,7 +54,6 @@ import { ShowcasePreview } from "./ShowcasePreview";
 import { ProfileEditor } from "./ProfileEditor";
 import { actionLabel } from "./profile";
 import { ProfileText, ProfileSections } from "./ProfileContent";
-import { CollectiveSculpture } from "./CollectiveSculpture";
 import { CommunityPage } from "./CommunityPage";
 import { pageSeo } from "./seo";
 import { CharterPage } from "./CharterPage";
@@ -281,7 +280,7 @@ export default function App() {
             }}
             className={menu ? "open" : ""}
           >
-            <NavLink to="/explore">Explore tools</NavLink>
+            <NavLink to="/explore">Explore projects</NavLink>
             <NavLink to="/about">Why OIC</NavLink>
             <NavLink to="/how-it-works">How it works</NavLink>
             <NavLink to="/community">Community</NavLink>
@@ -318,7 +317,7 @@ export default function App() {
             <OicMark />
             <span>Open Industrial Collective</span>
           </Link>
-          <span>Free tools. Shared progress.</span>
+          <span>Free software. Shared progress.</span>
           <div>
             <Link to="/how-it-works">How it works</Link>
             <Link to="/platforms">Platforms</Link>
@@ -351,20 +350,15 @@ function Home() {
       <section className="container workshop-opening">
         <div className="workshop-hero-layout">
           <div className="workshop-hero-copy">
-            <span className="workshop-edition">
-              Free industrial tools, in one place
-            </span>
-            <h1>
-              Find the tool.
-              <br className="desktop-break" /> Get to work.
-            </h1>
+            <span className="workshop-edition">Open Industrial Collective</span>
+            <h1>Free industrial software. More room to innovate.</h1>
             <p className="workshop-intro">
-              Discover useful industrial software, see exactly what’s free, and
-              go straight to its maker.
+              OIC helps builders bring free tools to industry, so more teams can
+              try new ideas and solve real problems.
             </p>
             <div className="workshop-actions">
               <Link className="button primary" to="/explore">
-                Explore tools <ArrowRight size={18} />
+                Explore projects <ArrowRight size={18} />
               </Link>
               <Link className="workshop-why" to="/#why-oic">
                 Why OIC? <ArrowDown size={16} />
@@ -372,17 +366,23 @@ function Home() {
             </div>
           </div>
           <div className="workshop-brand-art">
-            <CollectiveSculpture />
-            <span>Built to move useful work forward.</span>
+            <img
+              className="oic-hero-illustration"
+              src="/images/illustrations/workbench-hero.webp"
+              alt=""
+              width="1774"
+              height="887"
+              fetchPriority="high"
+            />
           </div>
         </div>
         <div className="workshop-search-row">
           <form className="workshop-search" action="/explore" role="search">
             <Search size={19} />
             <input
-              aria-label="Search tools"
+              aria-label="Search projects"
               name="q"
-              placeholder="Search tools, tasks, or platforms"
+              placeholder="Search projects or tasks"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
             />
@@ -410,7 +410,7 @@ function Home() {
           <article className="workshop-project">
             <div className="workshop-project-title">
               <span className="project-byline">
-                <span /> Featured tool
+                <span /> Featured project
               </span>
               <h2>
                 <Link to={`/projects/${featured.id}`}>{featured.name}</Link>
@@ -449,13 +449,11 @@ function Home() {
             <span>Why OIC exists</span>
             <OicMark />
           </div>
-          <h2>Good industrial ideas deserve a path to trust.</h2>
+          <h2>Good ideas need a way in.</h2>
           <div className="workshop-purpose-copy">
             <p>
-              More people can build useful technology. OIC starts by helping
-              them share it clearly—and is developing ways for industrial
-              experts to show what works, under which conditions, and what
-              remains unknown.
+              A useful industrial tool can come from anyone. OIC helps it reach
+              the people who could put it to work.
             </p>
             <Link className="workshop-link" to="/about">
               More about OIC <ArrowUpRight size={19} />
@@ -464,11 +462,12 @@ function Home() {
         </div>
       </section>
       <section className="container workshop-contribute">
-        <span className="workshop-small-label">Built something useful?</span>
-        <h2>Put your tool on the map.</h2>
+        <span className="workshop-small-label">SHARE A PROJECT</span>
+        <h2>Built something industry could use?</h2>
         <div>
           <p>
-            Share a free edition with clear terms and a direct way to try it.
+            Share a free tool and show people what it does, what it needs, and
+            how to try it.
           </p>
           <Link className="button primary" to="/share">
             Prepare a listing <ArrowUpRight size={18} />
@@ -629,7 +628,7 @@ function Detail() {
     <div className="container page">
       <Link className="back" to={backTo}>
         <ArrowLeft size={16} />
-        All tools
+        All projects
       </Link>
       <div className="detail-heading">
         <Icon project={p} size={38} />
@@ -853,7 +852,7 @@ function Detail() {
           <div className="section-heading">
             <h2>Keep exploring.</h2>
             <Link className="text-link" to="/explore">
-              All tools <ArrowRight size={16} />
+              All projects <ArrowRight size={16} />
             </Link>
           </div>
           <div className="project-grid">
@@ -873,12 +872,11 @@ function About() {
         <div className="mission-hero-copy">
           <span className="eyebrow">WHY OIC EXISTS</span>
           <h1 id="mission-title">
-            Industrial ideas need a <span>path to trust.</span>
+            Industrial innovation shouldn’t require a <span>big budget.</span>
           </h1>
           <p>
-            More people can turn industrial expertise into working technology.
-            To use it responsibly, manufacturers need to understand what a tool
-            does, how it was evaluated, and what remains uncertain.
+            More people can build useful software. OIC helps their free tools
+            reach industry with clear terms and requirements.
           </p>
           <a className="mission-jump" href="#the-approach">
             See the approach <ArrowDown size={17} />
@@ -892,23 +890,23 @@ function About() {
           <ol>
             <li>
               <span>01</span>
-              <strong>Industrial expertise</strong>
-              <small>Real problems and practical judgment</small>
+              <strong>Lower barriers</strong>
+              <small>Make useful software more accessible</small>
             </li>
             <li>
               <span>02</span>
-              <strong>Useful technology</strong>
-              <small>Tools from teams of every size</small>
+              <strong>Enable builders</strong>
+              <small>Give good ideas a way to reach industry</small>
             </li>
             <li>
               <span>03</span>
-              <strong>Inspectable evidence</strong>
-              <small>Defined scope, results and limits</small>
+              <strong>Earn trust</strong>
+              <small>Show what has been tested and what remains unknown</small>
             </li>
             <li>
               <span>04</span>
-              <strong>Informed adoption</strong>
-              <small>Decisions made by the people responsible</small>
+              <strong>Advance industry</strong>
+              <small>Put useful work to informed use</small>
             </li>
           </ol>
         </div>
@@ -917,9 +915,8 @@ function About() {
       <section className="mission-belief" aria-label="Core belief">
         <span className="eyebrow">OUR CORE BELIEF</span>
         <p>
-          Industrial technology should earn trust through{" "}
-          <em>evidence and expertise</em>. Builders of every size deserve a
-          credible way to show what their work can do.
+          Industrial progress grows when <em>more builders can contribute</em> and
+          more teams can use their work with confidence.
         </p>
       </section>
 
@@ -938,28 +935,19 @@ function About() {
         </div>
         <div className="mission-pillars">
           <article>
+            <img className="oic-pillar-art" src="/images/illustrations/build.webp" alt="" width="1536" height="1024" loading="lazy" />
             <span className="mission-pillar-number">01 / BUILD</span>
-            <h3>Expertise becomes technology.</h3>
-            <p>
-              Engineers, operators, integrators and small teams turn practical
-              knowledge into tools, workflows and solutions.
-            </p>
+            <h3>Turn industrial knowledge into useful software.</h3>
           </article>
           <article>
+            <img className="oic-pillar-art" src="/images/illustrations/share.webp" alt="" width="1536" height="1024" loading="lazy" />
             <span className="mission-pillar-number">02 / SHARE</span>
-            <h3>Useful work becomes findable.</h3>
-            <p>
-              OIC's first public step is a catalog of free tools with clear
-              creators, access, terms and requirements.
-            </p>
+            <h3>Give free tools a clear route to real users.</h3>
           </article>
           <article>
+            <img className="oic-pillar-art" src="/images/illustrations/prove.webp" alt="" width="1536" height="1024" loading="lazy" />
             <span className="mission-pillar-number">03 / PROVE</span>
-            <h3>Claims meet evidence.</h3>
-            <p>
-              We're developing scoped evaluation methods shaped by industrial
-              experts, so results and remaining gaps can be inspected.
-            </p>
+            <h3>Test meaningful claims and show the limits.</h3>
           </article>
         </div>
       </section>
@@ -968,10 +956,11 @@ function About() {
         <div>
           <span className="eyebrow">WHY THE EVIDENCE MATTERS</span>
           <h2 id="evidence-title">
-            A polished demo is a beginning. Industrial use asks more.
+            Confidence needs evidence.
           </h2>
         </div>
         <div className="mission-evidence-points">
+          <p className="oic-evidence-intro">Teams need to know what was tested, under which conditions, and what remains unknown.</p>
           <p>
             <strong>Define the question.</strong> Practitioners help name the
             behavior and failure modes that matter in real environments.
@@ -991,19 +980,17 @@ function About() {
         <div>
           <span className="eyebrow">WHERE WE ARE NOW</span>
           <h2 id="mission-now-title">
-            Start useful. Build the trust layer carefully.
+            A working catalog. A growing mission.
           </h2>
           <p>
-            The public catalog helps people discover and share free industrial
-            tools across open-source and closed-source models. Listings receive
-            a human admission review. Separate local evaluation work is under
-            development; no listed tool has an OIC production certification or
-            independent public verification today.
+            OIC publishes free-project listings now. Expert-led evaluation is in
+            development, and each team decides what is suitable for its
+            environment. Catalog admission is not production certification.
           </p>
         </div>
         <div className="mission-next-links">
           <Link to="/explore">
-            Explore the tools <ArrowRight size={17} />
+            Explore projects <ArrowRight size={17} />
           </Link>
           <Link to="/how-it-works">
             How OIC works <ArrowRight size={17} />
@@ -1021,11 +1008,9 @@ function Guide() {
     <div className="container page guide-page">
       <div className="page-heading">
         <div className="eyebrow">CONTRIBUTOR GUIDE</div>
-        <h1>One small file. A useful connection.</h1>
-        <p>
-          Your project stays in its own home. Publish a profile in your
-          repository, then request a listing.
-        </p>
+        <h1>Share your tool. Keep your project.</h1>
+        <p>Create a listing in your own repository, then request OIC review.</p>
+        <img className="oic-page-art oic-guide-art" src="/images/illustrations/profile.webp" alt="" width="1536" height="1024" loading="lazy" />
       </div>
       <div className="guide-layout">
         <div>
@@ -1178,7 +1163,7 @@ function NotFound() {
       <h1>This page isn’t in the toolbox.</h1>
       <p>The link may have changed, or the project isn’t listed yet.</p>
       <Link className="button primary" to="/explore">
-        Explore tools <ArrowRight size={17} />
+        Explore projects <ArrowRight size={17} />
       </Link>
     </div>
   );

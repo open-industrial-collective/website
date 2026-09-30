@@ -7,7 +7,7 @@ export const catalog = JSON.parse(
 );
 export function countLabel(filter = () => true) {
   const count = catalog.filter(filter).length;
-  return `${count} ${count === 1 ? "tool" : "tools"}`;
+  return `${count} ${count === 1 ? "project" : "projects"}`;
 }
 /** The mobile filter drawer's "Show N results" button for a filter. */
 export function showResultsLabel(filter = () => true) {

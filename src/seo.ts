@@ -4,9 +4,9 @@ import { site } from "./site.config";
 
 const projects = data as Listing[];
 const pages: Record<string, [string, string]> = {
-  "/": ["Free industrial tools and shared know-how", site.description],
+  "/": ["Free industrial software. More room to innovate.", site.description],
   "/explore": [
-    "Explore free industrial tools",
+    "Explore free industrial projects",
     "Browse free industrial software for engineering, operations, visualization and connectivity. Compare source availability, access terms and requirements.",
   ],
   "/explore/glossary": [
@@ -14,11 +14,11 @@ const pages: Record<string, [string, string]> = {
     "Understand OIC capability categories, package formats, platform relationships and search filters.",
   ],
   "/share": [
-    "Share a free industrial tool",
+    "Share a free industrial project",
     "Prepare a portable OIC project profile and request a listing for your free industrial software, module or browser demo.",
   ],
   "/community": [
-    "Community and participation",
+    "Help shape what industry can use",
     "Suggest a free industrial tool, share one you maintain, offer a contribution, or see who currently stewards OIC.",
   ],
   "/about": [
@@ -26,15 +26,15 @@ const pages: Record<string, [string, string]> = {
     "OIC connects industrial expertise to adoption through useful technology, open sharing and evidence people can inspect. Learn the Build, Share, Prove mission and what exists today.",
   ],
   "/how-it-works": [
-    "How OIC works",
+    "From promising tool to practical use",
     "Find and share free industrial tools with clear access, terms and requirements. Get direct answers about listing review, source rights, platform costs and the limits of verification.",
   ],
   "/platforms": [
-    "Industrial platforms and software costs",
+    "Free software and platform requirements",
     "Free tools can run on commercial platforms. Understand separate platform costs and explore the Ignition ecosystem.",
   ],
   "/guide": [
-    "Industrial tool listing guide",
+    "Share your tool. Keep your project.",
     "Describe a free industrial tool, explain its terms and requirements, and learn how OIC reviews catalog listings.",
   ],
   "/charter": [

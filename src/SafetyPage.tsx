@@ -23,7 +23,7 @@ export function SafetyPage() {
             and safety review. Catalog inclusion is not production approval.
           </p>
           <Link className="button primary" to="/explore">
-            Explore tools <ArrowRight size={16} />
+            Explore projects <ArrowRight size={16} />
           </Link>
           <Link className="text-link" to="/charter">
             Listing Charter <ArrowRight size={15} />
