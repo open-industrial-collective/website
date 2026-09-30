@@ -14,7 +14,8 @@
     "test": "npm run schema && tsx --test tests/*.test.ts",
     "check": "npm test && npm run build && node tests/seo-output.mjs",
     "schema": "node scripts/compile-validator.mjs",
-    "profile": "tsx scripts/sync-profile.ts"
+    "profile": "tsx scripts/sync-profile.ts",
+    "profile:check": "npm run -s schema && tsx scripts/check-profile.ts"
   },
   "dependencies": {
     "@fontsource-variable/inter": "5.3.0",

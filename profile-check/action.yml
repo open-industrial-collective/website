@@ -1,0 +1,32 @@
+name: OIC profile check
+description: Check an Open Industrial Collective listing profile with the same importer and Charter preflight that OIC review uses. A clean check is not an approval.
+inputs:
+  path:
+    description: Manifest path inside the repository.
+    default: .oic/project.yaml
+  directory:
+    description: Checkout to check.
+    default: ${{ github.workspace }}
+  strict:
+    description: Also fail on findings that need review (not only on blocking ones).
+    default: "false"
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 22
+    - name: Install the OIC importer
+      shell: bash
+      working-directory: ${{ github.action_path }}/..
+      run: npm ci --no-audit --no-fund --ignore-scripts
+    - name: Check the profile
+      shell: bash
+      working-directory: ${{ github.action_path }}/..
+      env:
+        OIC_DIR: ${{ inputs.directory }}
+        OIC_PATH: ${{ inputs.path }}
+        OIC_STRICT: ${{ inputs.strict }}
+      run: |
+        npm run -s schema
+        npx tsx scripts/check-profile.ts "$OIC_DIR" --path "$OIC_PATH" $([ "$OIC_STRICT" = "true" ] && echo --strict)
